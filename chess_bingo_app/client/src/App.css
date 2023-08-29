@@ -28,7 +28,6 @@ table thead th {
 table td, table th {
   border: 1px solid lightgray;
   padding: 8px; /* Adding padding to make it look nicer; adjust as needed */
-  background-color: white;
 }
 
 

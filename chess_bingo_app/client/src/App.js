@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
 
-
-
 function ChessOpeningsCollector() {
   const [openings, setOpenings] = useState([]);
   const [username, setUsername] = useState('khg001');
@@ -28,7 +26,9 @@ function ChessOpeningsCollector() {
           setOpenings(data.openings);
           setTotalGames(data.total_games); 
           setTotalStamps(data.total_stamps); 
-          setLoadedUsername(data.loaded_username); 
+          setLoadedUsername(data.loaded_username);
+          console.log(data);
+
 
       })
       .catch(error => {
@@ -57,11 +57,11 @@ function ChessOpeningsCollector() {
   return (
     <div>
         <div className="stampImageContainer">
-          <img src="assets/stamp_images/image.webp" alt="Stamp Image" className='stampImage'/>
-          <img src="assets/stamp_images/image (1).webp" alt="Stamp Image" className='stampImage'/>
-          <img src="assets/stamp_images/image (5).webp" alt="Stamp Image" className='stampImage'/>          
-          <img src="assets/stamp_images/image (6).webp" alt="Stamp Image" className='stampImage'/>
-          <img src="assets/stamp_images/image (4).webp" alt="Stamp Image" className='stampImage'/>
+          <img src="assets/stamp_images/image.webp" alt="Stamp" className='stampImage'/>
+          <img src="assets/stamp_images/image (1).webp" alt="Stamp" className='stampImage'/>
+          <img src="assets/stamp_images/image (5).webp" alt="Stamp" className='stampImage'/>          
+          <img src="assets/stamp_images/image (6).webp" alt="Stamp" className='stampImage'/>
+          <img src="assets/stamp_images/image (4).webp" alt="Stamp" className='stampImage'/>
        
         </div>
         <h1>Chess Opening Stamp Collector</h1>

@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
+import numpy as np
 import requests
 
 app = Flask(__name__)
@@ -71,11 +72,8 @@ def get_user_data(username,defaultusername='khg001'):
         # Credit openings with children
         df['player_white_with_children'] = df['player_white']
         df['player_black_with_children'] = df['player_black']
-
         for index, row in df.iterrows():
-            
             parents = eval(row['parents'])
-
             if len(parents) > 0:
                 for parent in parents:
                     df.loc[df['name'] == parent,'player_white_with_children'] += row['player_white']
@@ -92,16 +90,17 @@ def get_user_data(username,defaultusername='khg001'):
         df['black_pct'] = df['player_black'] / df['player_black'].sum()
         df['black_pct_with_children'] = df['player_black_with_children'] / df['player_black_with_children'].sum()
 
-        df['ratio_white'] = df['white_pct_with_children'] / df['all_pct']
-        df['ratio_black'] = df['black_pct__with_children'] / df['all_pct']
+        # Ratios and handle division by zero
+        df['ratio_white'] = np.where(df['all_pct'] == 0, 0, df['white_pct_with_children'] / df['all_pct'])
+        df['ratio_black'] = np.where(df['all_pct'] == 0, 0, df['black_pct_with_children'] / df['all_pct'])
+
+        print(df)
+
         return df
 
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
-
-
-
+    return 'Hello, Worlds!'
 
 @app.route('/openings', methods=['GET'])
 def get_data():
@@ -130,7 +129,6 @@ def get_data():
         'total_games': total_games,
         'total_stamps': total_stamps,
         'loaded_username': username
-
     })
 
 
