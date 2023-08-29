@@ -47,7 +47,7 @@ def get_user_data(username,defaultusername='khg001'):
         df = pd.read_csv(openings_db, sep="\t")
 
         # Get user data
-        max = 50
+        max = 100
 
         headers = {"Content-Type": "application/x-ndjson"}
         url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false"
@@ -92,6 +92,8 @@ def get_user_data(username,defaultusername='khg001'):
         df['black_pct'] = df['player_black'] / df['player_black'].sum()
         df['black_pct_with_children'] = df['player_black_with_children'] / df['player_black_with_children'].sum()
 
+        df['ratio_white'] = df['white_pct_with_children'] / df['all_pct']
+        df['ratio_black'] = df['black_pct__with_children'] / df['all_pct']
         return df
 
 @app.route('/')
@@ -109,9 +111,27 @@ def get_data():
     df = get_user_data(username)
 
     # Add additional info
+    total_games = int(df['player_total'].sum())
+    total_stamps = int(df['player_total_with_children'].sum())
+
+    """
+    # Most popular openings compared to average
+    # Least popular openings compared to average, but have played
+    # Top missing stamps
+    # Integrate with JS front-end library for table formatting, don't reinvent the wheel
+
+
+    most_popular_white = df.sort_values(by='ratio_white',ascending=False).head(10)
+    """
 
     # For now, we'll just return the dataframe data as JSON
-    return jsonify(df.to_dict(orient='records'))
+    return jsonify({
+        'openings': df.to_dict(orient='records'),
+        'total_games': total_games,
+        'total_stamps': total_stamps,
+        'loaded_username': username
+
+    })
 
 
 if __name__ == '__main__':

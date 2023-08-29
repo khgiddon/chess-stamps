@@ -4,9 +4,65 @@
   padding: 20px;
 }
 
+html, body {
+  background-color: rgb(241, 239, 239);
+
+}
+
 table {
   margin-top: 20px;
   width: 80%;
   margin-left: auto;
   margin-right: auto;
+  border-collapse: collapse; /* Ensures borders touch each other */
+}
+
+/* Style for the table headers */
+table thead th {
+  background-color: #BB3139; /* Example color; adjust as you see fit */
+  color: white;
+  border-bottom: 1px solid lightgray; /* Adds a border at the bottom of the header cells */
+}
+
+/* Style for all table cells */
+table td, table th {
+  border: 1px solid lightgray;
+  padding: 8px; /* Adding padding to make it look nicer; adjust as needed */
+  background-color: white;
+}
+
+
+/* ChessOpeningsCollector.css */
+.smallText {
+  font-size: 0.9rem;  /* Adjust this value as you see fit */
+  padding-left: 15px; /* Adjust this value as needed */
+
+}
+
+.summaryText {
+  font-size: 0.9rem;  /* Adjust this value as you see fit */
+  padding-left: 15px; /* Adjust this value as needed */
+
+}
+
+.usernameContainer {
+  padding-left: 15px; /* Adjust this value as needed */
+
+}
+
+
+h1, h2, h3 {
+  text-align: center;
+}
+
+.stampImageContainer {
+  text-align: center;
+  padding-top: 10px;
+  padding-bottom: 0px;
+}
+
+.stampImage {
+  width: 100px;
+  height: auto;
+  border: 1px solid darkslategray;
 }
