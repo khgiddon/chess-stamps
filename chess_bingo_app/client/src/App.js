@@ -1,5 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
+import { createRoot } from 'react-dom/client';
+import { AgGridReact } from 'ag-grid-react';
+
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';  // You can choose another theme if you prefer
+
 
 function ChessOpeningsCollector() {
   const [openings, setOpenings] = useState([]);
@@ -40,6 +46,21 @@ function ChessOpeningsCollector() {
     fetchData(username);
   }
 
+  // DATA TABLE FORMATTING
+
+  const gridOptions = {
+    defaultColDef: {
+      sortable: true
+    }
+    };
+
+  const gridRef = useRef(null); // Create a reference
+
+  const onGridReady = (params) => {
+      // Call sizeColumnsToFit() after the grid has initialized
+      params.api.sizeColumnsToFit();
+  };
+
   const formatPercentage = (value) => {
     // Convert to percentage
     let percentage = value * 100;
@@ -53,6 +74,33 @@ function ChessOpeningsCollector() {
       return percentage.toFixed(1);
     }
   }
+
+  const columns = [
+    { headerName: "Opening"
+    , field: "name"
+    , autoHeight: true
+    , cellStyle: {whiteSpace: 'normal'}
+    , minWidth: 400
+    },
+    { headerName: "PGN", field: "pgn" },
+    {
+        headerName: "% of stamps (all Lichess games)",
+        field: "all_pct",
+        valueFormatter: params => formatPercentage(params.value) + '%'
+    },
+    { headerName: "Player stamps (white)", field: "player_white_with_children" },
+    { headerName: "Player stamps (black)", field: "player_black_with_children" },
+    {
+        headerName: "% of player stamps (white)",
+        field: "white_pct_with_children",
+        valueFormatter: params => (params.value * 100).toFixed(1) + '%'
+    },
+    {
+        headerName: "% of player stamps (black)",
+        field: "black_pct_with_children",
+        valueFormatter: params => (params.value * 100).toFixed(1) + '%'
+    }
+];
 
   return (
     <div>
@@ -82,32 +130,16 @@ function ChessOpeningsCollector() {
         </div>
         <p className="summaryText">Analyzed <b>{totalstamps}</b> opening stamps from <b>{totalgames}</b> games played by <b>{loadedusername}</b>.</p>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Opening</th>
-            <th>PGN</th>
-            <th>% of stamps (all Lichess games)</th>
-            <th>Player stamps (white)</th>
-            <th>Player stamps (black)</th>
-            <th>% of player stamps (white)</th>
-            <th>% of player stamps (black)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {openings.map((opening, index) => (
-            <tr key={index}>
-              <td>{opening.name}</td>
-              <td>{opening.pgn}</td>
-              <td>{formatPercentage(opening.all_pct)}%</td>  {/* Format as percentage */}
-              <td>{opening.player_white_with_children}</td>
-              <td>{opening.player_black_with_children}</td>
-              <td>{(opening.white_pct_with_children * 100).toFixed(1)}%</td>  {/* Format as percentage */}
-              <td>{(opening.black_pct_with_children * 100).toFixed(1)}%</td>  {/* Format as percentage */}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
+            <AgGridReact
+                columnDefs={columns}
+                gridOptions={gridOptions}
+                rowData={openings}
+                onGridReady={onGridReady} // Attach the onGridReady event handler
+                ref={gridRef} // Attach the reference to the grid
+                domLayout='autoHeight' // Adjusts height based on number of rows, removes the need to set a static height.
+            />
+        </div>
     </div>
   );
 }
