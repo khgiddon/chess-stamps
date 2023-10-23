@@ -12,13 +12,7 @@ function ChessOpeningsCollector() {
   const [username, setUsername] = useState('khg001');
   const [loadedusername, setLoadedUsername] = useState('khg001');
   const [totalgames, setTotalGames] = useState(0); 
-  const [totalstamps, setTotalStamps] = useState(0);
-  const [mostpopularwhite, setMostPopularWhite] = useState([]);
-  const [mostpopularwhitemin10, setMostPopularWhiteMin10] = useState([]);
-  const [mostpopularblack, setMostPopularBlack] = useState([]);
-  const [mostpopularblackmin10, setMostPopularBlackMin10] = useState([]);
-  const [mostpopularmissingstamp, setMostPopularMissingStamp] = useState([]);
-  const [mostobscurestamp, setMostObscureStamp] = useState([]);
+  const [totalstamps, setTotalStamps] = useState(0); 
 
 
   // Fetch data when the component is first mounted using the default username
@@ -39,14 +33,8 @@ function ChessOpeningsCollector() {
           setTotalGames(data.total_games); 
           setTotalStamps(data.total_stamps); 
           setLoadedUsername(data.loaded_username);
-          setMostPopularWhite(data.most_popular_white);
-          setMostPopularWhiteMin10(data.most_popular_white_min10);
-          setMostPopularBlack(data.most_popular_black);
-          setMostPopularBlackMin10(data.most_popular_black_min10);
-          setMostPopularMissingStamp(data.most_popular_missing_stamp);
-          setMostObscureStamp(data.most_obscure_stamp);
           console.log(data);
-          console.log(mostobscurestamp);
+
 
       })
       .catch(error => {
@@ -57,30 +45,9 @@ function ChessOpeningsCollector() {
   const handleSubmit = () => {
     fetchData(username);
   }
-// ------------------------------------------------
-// Other functions
-// ------------------------------------------------
-
-// Convert a percentage to "1 in every X"
-function percentageToOneInEveryX(percentage) {
-  if (percentage === 0) {
-    return "Never";
-  }
-  const oneInX = 1 / percentage;
-  const roundedOneInX = Math.round(oneInX).toLocaleString(); // Rounds to the nearest integer and adds thousands separators
-  return `1 in every ${roundedOneInX}`;
-}
-
-// Custom rounding function for ratios
-function customRoundForRatio(num) {
-  if (num > 10) {
-    return Math.round(num);
-  } else {
-    return parseFloat(num.toFixed(2));
-  }
-}
 
   // DATA TABLE FORMATTING
+
   const gridOptions = {
     defaultColDef: {
       sortable: true
@@ -162,22 +129,6 @@ function customRoundForRatio(num) {
             <button onClick={handleSubmit} >Submit</button>
         </div>
         <p className="summaryText">Analyzed <b>{totalstamps}</b> opening stamps from <b>{totalgames}</b> games played by <b>{loadedusername}</b>.</p>
-
-        <p className="summaryText">The most popular stamp you're missing is the <b>{mostpopularmissingstamp.name}</b>.  You've never played this, but it's played in {percentageToOneInEveryX(mostpopularmissingstamp.all_pct)} of all Lichess games.</p>
-
-        <p className="summaryText">The most obscure stamp you've collected is the <b>{mostobscurestamp.name}</b>.  You've played this {mostobscurestamp.player_total_with_children} times, but this is only {percentageToOneInEveryX(mostobscurestamp.all_pct)} of all Lichess stamps!</p>
-
-        <p className="summaryText">
-          As white, the stamp you play most often relative to all of Lichess is the <b>{mostpopularwhite.name}</b>. 
-          You've played this {percentageToOneInEveryX(mostpopularwhite.player_pct_with_children)} stamps, but this is only {percentageToOneInEveryX(mostpopularwhite.all_pct)} of all Lichess stamps!
-          That means you play it {customRoundForRatio(mostpopularwhite.player_pct_with_children/mostpopularwhite.all_pct)}x as frequently.
-        </p>
-
-        <p className="summaryText">
-          As black, the stamp you play most often relative to all of Lichess is the <b>{mostpopularblack.name}</b>. 
-          You've played this {percentageToOneInEveryX(mostpopularblack.player_pct_with_children)} stamps, but this is only {percentageToOneInEveryX(mostpopularblack.all_pct)} of all Lichess stamps!
-          That means you play it {customRoundForRatio(mostpopularblack.player_pct_with_children/mostpopularblack.all_pct)}x as frequently.
-        </p>
 
         <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
             <AgGridReact

@@ -23,7 +23,7 @@ def response_parser(s):
     return data
 
 # Get user data
-def get_user_data(username,defaultusername='khg001'):
+def get_user_data(username,defaultusername='khg002'):
 
     """
     This script uses the Lichess API to export the games of a user
@@ -48,7 +48,7 @@ def get_user_data(username,defaultusername='khg001'):
         df = pd.read_csv(openings_db, sep="\t")
 
         # Get user data
-        max = 100
+        max = 5000
 
         headers = {"Content-Type": "application/x-ndjson"}
         url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false"
@@ -93,9 +93,7 @@ def get_user_data(username,defaultusername='khg001'):
         # Ratios and handle division by zero
         df['ratio_white'] = np.where(df['all_pct'] == 0, 0, df['white_pct_with_children'] / df['all_pct'])
         df['ratio_black'] = np.where(df['all_pct'] == 0, 0, df['black_pct_with_children'] / df['all_pct'])
-
-        print(df)
-
+        
         return df
 
 @app.route('/')
@@ -104,6 +102,8 @@ def hello_world():
 
 @app.route('/openings', methods=['GET'])
 def get_data():
+
+    print('hello world3')
 
     # Core data pull
     username = request.args.get('username')
@@ -117,20 +117,41 @@ def get_data():
     # Most popular openings compared to average
     # Least popular openings compared to average, but have played
     # Top missing stamps
-    # Integrate with JS front-end library for table formatting, don't reinvent the wheel
-
-
-    most_popular_white = df.sort_values(by='ratio_white',ascending=False).head(10)
     """
+
+    # Test
+    print(df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0])
+    print(df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0].to_dict())
+
+    most_popular_white = df.sort_values(by='ratio_white',ascending=False).head(1).iloc[0].to_dict()
+    most_popular_white_min10 = df.query('player_white_with_children >= 10').sort_values(by='ratio_white', ascending=False).head(1).iloc[0].to_dict()
+
+    most_popular_black = df.sort_values(by='ratio_black',ascending=False).head(1).iloc[0].to_dict()
+    most_popular_black_min10 = df.query('player_black_with_children >= 10').sort_values(by='ratio_black', ascending=False).head(1).iloc[0].to_dict()
+
+    most_popular_missing_stamp =  df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(1).iloc[0].to_dict()
+    most_obscure_stamp = df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0].to_dict()
+
+    #print(most_popular_missing_stamp)
+    #print(most_obscure_stamp)
+
+
+    # Specify columns and only return the columns that are needed to speed things up
+    df = df[['name','pgn','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children']]
 
     # For now, we'll just return the dataframe data as JSON
     return jsonify({
         'openings': df.to_dict(orient='records'),
         'total_games': total_games,
         'total_stamps': total_stamps,
-        'loaded_username': username
+        'loaded_username': username,
+        'most_popular_white': most_popular_white,
+        'most_popular_white_min10': most_popular_white_min10,
+        'most_popular_black': most_popular_black,
+        'most_popular_black_min10': most_popular_black_min10,
+        'most_popular_missing_stamp': most_popular_missing_stamp,
+        'most_obscure_stamp': most_obscure_stamp
     })
-
 
 if __name__ == '__main__':
     app.run(debug=True)
