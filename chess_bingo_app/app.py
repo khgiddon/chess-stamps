@@ -34,7 +34,7 @@ def get_user_data(username,defaultusername='khg002'):
 
     """
 
-    # If no username is provided, load the default file
+    # If no username is provided, load the default file (for dev purposes)
     if username == None or username == defaultusername:
         # Load default file
         base_file = "assets/base_file.tsv"
@@ -100,6 +100,8 @@ def get_user_data(username,defaultusername='khg002'):
         df['ratio_white'] = np.where(df['all_pct'] == 0, 0, df['white_pct_with_children'] / df['all_pct'])
         df['ratio_black'] = np.where(df['all_pct'] == 0, 0, df['black_pct_with_children'] / df['all_pct'])
         
+        #df.to_csv("assets/base_file.tsv", sep="\t", index=False)
+
         return df
 
 @app.route('/')
@@ -148,7 +150,7 @@ def get_data():
 
 
     # Specify columns and only return the columns that are needed to speed things up
-    df = df[['name','pgn','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children']]
+    df = df[['name','pgn','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children']]
 
     # For now, we'll just return the dataframe data as JSON
     return jsonify({

@@ -1,4 +1,9 @@
 import pandas as pd
+import chess
+import chess.pgn
+import io
+
+
 
 # Get overall data
 openings_db = "assets/openings_pgn/combined_with_stats.tsv"
@@ -31,6 +36,11 @@ for index, row in df.iterrows():
         parents = []
     parents_list.append(parents)
 
+    # Add FEN (for chessboard render later)
+    
+
 df['parents'] = parents_list
 
+
+# Save
 df.to_csv("assets/openings_pgn/combined_with_stats_parents.tsv", sep="\t", index=False)
