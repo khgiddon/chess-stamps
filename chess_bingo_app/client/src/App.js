@@ -169,15 +169,27 @@ function customRoundForRatio(num) {
 
         <p className="summaryText">
           As white, the stamp you play most often relative to all of Lichess is the <b>{mostpopularwhite.name}</b>. 
-          You've played this {percentageToOneInEveryX(mostpopularwhite.player_pct_with_children)} stamps, but this is only {percentageToOneInEveryX(mostpopularwhite.all_pct)} of all Lichess stamps!
+          You've played this {mostpopularwhite.player_white_with_children} times, or {percentageToOneInEveryX(mostpopularwhite.player_pct_with_children)} stamps, but this is only {percentageToOneInEveryX(mostpopularwhite.all_pct)} of all Lichess stamps!
           That means you play it {customRoundForRatio(mostpopularwhite.player_pct_with_children/mostpopularwhite.all_pct)}x as frequently.
         </p>
 
         <p className="summaryText">
           As black, the stamp you play most often relative to all of Lichess is the <b>{mostpopularblack.name}</b>. 
-          You've played this {percentageToOneInEveryX(mostpopularblack.player_pct_with_children)} stamps, but this is only {percentageToOneInEveryX(mostpopularblack.all_pct)} of all Lichess stamps!
+          You've played this {mostpopularblack.player_black_with_children} times, or {percentageToOneInEveryX(mostpopularblack.player_pct_with_children)} stamps, but this is only {percentageToOneInEveryX(mostpopularblack.all_pct)} of all Lichess stamps!
           That means you play it {customRoundForRatio(mostpopularblack.player_pct_with_children/mostpopularblack.all_pct)}x as frequently.
         </p>
+
+        <p className="summaryText">
+          Secret weapon: As white, the stamp you play most often (min 10 games) relative to all of Lichess is the <b>{mostpopularwhitemin10.name}</b>. 
+          You've played this {mostpopularwhitemin10.player_white_with_children} times, or {percentageToOneInEveryX(mostpopularwhitemin10.player_pct_with_children)} stamps, but this is only {percentageToOneInEveryX(mostpopularwhitemin10.all_pct)} of all Lichess stamps!
+          That means you play it {customRoundForRatio(mostpopularwhitemin10.player_pct_with_children/mostpopularwhitemin10.all_pct)}x as frequently.
+        </p>      
+
+        <p className="summaryText">
+          Secret weapon: As black, the stamp you play most often (min 10 games) relative to all of Lichess is the <b>{mostpopularblackmin10.name}</b>. 
+          You've played this {mostpopularblackmin10.player_black_with_children} times, or {percentageToOneInEveryX(mostpopularblackmin10.player_pct_with_children)} stamps, but this is only {percentageToOneInEveryX(mostpopularblackmin10.all_pct)} of all Lichess stamps!
+          That means you play it {customRoundForRatio(mostpopularblackmin10.player_pct_with_children/mostpopularblackmin10.all_pct)}x as frequently.
+        </p>      
 
         <div className="ag-theme-alpine" style={{ height: 400, width: '100%' }}>
             <AgGridReact

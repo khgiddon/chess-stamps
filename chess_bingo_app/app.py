@@ -48,15 +48,21 @@ def get_user_data(username,defaultusername='khg002'):
         df = pd.read_csv(openings_db, sep="\t")
 
         # Get user data
-        max = 5000
+        max = 10000
 
+        print('querying lichess api...')
         headers = {"Content-Type": "application/x-ndjson"}
         url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false"
         response = requests.get(url,headers=headers)
-
+        print('received response from lichess api')
 
         # Parse and create data
         l = response.content.decode('utf-8').split('\n\n\n')
+        print(f'length of response: {len(l)}')
+
+        if len(l) == 1:
+            print(response.content.decode('utf-8'))
+
         del l[-1] # Last response is empty
 
         df['player_white'] = 0
