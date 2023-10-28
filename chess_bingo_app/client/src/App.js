@@ -10,6 +10,17 @@ import {Chessboard} from 'react-chessboard';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';  // You can choose another theme if you prefer
 
+const BlockUsernameSubmit = ({username, setUsername, handleSubmit}) => (
+  <div className="usernameContainer">
+  <input 
+      type="text"
+      placeholder="Enter your lichess username"
+      value={username}
+      onChange={(e) => setUsername(e.target.value)}
+  />
+  <button onClick={handleSubmit}>Submit</button>
+</div>
+);
 
 function ChessOpeningsCollector() {
   const [openings, setOpenings] = useState([]);
@@ -25,12 +36,7 @@ function ChessOpeningsCollector() {
   const [mostobscurestamp, setMostObscureStamp] = useState([]);
 
 
-  // Fetch data when the component is first mounted using the default username
-  useEffect(() => {
-    fetchData(username);
-  }, []);
-
-  const fetchData = (user = '') => {
+  const fetchData = useCallback((user = '') => {
     fetch(`http://127.0.0.1:5000/openings?username=${user}`)
       .then(response => {
         if (!response.ok) {
@@ -56,21 +62,27 @@ function ChessOpeningsCollector() {
       .catch(error => {
         console.error("Error fetching data:", error);
       });
-  }
+    }, []);  // Empty array means no dependencies, fetchData will not change across re-renders
+
+  // Fetch data when the component is first mounted using the default username
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);  // fetchData is now a stable function reference
+
 
   const handleSubmit = () => {
     fetchData(username);
   }
 
   // Front end components
-  const ChessImage = ({ fen }) => {
+  const ChessImage = React.memo(({ fen }) => {
     return (
       <Chessboard
         position={fen}
         arePiecesDraggable={false}
       />
     );
-  };
+  });
 
   const BlockHeader = () => (
     <div>
@@ -93,18 +105,6 @@ function ChessOpeningsCollector() {
         <b>A:</b> Every time you reach a <u>named opening position</u>, you collect a stamp! You can collect multiple stamps in the same game. For example, if you play the Ruy Lopez, you'll collect a stamp for the King's Pawn Game, the King's Knight Opening, the King's Knight Opening: Normal Variation, the Ruy Lopez, and whatever subsequent variation of the Ruy Lopez you end up in.
         </p>
   </div>
-  );
-
-  const BlockUsernameSubmit = () => (
-    <div className="usernameContainer">
-    <input 
-        type="text"
-        placeholder="Enter your lichess username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-    />
-    <button onClick={handleSubmit}>Submit</button>
-</div>
   );
 
   const Row = ({ name, name_description, opening, fen, image, text }) => {
@@ -132,6 +132,8 @@ function ChessOpeningsCollector() {
       </tr>
     );
   };
+
+  const MemoizedRow = React.memo(Row);
 
   const DisplayTable = () => (
     <table>
@@ -197,7 +199,11 @@ function ChessOpeningsCollector() {
     <div>
       <BlockHeader />
       <BlockSummaryText />
-      <BlockUsernameSubmit />
+      <BlockUsernameSubmit 
+        username={username}
+        setUsername={setUsername}
+        handleSubmit={handleSubmit}
+      />
 
       <p className="summaryText">Analyzed <b>{totalstamps}</b> opening stamps from <b>{totalgames}</b> games played by <b>{loadedusername}</b>.</p>
 
