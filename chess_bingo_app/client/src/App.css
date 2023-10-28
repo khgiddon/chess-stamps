@@ -25,9 +25,10 @@ table thead th {
 }
 
 /* Style for all table cells */
-table td, table th {
+table td, table th, table tr {
   border: 1px solid lightgray;
   padding: 8px; /* Adding padding to make it look nicer; adjust as needed */
+  font-size: 0.9rem;
 }
 
 
@@ -36,6 +37,14 @@ table td, table th {
   font-size: 0.9rem;  /* Adjust this value as you see fit */
   padding-left: 15px; /* Adjust this value as needed */
 
+}
+
+.nameText {
+  font-size: 0.9rem;
+}
+
+.nameDescriptionText {
+  font-size: 0.7rem;  /* Adjust this value as you see fit */
 }
 
 .summaryText {
