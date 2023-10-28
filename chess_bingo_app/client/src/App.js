@@ -75,10 +75,15 @@ function ChessOpeningsCollector() {
   }
 
   // Front end components
-  const ChessImage = React.memo(({ fen }) => {
+  const ChessImage = React.memo(({ fen, id }) => {
+    useEffect(() => {
+      console.log('ChessImage rendered', { fen, id });
+    }, []); // Empty array to only log on initial render
+
     return (
       <Chessboard
         position={fen}
+        id={id}
         arePiecesDraggable={false}
       />
     );
@@ -107,7 +112,7 @@ function ChessOpeningsCollector() {
   </div>
   );
 
-  const Row = ({ name, name_description, opening, fen, image, text }) => {
+  const Row = ({ name, name_description, opening, fen, id, image, text }) => {
     return (
       <tr>
         <td>
@@ -124,8 +129,11 @@ function ChessOpeningsCollector() {
         <td>
           <div>
           <a href={`https://lichess.org/analysis/${fen}`}>
-            <ChessImage fen={fen} />
-          </a>
+            {<ChessImage
+              fen={fen}
+              id={id}
+              />}
+            </a>
           </div>
         </td>
         <td>{text}</td>
@@ -149,6 +157,7 @@ function ChessOpeningsCollector() {
           name="Missing stamp"
           opening={mostpopularmissingstamp.name}
           fen={mostpopularmissingstamp.fen}
+          id={1}
           text={`The most popular stamp you're missing is ${mostpopularmissingstamp.name}. 
           You've never played this, but it's played in ${percentageToOneInEveryX(mostpopularmissingstamp.all_pct)} of all Lichess games.`}
         />
@@ -156,13 +165,15 @@ function ChessOpeningsCollector() {
           name="Rarest find"
           opening={mostobscurestamp.name}
           fen={mostobscurestamp.fen}
-          text={`The most obscure stamp you've collected is the ${mostobscurestamp.name}.  You've played this ${mostobscurestamp.player_total_with_children} times, but this is only ${percentageToOneInEveryX(mostobscurestamp.all_pct)} Lichess stamps!`}
+          id={2}
+          text={`The most obscure stamp you've collected is the ${mostobscurestamp.name}.  You've played this ${mostobscurestamp.player_total_with_children} times. This is only ${percentageToOneInEveryX(mostobscurestamp.all_pct)} Lichess stamps!`}
         />
         <Row
           name="Secret weapon: white"
           name_description="(most played relative to population)"
           opening={mostpopularwhite.name}
           fen={mostpopularwhite.fen}
+          id={3}
           text={`You've played this ${mostpopularwhite.player_white_with_children} times, or ${percentageToOneInEveryX(mostpopularwhite.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(mostpopularwhite.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(mostpopularwhite.player_pct_with_children/mostpopularwhite.all_pct)}x as frequently.`}
         />  
         <Row
@@ -170,6 +181,7 @@ function ChessOpeningsCollector() {
           name_description="(most played relative to population)"
           opening={mostpopularblack.name}
           fen={mostpopularblack.fen}
+          id={4}
           text={`You've played this ${mostpopularblack.player_black_with_children} times, or ${percentageToOneInEveryX(mostpopularblack.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(mostpopularblack.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(mostpopularblack.player_pct_with_children/mostpopularblack.all_pct)}x as frequently.`}
         />          
         <Row
@@ -177,6 +189,7 @@ function ChessOpeningsCollector() {
           name_description="(most played relative to population, min. 10 games)"
           opening={mostpopularwhitemin10.name}
           fen={mostpopularwhitemin10.fen}
+          id={5}
           text={`You've played this ${mostpopularwhitemin10.player_white_with_children} times,
                  or ${percentageToOneInEveryX(mostpopularwhitemin10.player_pct_with_children)} stamps.
                 That means you play it ${customRoundForRatio(mostpopularwhitemin10.player_pct_with_children/mostpopularwhitemin10.all_pct)}x as frequently as the population.`}
@@ -186,7 +199,7 @@ function ChessOpeningsCollector() {
           name_description="(most played relative to population, min. 10 games)"
           opening={mostpopularblackmin10.name}
           fen={mostpopularblackmin10.fen}
-
+          id={6}
           text={`You've played this ${mostpopularblackmin10.player_black_with_children} times,
                 or ${percentageToOneInEveryX(mostpopularblackmin10.player_pct_with_children)} stamps.
                 That means you play it ${customRoundForRatio(mostpopularblackmin10.player_pct_with_children/mostpopularblackmin10.all_pct)}x as frequently as the population.`}
