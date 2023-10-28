@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
 import { percentageToOneInEveryX, customRoundForRatio, formatPercentage } from './utilityFunctions';
+import {Chessboard} from 'react-chessboard';
 
 
 // import { createRoot } from 'react-dom/client';
@@ -63,6 +64,15 @@ function ChessOpeningsCollector() {
   }
 
   // Front end components
+  const ChessImage = ({ fen }) => {
+    return (
+      <Chessboard
+        position={fen}
+        arePiecesDraggable={false}
+      />
+    );
+  };
+
   const BlockHeader = () => (
     <div>
       <div className="stampImageContainer">
@@ -107,8 +117,11 @@ function ChessOpeningsCollector() {
             <span className="nameDescriptionText">{name_description}</span>
           </div>
         </td>
-        <td>{opening}</td>
-        <td>Image Placeholder</td>
+        <td>
+          <div align="center"><b>{opening}</b>
+          <br/><br/><ChessImage />
+          </div>
+        </td>
         <td>{text}</td>
       </tr>
     );
@@ -119,8 +132,7 @@ function ChessOpeningsCollector() {
       <thead>
         <tr>
           <th>Name</th>
-          <th>Opening</th>
-          <th>Image</th>
+          <th style={{width:'15%',padding:'0px'}}>Image</th>
           <th>Details</th>
         </tr>
       </thead>
@@ -137,8 +149,20 @@ function ChessOpeningsCollector() {
           text={`The most obscure stamp you've collected is the ${mostobscurestamp.name}.  You've played this ${mostobscurestamp.player_total_with_children} times, but this is only ${percentageToOneInEveryX(mostobscurestamp.all_pct)} Lichess stamps!`}
         />
         <Row
+          name="Secret weapon: white"
+          name_description="(most played relative to population)"
+          opening={mostpopularwhite.name}
+          text={`You've played this ${mostpopularwhite.player_white_with_children} times, or ${percentageToOneInEveryX(mostpopularwhite.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(mostpopularwhite.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(mostpopularwhite.player_pct_with_children/mostpopularwhite.all_pct)}x as frequently.`}
+        />  
+        <Row
+          name="Secret weapon: black"
+          name_description="(most played relative to population)"
+          opening={mostpopularblack.name}
+          text={`You've played this ${mostpopularblack.player_black_with_children} times, or ${percentageToOneInEveryX(mostpopularblack.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(mostpopularblack.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(mostpopularblack.player_pct_with_children/mostpopularblack.all_pct)}x as frequently.`}
+        />          
+        <Row
           name="Repertoire: white"
-          name_description="(min. 10 games)"
+          name_description="(most played relative to population, min. 10 games)"
           opening={mostpopularwhitemin10.name}
           text={`You've played this ${mostpopularwhitemin10.player_white_with_children} times,
                  or ${percentageToOneInEveryX(mostpopularwhitemin10.player_pct_with_children)} stamps.
@@ -146,22 +170,12 @@ function ChessOpeningsCollector() {
           />      
         <Row
           name="Repertoire: black"
-          name_description="(min. 10 games)"
+          name_description="(most played relative to population, min. 10 games)"
           opening={mostpopularblackmin10.name}
           text={`You've played this ${mostpopularblackmin10.player_black_with_children} times,
                 or ${percentageToOneInEveryX(mostpopularblackmin10.player_pct_with_children)} stamps.
                 That means you play it ${customRoundForRatio(mostpopularblackmin10.player_pct_with_children/mostpopularblackmin10.all_pct)}x as frequently as the population.`}
           />
-        <Row
-          name="Secret weapon: white"
-          opening={mostpopularwhite.name}
-          text={`You've played this ${mostpopularwhite.player_white_with_children} times, or ${percentageToOneInEveryX(mostpopularwhite.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(mostpopularwhite.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(mostpopularwhite.player_pct_with_children/mostpopularwhite.all_pct)}x as frequently.`}
-        />  
-        <Row
-          name="Secret weapon: black"
-          opening={mostpopularblack.name}
-          text={`You've played this ${mostpopularblack.player_black_with_children} times, or ${percentageToOneInEveryX(mostpopularblack.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(mostpopularblack.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(mostpopularblack.player_pct_with_children/mostpopularblack.all_pct)}x as frequently.`}
-        />  
       </tbody>
     </table>
   );

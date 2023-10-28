@@ -115,6 +115,8 @@ def get_data():
     username = request.args.get('username')
     df = get_user_data(username)
 
+    print(df.columns)
+
     # Add additional info
     total_games = int(df['player_total'].sum())
     total_stamps = int(df['player_total_with_children'].sum())
