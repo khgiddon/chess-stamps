@@ -2,6 +2,7 @@
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO
 from flask_cors import CORS
+from flask_socketio import SocketIO
 import pandas as pd
 import numpy as np
 import requests
@@ -9,9 +10,8 @@ import os
 import json
 from dotenv import load_dotenv
 
-
 app = Flask(__name__)
-socketio = SocketIO(app)
+socketio = SocketIO(app,cors_allowed_origins="*")
 CORS(app)  # This will allow the frontend to make requests to this server
 
 
@@ -83,13 +83,19 @@ def get_user_data(username,defaultusername='khg002'):
     
     else:
 
+        print(f'\n\n\n\n username {username} \n\n\n\n')
+
         # Get overall data
         openings_db = "assets/openings_pgn/combined_with_stats_parents.tsv"
         df = pd.read_csv(openings_db, sep="\t")
         print(f'querying lichess api for {username}...')
 
-        # Settings for getting user data
+        # Get user data
         max = 150
+
+        
+
+        print(f'querying lichess api for {username}...')
 
         # Read the lichessToken
         load_dotenv()
@@ -107,20 +113,22 @@ def get_user_data(username,defaultusername='khg002'):
         print(f'games to pull: {games_to_pull} for {username}')
 
         # Second request is to pull the actual games
+        chunks_expected = min(games_to_pull,max)   
+        chunks = 0
+        response_test = []
         url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical"
         response = requests.get(url,headers=headers,stream=True)
         print('received response from lichess api')
-        total_size = int(response.headers.get('content-length', 0))
-        bytes_downloaded = 0
-
         for chunk in response.iter_content(chunk_size=1024):
-            bytes_downloaded += len(chunk)
-            percentage_complete = (bytes_downloaded / total_size) * 100
-            socketio.emit('progress', {'percentage': percentage_complete})
-
+            percentage_complete = int((chunks / chunks_expected) * 100)
+            socketio.emit('progress', percentage_complete)
+            chunks += 1
+            print(percentage_complete)
+            response_test.append(chunk)
 
         # Parse and create data
-        l = response.content.decode('utf-8').split('\n\n\n')
+        full_response = b''.join(response_test).decode('utf-8')
+        l = full_response.split('\n\n\n')    
         print(f'length of response: {len(l)}')
 
         if len(l) == 1:
@@ -160,7 +168,8 @@ def send_data_to_frontend():
     total_games = int(df['player_total'].sum())
     total_stamps = int(df['player_total_with_children'].sum())
     unique_stamps = int(len(df.where(df['player_total'] > 0).dropna()))
-    unique_stamps_all = int(len(df))
+    unique_stamps_all = int(len(df))    
+
 
     """
     # Most popular openings compared to average

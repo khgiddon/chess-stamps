@@ -4,6 +4,8 @@ import './App.css';
 import { percentageToOneInEveryX, customRoundForRatio, formatPercentage, listToCleanList } from './utilityFunctions';
 import {Chessboard} from 'react-chessboard';
 
+import io from 'socket.io-client';
+
 // import { createRoot } from 'react-dom/client';
 // import { AgGridReact } from 'ag-grid-react';
 
@@ -22,6 +24,8 @@ const BlockUsernameSubmit = ({username, setUsername, handleSubmit}) => (
 </div>
 );
 
+const socket = io('http://localhost:5000');
+
 function ChessOpeningsCollector() {
   const [openings, setOpenings] = useState([]);
   const [username, setUsername] = useState('khg002');
@@ -29,7 +33,7 @@ function ChessOpeningsCollector() {
   const [totalgames, setTotalGames] = useState(0); 
   const [totalstamps, setTotalStamps] = useState(0);
   const [uniquestamps, setUniqueStamps] = useState(0);
-  const [uniquestampsall, setUniqueStampsAll] = useState(0);
+  const [uniquestampsall, setUniqueStampsAll] = useState(0);  
   const [mostpopularwhite, setMostPopularWhite] = useState([]);
   const [mostpopularwhitemin10, setMostPopularWhiteMin10] = useState([]);
   const [mostpopularblack, setMostPopularBlack] = useState([]);
@@ -37,11 +41,19 @@ function ChessOpeningsCollector() {
   const [mostpopularmissingstamp, setMostPopularMissingStamp] = useState([]);
   const [mostobscurestamp, setMostObscureStamp] = useState([]);
   const [othermissingstamps, setOtherMissingStamps] = useState([]);
+  const [progress, setProgress] = useState(0);
 
 
+  const fetchData = useCallback((username = 'khg002') => {
 
-  const fetchData = useCallback((user = '') => {
-    fetch(`http://127.0.0.1:5000/openings?username=${user}`)
+    const handleProgress = (progress_int) => {
+      setProgress(progress_int);
+    };    
+
+    setProgress(0);  // Start progress at 0%
+    socket.on('progress', handleProgress); 
+
+    fetch(`http://127.0.0.1:5000/openings?username=${username}`)
       .then(response => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -53,7 +65,7 @@ function ChessOpeningsCollector() {
           setTotalGames(data.total_games); 
           setTotalStamps(data.total_stamps); 
           setUniqueStamps(data.unique_stamps);
-          setUniqueStampsAll(data.unique_stamps_all);
+          setUniqueStampsAll(data.unique_stamps_all);          
           setLoadedUsername(data.loaded_username);
           setMostPopularWhite(data.most_popular_white);
           setMostPopularWhiteMin10(data.most_popular_white_min10);
@@ -64,9 +76,13 @@ function ChessOpeningsCollector() {
           setOtherMissingStamps(data.other_missing_stamps);
           console.log(data);
           console.log(mostobscurestamp);
+          setProgress(100);  // End progress at 100%
+          socket.off('progress', handleProgress);          
 
       })
       .catch(error => {
+        setProgress(100);  // End progress at 100%
+        socket.off('progress', handleProgress);        
         console.error("Error fetching data:", error);
       });
     }, []);  // Empty array means no dependencies, fetchData will not change across re-renders
@@ -118,6 +134,14 @@ function ChessOpeningsCollector() {
         </p>
   </div>
   );
+
+  const ProgressBar = ({ progress }) => (
+    <div className="progress-container">
+        <div className="progress-bar" style={{ width: `${progress}%` }}>
+            {progress}%
+        </div>
+    </div>
+);    
 
   const ResultsSummary = () => (
     <div>
@@ -240,7 +264,7 @@ function ChessOpeningsCollector() {
         setUsername={setUsername}
         handleSubmit={handleSubmit}
       />
-
+      <ProgressBar progress={progress} />
       <ResultsSummary />
       <DisplayTable />
 

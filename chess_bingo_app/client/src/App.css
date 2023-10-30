@@ -82,3 +82,15 @@ h1, h2, h3 {
   border: 1px solid darkslategray;
 }
 
+.progress-container {
+  width: 100%;
+  background-color: #ccc;
+}
+
+.progress-bar {
+  height: 30px;
+  background-color: #4CAF50;
+  text-align: center;
+  line-height: 30px;
+  color: white;
+}
