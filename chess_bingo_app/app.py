@@ -1,5 +1,6 @@
 
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
+from flask_socketio import SocketIO
 from flask_cors import CORS
 from flask_socketio import SocketIO
 import pandas as pd
@@ -12,6 +13,7 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 socketio = SocketIO(app,cors_allowed_origins="*")
 CORS(app)  # This will allow the frontend to make requests to this server
+
 
 # Parse lichess games API response - data comes in newline-delimited JSON
 def response_parser(s):
@@ -26,6 +28,39 @@ def response_parser(s):
             data[key] = value
 
     return data
+
+def generate_base_statistics(df):
+    # Begin generating stats
+
+    # Credit openings with children
+    df['player_white_with_children'] = df['player_white']
+    df['player_black_with_children'] = df['player_black']
+    for index, row in df.iterrows():
+        parents = eval(row['parents'])
+        if len(parents) > 0:
+            for parent in parents:
+                df.loc[df['name'] == parent,'player_white_with_children'] += row['player_white']
+                df.loc[df['name'] == parent,'player_black_with_children'] += row['player_black']
+
+    # Clean and analyze
+    df['player_total'] = df['player_white'] + df['player_black']
+    df['player_total_with_children'] = df['player_white_with_children'] + df['player_black_with_children']
+    df['all_pct'] = df['games'] / df['games'].sum()
+    df['player_pct'] = df['player_total'] / df['player_total'].sum()
+    df['player_pct_with_children'] = df['player_total_with_children'] / df['player_total_with_children'].sum()
+    df['white_pct'] = df['player_white'] / df['player_white'].sum()
+    df['white_pct_with_children'] = df['player_white_with_children'] / df['player_white_with_children'].sum()
+    df['black_pct'] = df['player_black'] / df['player_black'].sum()
+    df['black_pct_with_children'] = df['player_black_with_children'] / df['player_black_with_children'].sum()
+
+    # Ratios and handle division by zero
+    df['ratio_white'] = np.where(df['all_pct'] == 0, 0, df['white_pct_with_children'] / df['all_pct'])
+    df['ratio_black'] = np.where(df['all_pct'] == 0, 0, df['black_pct_with_children'] / df['all_pct'])
+    
+    #df.to_csv("assets/base_file.tsv", sep="\t", index=False)
+
+    return(df)
+
 
 # Get user data
 def get_user_data(username,defaultusername='khg002'):
@@ -53,6 +88,7 @@ def get_user_data(username,defaultusername='khg002'):
         # Get overall data
         openings_db = "assets/openings_pgn/combined_with_stats_parents.tsv"
         df = pd.read_csv(openings_db, sep="\t")
+        print(f'querying lichess api for {username}...')
 
         # Get user data
         max = 150
@@ -97,12 +133,11 @@ def get_user_data(username,defaultusername='khg002'):
 
         if len(l) == 1:
             print(response.content.decode('utf-8'))
-
         del l[-1] # Last response is empty
 
+        # Create dataframe
         df['player_white'] = 0
         df['player_black'] = 0
-
         for game in l:
             game_parsed = response_parser(game)
             if game_parsed['White'] == username:
@@ -110,33 +145,8 @@ def get_user_data(username,defaultusername='khg002'):
             else:
                 df.loc[df['name'] == game_parsed['Opening'],'player_black'] += 1
 
-        # Credit openings with children
-        df['player_white_with_children'] = df['player_white']
-        df['player_black_with_children'] = df['player_black']
-        for index, row in df.iterrows():
-            parents = eval(row['parents'])
-            if len(parents) > 0:
-                for parent in parents:
-                    df.loc[df['name'] == parent,'player_white_with_children'] += row['player_white']
-                    df.loc[df['name'] == parent,'player_black_with_children'] += row['player_black']
-
-        # Clean and analyze
-        df['player_total'] = df['player_white'] + df['player_black']
-        df['player_total_with_children'] = df['player_white_with_children'] + df['player_black_with_children']
-        df['all_pct'] = df['games'] / df['games'].sum()
-        df['player_pct'] = df['player_total'] / df['player_total'].sum()
-        df['player_pct_with_children'] = df['player_total_with_children'] / df['player_total_with_children'].sum()
-        df['white_pct'] = df['player_white'] / df['player_white'].sum()
-        df['white_pct_with_children'] = df['player_white_with_children'] / df['player_white_with_children'].sum()
-        df['black_pct'] = df['player_black'] / df['player_black'].sum()
-        df['black_pct_with_children'] = df['player_black_with_children'] / df['player_black_with_children'].sum()
-
-        # Ratios and handle division by zero
-        df['ratio_white'] = np.where(df['all_pct'] == 0, 0, df['white_pct_with_children'] / df['all_pct'])
-        df['ratio_black'] = np.where(df['all_pct'] == 0, 0, df['black_pct_with_children'] / df['all_pct'])
-        
-        #df.to_csv("assets/base_file.tsv", sep="\t", index=False)
-
+        # Generate statistics
+        df = generate_base_statistics(df)
         return df
 
 @app.route('/')
@@ -144,7 +154,7 @@ def hello_world():
     return 'Hello, Worlds!'
 
 @app.route('/openings', methods=['GET'])
-def get_data():
+def send_data_to_frontend():
 
     print('running get_data()')
 
@@ -152,7 +162,7 @@ def get_data():
     username = request.args.get('username')
     df = get_user_data(username)
 
-    print(df.columns)
+    #print(df.columns)
 
     # Add additional info
     total_games = int(df['player_total'].sum())
@@ -160,15 +170,12 @@ def get_data():
     unique_stamps = int(len(df.where(df['player_total'] > 0).dropna()))
     unique_stamps_all = int(len(df))    
 
+
     """
     # Most popular openings compared to average
     # Least popular openings compared to average, but have played
     # Top missing stamps
     """
-
-    # Test
-    print(df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0])
-    print(df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0].to_dict())
 
     most_popular_white = df.sort_values(by='ratio_white',ascending=False).head(1).iloc[0].to_dict()
     most_popular_white_min10 = df.query('player_white_with_children >= 10').sort_values(by='ratio_white', ascending=False).head(1).iloc[0].to_dict()
@@ -180,9 +187,10 @@ def get_data():
     most_obscure_stamp = df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0].to_dict()
 
     other_missing_stamps = df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(4)['name'].tolist()[1:4]
-    print('other_missing_stamps:',other_missing_stamps)
-
-
+    
+    # Random missing stamp?
+    
+    #print('other_missing_stamps:',other_missing_stamps)
 
     # Specify columns and only return the columns that are needed to speed things up
     df = df[['name','pgn','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children']]
@@ -193,7 +201,7 @@ def get_data():
         'total_games': total_games,
         'total_stamps': total_stamps,
         'unique_stamps': unique_stamps,
-        'unique_stamps_all': unique_stamps_all,        
+        'unique_stamps_all': unique_stamps_all,
         'loaded_username': username,
         'most_popular_white': most_popular_white,
         'most_popular_white_min10': most_popular_white_min10,
