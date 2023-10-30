@@ -11,8 +11,8 @@ from dotenv import load_dotenv
 
 
 app = Flask(__name__)
-socketio = SocketIO(app)
-CORS(app)  # This will allow the frontend to make requests to this server
+socketio = SocketIO(app,cors_allowed_origins="*")
+CORS(app, origins=["localhost:3000"])  # This will allow the frontend to make requests to this server
 
 
 # Parse lichess games API response - data comes in newline-delimited JSON
@@ -107,20 +107,22 @@ def get_user_data(username,defaultusername='khg002'):
         print(f'games to pull: {games_to_pull} for {username}')
 
         # Second request is to pull the actual games
+        chunks_expected = min(games_to_pull,max)   
+        chunks = 0
+        response_test = []
         url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical"
         response = requests.get(url,headers=headers,stream=True)
         print('received response from lichess api')
-        total_size = int(response.headers.get('content-length', 0))
-        bytes_downloaded = 0
-
         for chunk in response.iter_content(chunk_size=1024):
-            bytes_downloaded += len(chunk)
-            percentage_complete = (bytes_downloaded / total_size) * 100
+            percentage_complete = (chunks / chunks_expected) * 100
             socketio.emit('progress', {'percentage': percentage_complete})
-
+            chunks += 1
+            print(percentage_complete)
+            response_test.append(chunk)
 
         # Parse and create data
-        l = response.content.decode('utf-8').split('\n\n\n')
+        full_response = b''.join(response_test).decode('utf-8')
+        l = full_response.split('\n\n\n')    
         print(f'length of response: {len(l)}')
 
         if len(l) == 1:

@@ -3,12 +3,16 @@ import './App.css';
 
 import { percentageToOneInEveryX, customRoundForRatio, formatPercentage, listToCleanList } from './utilityFunctions';
 import {Chessboard} from 'react-chessboard';
+import io from 'socket.io-client';
+
 
 // import { createRoot } from 'react-dom/client';
 // import { AgGridReact } from 'ag-grid-react';
+// import 'ag-grid-community/styles/ag-grid.css';
+// import 'ag-grid-community/styles/ag-theme-alpine.css';  // You can choose another theme if you prefer
 
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';  // You can choose another theme if you prefer
+const socket = io('http://localhost:5000');
+
 
 const BlockUsernameSubmit = ({username, setUsername, handleSubmit}) => (
   <div className="usernameContainer">
@@ -37,11 +41,17 @@ function ChessOpeningsCollector() {
   const [mostpopularmissingstamp, setMostPopularMissingStamp] = useState([]);
   const [mostobscurestamp, setMostObscureStamp] = useState([]);
   const [othermissingstamps, setOtherMissingStamps] = useState([]);
-
-
+  const [progress, setProgress] = useState(0);
 
   const fetchData = useCallback((user = '') => {
-    fetch(`http://127.0.0.1:5000/openings?username=${user}`)
+    setProgress(0);  // Start progress at 0%
+
+    const handleProgress = (progress_int) => {
+      setProgress(progress_int);
+    };    
+
+    socket.on('progress', handleProgress);
+    fetch(`http://127.0.0.1:5000/openings?username=${user}`, { mode: 'no-cors' })
       .then(response => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -64,12 +74,15 @@ function ChessOpeningsCollector() {
           setOtherMissingStamps(data.other_missing_stamps);
           console.log(data);
           console.log(mostobscurestamp);
-
-      })
-      .catch(error => {
-        console.error("Error fetching data:", error);
-      });
-    }, []);  // Empty array means no dependencies, fetchData will not change across re-renders
+          setProgress(100);  // End progress at 100%
+          socket.off('progress', handleProgress);
+        })
+        .catch(error => {
+            console.error("Error fetching data:", error);
+            setProgress(0);  // Reset progress to 0% on error
+            socket.off('progress', handleProgress);
+        });
+    }, []);
 
   // Fetch data when the component is first mounted using the default username
   useEffect(() => {
@@ -87,6 +100,7 @@ function ChessOpeningsCollector() {
       console.log('ChessImage rendered', { fen, id });
     }, []); // Empty array to only log on initial render
 
+    {/*}
     return (
       <Chessboard
         position={fen}
@@ -94,6 +108,7 @@ function ChessOpeningsCollector() {
         arePiecesDraggable={false}
       />
     );
+    */}
   });
 
   const BlockHeader = () => (
@@ -118,6 +133,12 @@ function ChessOpeningsCollector() {
         </p>
   </div>
   );
+
+  const ProgressBar = ({ progress }) => (
+    <div className="progress-container">
+        <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+    </div>
+);  
 
   const ResultsSummary = () => (
     <div>
@@ -240,7 +261,7 @@ function ChessOpeningsCollector() {
         setUsername={setUsername}
         handleSubmit={handleSubmit}
       />
-
+      <ProgressBar progress={progress} />
       <ResultsSummary />
       <DisplayTable />
 
