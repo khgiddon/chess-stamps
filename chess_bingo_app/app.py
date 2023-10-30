@@ -156,6 +156,8 @@ def get_data():
     # Add additional info
     total_games = int(df['player_total'].sum())
     total_stamps = int(df['player_total_with_children'].sum())
+    unique_stamps = int(len(df.where(df['player_total'] > 0).dropna()))
+    unique_stamps_all = int(len(df))    
 
     """
     # Most popular openings compared to average
@@ -189,6 +191,8 @@ def get_data():
         'openings': df.to_dict(orient='records'),
         'total_games': total_games,
         'total_stamps': total_stamps,
+        'unique_stamps': unique_stamps,
+        'unique_stamps_all': unique_stamps_all,        
         'loaded_username': username,
         'most_popular_white': most_popular_white,
         'most_popular_white_min10': most_popular_white_min10,
