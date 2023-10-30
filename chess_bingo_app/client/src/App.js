@@ -51,7 +51,7 @@ function ChessOpeningsCollector() {
     };    
 
     setProgress(0);  // Start progress at 0%
-    socket.on('progress', handleProgress);    
+    socket.on('progress', handleProgress); 
 
     fetch(`http://127.0.0.1:5000/openings?username=${username}`)
       .then(response => {
@@ -137,7 +137,9 @@ function ChessOpeningsCollector() {
 
   const ProgressBar = ({ progress }) => (
     <div className="progress-container">
-        <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+        <div className="progress-bar" style={{ width: `${progress}%` }}>
+            {progress}%
+        </div>
     </div>
 );    
 
