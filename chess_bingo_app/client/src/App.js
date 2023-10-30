@@ -11,17 +11,26 @@ import io from 'socket.io-client';
 // import 'ag-grid-community/styles/ag-grid.css';
 // import 'ag-grid-community/styles/ag-theme-alpine.css';  // You can choose another theme if you prefer
 
-const BlockUsernameSubmit = ({username, setUsername, handleSubmit}) => (
-  <div className="usernameContainer">
-  <input 
-      type="text"
-      placeholder="Enter your lichess username"
-      value={username}
-      onChange={(e) => setUsername(e.target.value)}
-  />
-  <button onClick={handleSubmit}>Submit</button>
-</div>
-);
+const BlockUsernameSubmit = ({ username, setUsername, handleSubmit }) => {
+  const [inputValue, setInputValue] = useState(username);
+
+  const handleButtonClick = () => {
+    setUsername(inputValue);
+    handleSubmit(inputValue);
+};
+
+  return (
+    <div className="usernameContainer">
+      <input
+        type="text"
+        placeholder="Enter your lichess username"
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+      />
+      <button onClick={handleButtonClick}>Submit</button>
+    </div>
+  );
+};  
 
 const socket = io('http://localhost:5000');
 
@@ -92,9 +101,9 @@ function ChessOpeningsCollector() {
   }, [fetchData]);  // fetchData is now a stable function reference
 
 
-  const handleSubmit = () => {
-    fetchData(username);
-  }
+  const handleSubmit = (newUsername) => {
+    fetchData(newUsername);
+}
 
   // Front end components
   const ChessImage = React.memo(({ fen, id }) => {
