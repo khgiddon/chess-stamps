@@ -1,7 +1,7 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-#from flask_socketio import SocketIO
+from flask_socketio import SocketIO
 import pandas as pd
 import numpy as np
 import requests
@@ -10,6 +10,7 @@ import json
 from dotenv import load_dotenv
 
 app = Flask(__name__)
+socketio = SocketIO(app,cors_allowed_origins="*")
 CORS(app)  # This will allow the frontend to make requests to this server
 
 # Parse lichess games API response - data comes in newline-delimited JSON
@@ -84,7 +85,7 @@ def get_user_data(username,defaultusername='khg002'):
         print('received response from lichess api')
         for chunk in response.iter_content(chunk_size=1024):
             percentage_complete = (chunks / chunks_expected) * 100
-            #socketio.emit('progress', {'percentage': percentage_complete})
+            socketio.emit('progress', {'percentage': percentage_complete})
             chunks += 1
             print(percentage_complete)
             response_test.append(chunk)
