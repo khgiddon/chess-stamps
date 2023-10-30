@@ -15,6 +15,7 @@ table {
   margin-left: auto;
   margin-right: auto;
   border-collapse: collapse; /* Ensures borders touch each other */
+  background-color: whitesmoke;
 }
 
 /* Style for the table headers */
@@ -27,6 +28,7 @@ table thead th {
 /* Style for all table cells */
 table td, table th, table tr {
   border: 1px solid lightgray;
+  border-radius: 5px  ;
   padding: 8px; /* Adding padding to make it look nicer; adjust as needed */
   font-size: 0.9rem;
 }
@@ -56,6 +58,11 @@ table td, table th, table tr {
 .usernameContainer {
   padding-left: 15px; /* Adjust this value as needed */
 
+}
+
+.openingHighlight {
+  font-weight: bold;
+  color: purple;
 }
 
 

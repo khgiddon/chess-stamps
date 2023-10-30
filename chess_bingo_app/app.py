@@ -48,9 +48,9 @@ def get_user_data(username,defaultusername='khg002'):
         df = pd.read_csv(openings_db, sep="\t")
 
         # Get user data
-        max = 100
+        max = 10000
 
-        print('querying lichess api...')
+        print(f'querying lichess api for {username}...')
         headers = {"Content-Type": "application/x-ndjson"}
         url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false"
         response = requests.get(url,headers=headers)
@@ -111,7 +111,7 @@ def hello_world():
 @app.route('/openings', methods=['GET'])
 def get_data():
 
-    print('hello world3')
+    print('running get_data()')
 
     # Core data pull
     username = request.args.get('username')
@@ -143,10 +143,8 @@ def get_data():
     most_obscure_stamp = df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0].to_dict()
 
     other_missing_stamps = df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(4)['name'].tolist()[1:4]
-    print(other_missing_stamps)
+    print('other_missing_stamps:',other_missing_stamps)
 
-    #print(most_popular_missing_stamp)
-    #print(most_obscure_stamp)
 
 
     # Specify columns and only return the columns that are needed to speed things up
@@ -163,7 +161,8 @@ def get_data():
         'most_popular_black': most_popular_black,
         'most_popular_black_min10': most_popular_black_min10,
         'most_popular_missing_stamp': most_popular_missing_stamp,
-        'most_obscure_stamp': most_obscure_stamp
+        'most_obscure_stamp': most_obscure_stamp,
+        'other_missing_stamps': other_missing_stamps
     })
 
 if __name__ == '__main__':

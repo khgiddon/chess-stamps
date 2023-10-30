@@ -34,3 +34,25 @@ export function percentageToOneInEveryX(percentage) {
       return percentage.toFixed(1);
     }
   }
+
+  export function listToCleanList(list) {
+    // Convert a list to a string with commas and "and"
+    if (list.length === 0) {
+      return "";
+    }
+    if (list.length === 1) {
+      return list[0];
+    }
+    if (list.length === 2) {
+      return `${list[0]} and ${list[1]}`;
+    }
+    if (list.length > 2) {
+      let string = "";
+      for (let i = 0; i < list.length - 1; i++) {
+        string += `${list[i]}, `;
+      }
+      string += `and ${list[list.length - 1]}`;
+      return string;
+    }
+
+  }

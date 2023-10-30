@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 
-import { percentageToOneInEveryX, customRoundForRatio, formatPercentage } from './utilityFunctions';
+import { percentageToOneInEveryX, customRoundForRatio, formatPercentage, listToCleanList } from './utilityFunctions';
 import {Chessboard} from 'react-chessboard';
 
 // import { createRoot } from 'react-dom/client';
@@ -34,6 +34,8 @@ function ChessOpeningsCollector() {
   const [mostpopularblackmin10, setMostPopularBlackMin10] = useState([]);
   const [mostpopularmissingstamp, setMostPopularMissingStamp] = useState([]);
   const [mostobscurestamp, setMostObscureStamp] = useState([]);
+  const [othermissingstamps, setOtherMissingStamps] = useState([]);
+
 
 
   const fetchData = useCallback((user = '') => {
@@ -55,6 +57,7 @@ function ChessOpeningsCollector() {
           setMostPopularBlackMin10(data.most_popular_black_min10);
           setMostPopularMissingStamp(data.most_popular_missing_stamp);
           setMostObscureStamp(data.most_obscure_stamp);
+          setOtherMissingStamps(data.other_missing_stamps);
           console.log(data);
           console.log(mostobscurestamp);
 
@@ -158,11 +161,17 @@ function ChessOpeningsCollector() {
           opening={mostpopularmissingstamp.name}
           fen={mostpopularmissingstamp.fen}
           id={1}
-          text={`The most popular stamp you're missing is ${mostpopularmissingstamp.name}. 
-          You've never played this, but it's played in ${percentageToOneInEveryX(mostpopularmissingstamp.all_pct)} of all Lichess games.`}
+          text={
+          <>
+          The most popular stamp you're missing is the <span className="openingHighlight">{mostpopularmissingstamp.name}</span>. 
+          You've never played this, but it's played in {percentageToOneInEveryX(mostpopularmissingstamp.all_pct)} of all Lichess games.
+          The other most popular stamps you're missing are: <span className="openingHighlight">{listToCleanList(othermissingstamps)}</span>.
+          Happy hunting!
+          </>
+          }
         />
         <Row
-          name="Rarest find"
+          name="Rarest stamp"
           opening={mostobscurestamp.name}
           fen={mostobscurestamp.fen}
           id={2}
