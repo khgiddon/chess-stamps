@@ -34,10 +34,7 @@ for index, row in df.iterrows():
         parents = potential_parents[potential_parents['uci_moves'].apply(lambda x: is_parent(eval(x), uci_moves_current))]['name'].tolist()
     else:
         parents = []
-    parents_list.append(parents)
-
-    # Add FEN (for chessboard render later)
-    
+    parents_list.append(parents)    
 
 df['parents'] = parents_list
 
