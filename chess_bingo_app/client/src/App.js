@@ -8,9 +8,8 @@ import io from 'socket.io-client';
 
 // import { createRoot } from 'react-dom/client';
 // import { AgGridReact } from 'ag-grid-react';
-
-import 'ag-grid-community/styles/ag-grid.css';
-import 'ag-grid-community/styles/ag-theme-alpine.css';  // You can choose another theme if you prefer
+// import 'ag-grid-community/styles/ag-grid.css';
+// import 'ag-grid-community/styles/ag-theme-alpine.css';  // You can choose another theme if you prefer
 
 const BlockUsernameSubmit = ({username, setUsername, handleSubmit}) => (
   <div className="usernameContainer">
@@ -100,7 +99,7 @@ function ChessOpeningsCollector() {
   // Front end components
   const ChessImage = React.memo(({ fen, id }) => {
     useEffect(() => {
-      console.log('ChessImage rendered', { fen, id });
+      console.log('ChessImage rendered', { fen, id })
     }, []); // Empty array to only log on initial render
 
     return (
@@ -122,6 +121,7 @@ function ChessOpeningsCollector() {
       <img src="assets/stamp_images/image (4).webp" alt="Stamp" className='stampImage'/>
     </div>
     <h1>Chess Opening Stamp Collector</h1>
+    {console.log('Header rendered')}
     <h3>How many chess opening stamps have you collected?</h3>
   </div>
   );
@@ -159,6 +159,7 @@ function ChessOpeningsCollector() {
         <td>
           <div align="center">
             <span className="nameText"><b>{name}</b>:</span><br/>
+            {console.log('Text rendered', { fen, id })}
             {/* Add extra line break if name_description is not null  */}
             { name_description? 
               <div><span className="nameDescriptionText">{name_description}</span></div>
@@ -194,7 +195,7 @@ function ChessOpeningsCollector() {
         </tr>
       </thead>
       <tbody>
-        <Row
+        <MemoizedRow
           name="Missing stamp"
           opening={mostpopularmissingstamp.name}
           fen={mostpopularmissingstamp.fen}
@@ -208,14 +209,14 @@ function ChessOpeningsCollector() {
           </>
           }
         />
-        <Row
+        <MemoizedRow
           name="Rarest stamp"
           opening={mostobscurestamp.name}
           fen={mostobscurestamp.fen}
           id={2}
           text={`The most obscure stamp you've collected is the ${mostobscurestamp.name}.  You've played this ${mostobscurestamp.player_total_with_children} times. This is only ${percentageToOneInEveryX(mostobscurestamp.all_pct)} Lichess stamps!`}
         />
-        <Row
+        <MemoizedRow
           name="Secret weapon: white"
           name_description="(most played relative to population)"
           opening={mostpopularwhite.name}
@@ -231,7 +232,7 @@ function ChessOpeningsCollector() {
           id={4}
           text={`You've played this ${mostpopularblack.player_black_with_children} times, or ${percentageToOneInEveryX(mostpopularblack.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(mostpopularblack.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(mostpopularblack.player_pct_with_children/mostpopularblack.all_pct)}x as frequently.`}
         />          
-        <Row
+        <MemoizedRow
           name="Repertoire: white"
           name_description="(most played relative to population, min. 10 games)"
           opening={mostpopularwhitemin10.name}
@@ -241,7 +242,7 @@ function ChessOpeningsCollector() {
                  or ${percentageToOneInEveryX(mostpopularwhitemin10.player_pct_with_children)} stamps.
                 That means you play it ${customRoundForRatio(mostpopularwhitemin10.player_pct_with_children/mostpopularwhitemin10.all_pct)}x as frequently as the population.`}
           />      
-        <Row
+        <MemoizedRow
           name="Repertoire: black"
           name_description="(most played relative to population, min. 10 games)"
           opening={mostpopularblackmin10.name}
