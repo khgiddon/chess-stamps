@@ -41,10 +41,18 @@ function ChessOpeningsCollector() {
   const [mostpopularmissingstamp, setMostPopularMissingStamp] = useState([]);
   const [mostobscurestamp, setMostObscureStamp] = useState([]);
   const [othermissingstamps, setOtherMissingStamps] = useState([]);
-
+  const [progress, setProgress] = useState(0);
 
 
   const fetchData = useCallback((username = 'khg002') => {
+
+    const handleProgress = (progress_int) => {
+      setProgress(progress_int);
+    };    
+
+    setProgress(0);  // Start progress at 0%
+    socket.on('progress', handleProgress);    
+
     fetch(`http://127.0.0.1:5000/openings?username=${username}`)
       .then(response => {
         if (!response.ok) {
@@ -68,9 +76,13 @@ function ChessOpeningsCollector() {
           setOtherMissingStamps(data.other_missing_stamps);
           console.log(data);
           console.log(mostobscurestamp);
+          setProgress(100);  // End progress at 100%
+          socket.off('progress', handleProgress);          
 
       })
       .catch(error => {
+        setProgress(100);  // End progress at 100%
+        socket.off('progress', handleProgress);        
         console.error("Error fetching data:", error);
       });
     }, []);  // Empty array means no dependencies, fetchData will not change across re-renders
@@ -122,6 +134,12 @@ function ChessOpeningsCollector() {
         </p>
   </div>
   );
+
+  const ProgressBar = ({ progress }) => (
+    <div className="progress-container">
+        <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+    </div>
+);    
 
   const ResultsSummary = () => (
     <div>
@@ -244,6 +262,7 @@ function ChessOpeningsCollector() {
         setUsername={setUsername}
         handleSubmit={handleSubmit}
       />
+      <ProgressBar progress={progress} />
       <ResultsSummary />
       <DisplayTable />
 
