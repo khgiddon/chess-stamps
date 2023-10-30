@@ -1,8 +1,12 @@
 Transpositions are included in the player games, because it uses the assigned opening for that particular game, but not for overall games.
 
 TODO:
-- Opening diagrams (integrate with some display API)
-- Integrate grid with awards
-- Add unique stamps / after total unique stamps
+- √ Opening diagrams (integrate with some display API)
+- √ Integrate grid with awards
+- √ Add unique stamps / after total unique stamps
+- Progress bar
 - Random opening you've never played (bounty)
-- API error handling
+- API error handling (e.g., less than 10 games)
+- √ Lichess API auth (temporary single-player solution)
+
+- Upgrade lichess API auth

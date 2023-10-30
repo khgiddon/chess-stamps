@@ -28,6 +28,8 @@ function ChessOpeningsCollector() {
   const [loadedusername, setLoadedUsername] = useState('khg002');
   const [totalgames, setTotalGames] = useState(0); 
   const [totalstamps, setTotalStamps] = useState(0);
+  const [uniquestamps, setUniqueStamps] = useState(0);
+  const [uniquestampsall, setUniqueStampsAll] = useState(0);
   const [mostpopularwhite, setMostPopularWhite] = useState([]);
   const [mostpopularwhitemin10, setMostPopularWhiteMin10] = useState([]);
   const [mostpopularblack, setMostPopularBlack] = useState([]);
@@ -50,6 +52,8 @@ function ChessOpeningsCollector() {
           setOpenings(data.openings);
           setTotalGames(data.total_games); 
           setTotalStamps(data.total_stamps); 
+          setUniqueStamps(data.unique_stamps);
+          setUniqueStampsAll(data.unique_stamps_all);
           setLoadedUsername(data.loaded_username);
           setMostPopularWhite(data.most_popular_white);
           setMostPopularWhiteMin10(data.most_popular_white_min10);
@@ -113,6 +117,16 @@ function ChessOpeningsCollector() {
         <b>A:</b> Every time you reach a <u>named opening position</u>, you collect a stamp! You can collect multiple stamps in the same game. For example, if you play the Ruy Lopez, you'll collect a stamp for the King's Pawn Game, the King's Knight Opening, the King's Knight Opening: Normal Variation, the Ruy Lopez, and whatever subsequent variation of the Ruy Lopez you end up in.
         </p>
   </div>
+  );
+
+  const ResultsSummary = () => (
+    <div>
+      <p className="summaryText">
+        Analyzed <b>{totalstamps}</b> opening stamps from <b>{totalgames}</b> games played by <b>{loadedusername}</b>.
+        <br/><br/>
+        You've collected <b>{uniquestamps}</b> unique stamps out of <b>{uniquestampsall}</b> possible stamps, or <b>{formatPercentage(uniquestamps/uniquestampsall)}%</b> of all stamps.
+      </p>
+    </div>
   );
 
   const Row = ({ name, name_description, opening, fen, id, image, text }) => {
@@ -227,8 +241,7 @@ function ChessOpeningsCollector() {
         handleSubmit={handleSubmit}
       />
 
-      <p className="summaryText">Analyzed <b>{totalstamps}</b> opening stamps from <b>{totalgames}</b> games played by <b>{loadedusername}</b>.</p>
-
+      <ResultsSummary />
       <DisplayTable />
 
     </div>
