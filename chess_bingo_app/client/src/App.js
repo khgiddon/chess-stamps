@@ -38,8 +38,8 @@ function ChessOpeningsCollector() {
 
 
 
-  const fetchData = useCallback((user = '') => {
-    fetch(`http://127.0.0.1:5000/openings?username=${user}`)
+  const fetchData = useCallback((username = 'khg002') => {
+    fetch(`http://127.0.0.1:5000/openings?username=${username}`)
       .then(response => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

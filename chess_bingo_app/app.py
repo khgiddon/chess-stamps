@@ -1,9 +1,13 @@
 
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+#from flask_socketio import SocketIO
 import pandas as pd
 import numpy as np
 import requests
+import os
+import json
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 CORS(app)  # This will allow the frontend to make requests to this server
@@ -43,21 +47,51 @@ def get_user_data(username,defaultusername='khg002'):
     
     else:
 
+        print(f'\n\n\n\n username {username} \n\n\n\n')
+
         # Get overall data
         openings_db = "assets/openings_pgn/combined_with_stats_parents.tsv"
         df = pd.read_csv(openings_db, sep="\t")
 
         # Get user data
-        max = 10000
+        max = 150
+
+        
 
         print(f'querying lichess api for {username}...')
-        headers = {"Content-Type": "application/x-ndjson"}
-        url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false"
+
+        # Read the lichessToken
+        load_dotenv()
+        lichessToken = os.getenv("lichessToken")
+
+        # First request is to get the number of games
+        headers = {
+            "Content-Type": "application/x-ndjson",
+            "Authorization": f"Bearer {lichessToken}"
+        }
+        url = f"https://lichess.org/api/user/{username}"   
         response = requests.get(url,headers=headers)
+        d = json.loads(response.content.decode('utf-8'))
+        games_to_pull = sum(d['perfs'][game_type]['games'] for game_type in ['bullet', 'blitz', 'rapid', 'classical'])
+        print(f'games to pull: {games_to_pull} for {username}')
+
+        # Second request is to pull the actual games
+        chunks_expected = min(games_to_pull,max)   
+        chunks = 0
+        response_test = []
+        url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical"
+        response = requests.get(url,headers=headers,stream=True)
         print('received response from lichess api')
+        for chunk in response.iter_content(chunk_size=1024):
+            percentage_complete = (chunks / chunks_expected) * 100
+            #socketio.emit('progress', {'percentage': percentage_complete})
+            chunks += 1
+            print(percentage_complete)
+            response_test.append(chunk)
 
         # Parse and create data
-        l = response.content.decode('utf-8').split('\n\n\n')
+        full_response = b''.join(response_test).decode('utf-8')
+        l = full_response.split('\n\n\n')    
         print(f'length of response: {len(l)}')
 
         if len(l) == 1:
