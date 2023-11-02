@@ -4,7 +4,8 @@ import './App.css';
 import { percentageToOneInEveryX, customRoundForRatio, formatPercentage, listToCleanList } from './utilityFunctions';
 import {Chessboard} from 'react-chessboard';
 
-import io from 'socket.io-client';
+import { socket } from './api/io';
+
 
 // import { createRoot } from 'react-dom/client';
 // import { AgGridReact } from 'ag-grid-react';
@@ -32,9 +33,7 @@ const BlockUsernameSubmit = ({ username, setUsername, handleSubmit }) => {
   );
 };  
 
-const socket = io('http://localhost:5000');
-
-function ChessOpeningsCollector() {
+function App() {
   const [openings, setOpenings] = useState([]);
   const [username, setUsername] = useState('khg002');
   const [data, setData] = useState([]);
@@ -267,4 +266,4 @@ function ChessOpeningsCollector() {
   );
 }
 
-export default ChessOpeningsCollector;
+export default App;
