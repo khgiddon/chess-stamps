@@ -4,7 +4,8 @@ import './App.css';
 import { percentageToOneInEveryX, customRoundForRatio, formatPercentage, listToCleanList } from './utilityFunctions';
 import {Chessboard} from 'react-chessboard';
 
-import { socket } from './api/io';
+import { fetchData } from './api/fetchData'; // Import the fetchData function
+
 
 const BlockUsernameSubmit = ({ username, setUsername, handleSubmit }) => {
   const [inputValue, setInputValue] = useState(username);
@@ -33,45 +34,17 @@ function App() {
   const [data, setData] = useState([]);
   const [progress, setProgress] = useState(0);
 
-  const fetchData = useCallback((username = 'khg002') => {
-
-    const handleProgress = (progress_int) => {
-      setProgress(progress_int);
-    };    
-
-    setProgress(0);  // Start progress at 0%
-    socket.on('progress', handleProgress); 
-
-    fetch(`http://127.0.0.1:5000/openings?username=${username}`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then(data => {
-          setData(data);
-          console.log(data);
-          console.log(data.most_obscure_stamp);
-          setProgress(100);  // End progress at 100%
-          socket.off('progress', handleProgress);          
-
-      })
-      .catch(error => {
-        setProgress(100);  // End progress at 100%
-        socket.off('progress', handleProgress);        
-        console.error("Error fetching data:", error);
-      });
-    }, []);  // Empty array means no dependencies, fetchData will not change across re-renders
+  const handleFetchData = useCallback((username = 'khg002') => {
+    fetchData(username, setData, setProgress);
+  }, [setData, setProgress]); // Include setData and setProgress in the dependency array
 
   // Fetch data when the component is first mounted using the default username
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);  // fetchData is now a stable function reference
-
+    handleFetchData();
+  }, [handleFetchData]);
 
   const handleSubmit = (newUsername) => {
-    fetchData(newUsername);
+    handleFetchData(newUsername);
 }
 
   // Front end components
