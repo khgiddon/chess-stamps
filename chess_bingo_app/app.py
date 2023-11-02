@@ -187,17 +187,17 @@ def send_data_to_frontend():
     most_obscure_stamp = df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0].to_dict()
 
     other_missing_stamps = df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(4)['name'].tolist()[1:4]
-    
-    # Random missing stamp?
-    
+        
     #print('other_missing_stamps:',other_missing_stamps)
 
     # Specify columns and only return the columns that are needed to speed things up
     df = df[['name','pgn','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children']]
 
+    print('returning json')
+
     # For now, we'll just return the dataframe data as JSON
     return jsonify({
-        'openings': df.to_dict(orient='records'),
+        #'openings': df.to_dict(orient='records'),
         'total_games': total_games,
         'total_stamps': total_stamps,
         'unique_stamps': unique_stamps,

@@ -37,20 +37,8 @@ const socket = io('http://localhost:5000');
 function ChessOpeningsCollector() {
   const [openings, setOpenings] = useState([]);
   const [username, setUsername] = useState('khg002');
-  const [loadedusername, setLoadedUsername] = useState('khg002');
-  const [totalgames, setTotalGames] = useState(0); 
-  const [totalstamps, setTotalStamps] = useState(0);
-  const [uniquestamps, setUniqueStamps] = useState(0);
-  const [uniquestampsall, setUniqueStampsAll] = useState(0);  
-  const [mostpopularwhite, setMostPopularWhite] = useState([]);
-  const [mostpopularwhitemin10, setMostPopularWhiteMin10] = useState([]);
-  const [mostpopularblack, setMostPopularBlack] = useState([]);
-  const [mostpopularblackmin10, setMostPopularBlackMin10] = useState([]);
-  const [mostpopularmissingstamp, setMostPopularMissingStamp] = useState([]);
-  const [mostobscurestamp, setMostObscureStamp] = useState([]);
-  const [othermissingstamps, setOtherMissingStamps] = useState([]);
+  const [data, setData] = useState([]);
   const [progress, setProgress] = useState(0);
-
 
   const fetchData = useCallback((username = 'khg002') => {
 
@@ -69,21 +57,9 @@ function ChessOpeningsCollector() {
         return response.json();
       })
       .then(data => {
-          setOpenings(data.openings);
-          setTotalGames(data.total_games); 
-          setTotalStamps(data.total_stamps); 
-          setUniqueStamps(data.unique_stamps);
-          setUniqueStampsAll(data.unique_stamps_all);          
-          setLoadedUsername(data.loaded_username);
-          setMostPopularWhite(data.most_popular_white);
-          setMostPopularWhiteMin10(data.most_popular_white_min10);
-          setMostPopularBlack(data.most_popular_black);
-          setMostPopularBlackMin10(data.most_popular_black_min10);
-          setMostPopularMissingStamp(data.most_popular_missing_stamp);
-          setMostObscureStamp(data.most_obscure_stamp);
-          setOtherMissingStamps(data.other_missing_stamps);
+          setData(data);
           console.log(data);
-          console.log(mostobscurestamp);
+          console.log(data.most_obscure_stamp);
           setProgress(100);  // End progress at 100%
           socket.off('progress', handleProgress);          
 
@@ -152,26 +128,30 @@ function ChessOpeningsCollector() {
     </div>
 );    
 
-  const ResultsSummary = () => (
+  const ResultsSummary = () => {
+    if (!data.total_stamps) return null; // Return null if data is not yet available
+
+    return (
     <div>
       <p className="summaryText">
-        Analyzed <b>{totalstamps}</b> opening stamps from <b>{totalgames}</b> games played by <b>{loadedusername}</b>.
+        Analyzed <b>{data.total_stamps}</b> opening stamps from <b>{data.total_games}</b> games played by <b>{username}</b>.
         <br/><br/>
-        You've collected <b>{uniquestamps}</b> unique stamps out of <b>{uniquestampsall}</b> possible stamps, or <b>{formatPercentage(uniquestamps/uniquestampsall)}%</b> of all stamps.
+        You've collected <b>{data.unique_stamps}</b> unique stamps out of <b>{data.unique_stampsall}</b> possible stamps, or <b>{formatPercentage(data.unique_stamps/data.unique_stamps_all)}%</b> of all stamps.
       </p>
     </div>
-  );
+    );
+    };
 
-  const Row = ({ name, name_description, opening, fen, id, image, text }) => {
+  const Row = ({ label, label_description, opening, fen, id, image, text }) => {
     return (
       <tr>
         <td>
           <div align="center">
-            <span className="nameText"><b>{name}</b>:</span><br/>
+            <span className="nameText"><b>{label}</b>:</span><br/>
             {console.log('Text rendered', { fen, id })}
             {/* Add extra line break if name_description is not null  */}
-            { name_description? 
-              <div><span className="nameDescriptionText">{name_description}</span></div>
+            { label_description? 
+              <div><span className="nameDescriptionText">{label_description}</span></div>
             : null
             }          
             <br/>{opening}
@@ -194,7 +174,11 @@ function ChessOpeningsCollector() {
 
   const MemoizedRow = React.memo(Row);
 
-  const DisplayTable = () => (
+  const DisplayTable = () => {
+    if (!data.most_popular_missing_stamp) return null; // Return null if data is not yet available
+
+    return (
+
     <table>
       <thead>
         <tr>
@@ -205,65 +189,66 @@ function ChessOpeningsCollector() {
       </thead>
       <tbody>
         <MemoizedRow
-          name="Missing stamp"
-          opening={mostpopularmissingstamp.name}
-          fen={mostpopularmissingstamp.fen}
+          label="Missing stamp"
+          opening={data.most_popular_missing_stamp.name}
+          fen={data.most_popular_missing_stamp.fen}
           id={1}
           text={
           <>
-          The most popular stamp you're missing is the <span className="openingHighlight">{mostpopularmissingstamp.name}</span>. 
-          You've never played this, but it's played in {percentageToOneInEveryX(mostpopularmissingstamp.all_pct)} of all Lichess games.
-          The other most popular stamps you're missing are: <span className="openingHighlight">{listToCleanList(othermissingstamps)}</span>.
+          The most popular stamp you're missing is the <span className="openingHighlight">{data.most_popular_missing_stamp.name}</span>. 
+          You've never played this, but it's played in {percentageToOneInEveryX(data.most_popular_missing_stamp.all_pct)} of all Lichess games.
+          The other most popular stamps you're missing are: <span className="openingHighlight">{listToCleanList(data.other_missing_stamps)}</span>.
           Happy hunting!
           </>
           }
         />
         <MemoizedRow
-          name="Rarest stamp"
-          opening={mostobscurestamp.name}
-          fen={mostobscurestamp.fen}
+          label="Rarest stamp"
+          opening={data.most_obscure_stamp.name}
+          fen={data.most_obscure_stamp.fen}
           id={2}
-          text={`The most obscure stamp you've collected is the ${mostobscurestamp.name}.  You've played this ${mostobscurestamp.player_total_with_children} times. This is only ${percentageToOneInEveryX(mostobscurestamp.all_pct)} Lichess stamps!`}
+          text={`The most obscure stamp you've collected is the ${data.most_obscure_stamp.name}.  You've played this ${data.most_obscure_stamp.player_total_with_children} times. This is only ${percentageToOneInEveryX(data.most_obscure_stamp.all_pct)} Lichess stamps!`}
         />
         <MemoizedRow
-          name="Secret weapon: white"
-          name_description="(most played relative to population)"
-          opening={mostpopularwhite.name}
-          fen={mostpopularwhite.fen}
+          label="Secret weapon: white"
+          label_description="(most played relative to population)"
+          opening={data.most_popular_white.name}
+          fen={data.most_popular_white.fen}
           id={3}
-          text={`You've played this ${mostpopularwhite.player_white_with_children} times, or ${percentageToOneInEveryX(mostpopularwhite.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(mostpopularwhite.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(mostpopularwhite.player_pct_with_children/mostpopularwhite.all_pct)}x as frequently.`}
-        />  
+          text={`You've played this ${data.most_popular_white.player_white_with_children} times, or ${percentageToOneInEveryX(data.most_popular_white.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_white.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(data.most_popular_white.player_pct_with_children/data.most_popular_white.all_pct)}x as frequently.`}
+        />
         <Row
-          name="Secret weapon: black"
-          name_description="(most played relative to population)"
-          opening={mostpopularblack.name}
-          fen={mostpopularblack.fen}
+          label="Secret weapon: black"
+          label_description="(most played relative to population)"
+          opening={data.most_popular_black.name}
+          fen={data.most_popular_black.fen}
           id={4}
-          text={`You've played this ${mostpopularblack.player_black_with_children} times, or ${percentageToOneInEveryX(mostpopularblack.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(mostpopularblack.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(mostpopularblack.player_pct_with_children/mostpopularblack.all_pct)}x as frequently.`}
-        />          
+          text={`You've played this ${data.most_popular_black.player_black_with_children} times, or ${percentageToOneInEveryX(data.most_popular_black.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_black.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(data.most_popular_black.player_pct_with_children/data.most_popular_black.all_pct)}x as frequently.`}
+        />
         <MemoizedRow
-          name="Repertoire: white"
-          name_description="(most played relative to population, min. 10 games)"
-          opening={mostpopularwhitemin10.name}
-          fen={mostpopularwhitemin10.fen}
+          label="Repertoire: white"
+          label_description="(most played relative to population, min. 10 games)"
+          opening={data.most_popular_white_min10.name}
+          fen={data.most_popular_white_min10.fen}
           id={5}
-          text={`You've played this ${mostpopularwhitemin10.player_white_with_children} times,
-                 or ${percentageToOneInEveryX(mostpopularwhitemin10.player_pct_with_children)} stamps.
-                That means you play it ${customRoundForRatio(mostpopularwhitemin10.player_pct_with_children/mostpopularwhitemin10.all_pct)}x as frequently as the population.`}
-          />      
+          text={`You've played this ${data.most_popular_white_min10.player_white_with_children} times,
+                 or ${percentageToOneInEveryX(data.most_popular_white_min10.player_pct_with_children)} stamps.
+                That means you play it ${customRoundForRatio(data.most_popular_white_min10.player_pct_with_children/data.most_popular_white_min10.all_pct)}x as frequently as the population.`}
+          />
         <MemoizedRow
-          name="Repertoire: black"
-          name_description="(most played relative to population, min. 10 games)"
-          opening={mostpopularblackmin10.name}
-          fen={mostpopularblackmin10.fen}
+          label="Repertoire: black"
+          label_description="(most played relative to population, min. 10 games)"
+          opening={data.most_popular_black_min10.name}
+          fen={data.most_popular_black_min10.fen}
           id={6}
-          text={`You've played this ${mostpopularblackmin10.player_black_with_children} times,
-                or ${percentageToOneInEveryX(mostpopularblackmin10.player_pct_with_children)} stamps.
-                That means you play it ${customRoundForRatio(mostpopularblackmin10.player_pct_with_children/mostpopularblackmin10.all_pct)}x as frequently as the population.`}
+          text={`You've played this ${data.most_popular_black_min10.player_black_with_children} times,
+                or ${percentageToOneInEveryX(data.most_popular_black_min10.player_pct_with_children)} stamps.
+                That means you play it ${customRoundForRatio(data.most_popular_black_min10.player_pct_with_children/data.most_popular_black_min10.all_pct)}x as frequently as the population.`}
           />
       </tbody>
     </table>
-  );
+    );
+  };
 
   return (
     <div>
