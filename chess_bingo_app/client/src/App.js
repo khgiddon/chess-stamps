@@ -6,12 +6,6 @@ import {Chessboard} from 'react-chessboard';
 
 import { socket } from './api/io';
 
-
-// import { createRoot } from 'react-dom/client';
-// import { AgGridReact } from 'ag-grid-react';
-// import 'ag-grid-community/styles/ag-grid.css';
-// import 'ag-grid-community/styles/ag-theme-alpine.css';  // You can choose another theme if you prefer
-
 const BlockUsernameSubmit = ({ username, setUsername, handleSubmit }) => {
   const [inputValue, setInputValue] = useState(username);
 
