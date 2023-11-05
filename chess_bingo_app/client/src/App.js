@@ -16,9 +16,12 @@ function App() {
   const [username, setUsername] = useState('khg002');
   const [data, setData] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [loading, setLoading] = useState(false); // Added loading state
 
   const handleFetchData = useCallback((username = 'khg002') => {
-    fetchData(username, setData, setProgress);
+    setLoading(true); // Set loading to true when the fetch starts
+    fetchData(username, setData, setProgress)
+      .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, [setData, setProgress]); // Include setData and setProgress in the dependency array
 
   // Fetch data when the component is first mounted using the default username
@@ -28,8 +31,7 @@ function App() {
 
   const handleSubmit = (newUsername) => {
     handleFetchData(newUsername);
-}
-
+  }
 
   return (
     <div>
@@ -41,8 +43,8 @@ function App() {
         handleSubmit={handleSubmit}
       />
       <ProgressBar progress={progress} />
-      <ResultsSummary data={data} username={username} />
-      <DisplayTable data={data} />
+      {!loading && <ResultsSummary data={data} username={username} />}
+      {!loading && <DisplayTable data={data} />}
     </div>
   );
 }
