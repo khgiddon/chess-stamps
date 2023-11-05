@@ -6,6 +6,7 @@
 
 html, body {
   background-color: rgb(241, 239, 239);
+  /* background-color: #2596be;  */
 
 }
 
@@ -85,6 +86,8 @@ h1, h2, h3 {
 .progress-wrapper {
   width: 80%;
   margin: 0 auto; /* Centers the wrapper */
+  display: flex;
+  flex-direction: column;  
 }
 
 .additional-text {
@@ -111,9 +114,27 @@ h1, h2, h3 {
 
 .progress-text {
   position: absolute;
+  color: black;
+  font-weight: bold;
+  font-size: 110%;
   width: 100%;
   top: 50%;
   transform: translateY(-50%);
   text-align: center;
   z-index: 1;
+}
+
+.chess-piece {
+  width: 50px; /* Adjust size as needed */
+  height: auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
 }
