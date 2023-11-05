@@ -1,14 +1,30 @@
 .App {
-  font-family: Arial, sans-serif;
   text-align: center;
   padding: 20px;
 }
 
 html, body {
   background-color: rgb(241, 239, 239);
+  font-family: Arial, sans-serif;
+
   /* background-color: #2596be;  */
 
 }
+
+ h2, h3 {
+  text-align: center;
+  font-family: 'Lato', Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  font-family: 'Stalemate', Arial, sans-serif;
+  font-size: 600%;
+  font-weight: 0;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
 
 table {
   margin-top: 20px;
@@ -67,9 +83,6 @@ table td, table th, table tr {
 }
 
 
-h1, h2, h3 {
-  text-align: center;
-}
 
 .stampImageContainer {
   text-align: center;
