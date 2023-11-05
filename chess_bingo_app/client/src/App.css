@@ -82,15 +82,38 @@ h1, h2, h3 {
   border: 1px solid darkslategray;
 }
 
+.progress-wrapper {
+  width: 80%;
+  margin: 0 auto; /* Centers the wrapper */
+}
+
+.additional-text {
+  text-align: center;
+  margin-bottom: 20px; /* Space between text and progress bar */
+}
+
 .progress-container {
+  position: relative;
   width: 100%;
-  background-color: #ccc;
+  height: 40px;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  overflow: hidden;
 }
 
 .progress-bar {
-  height: 30px;
-  background-color: #4CAF50;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background-color: #4caf50;
+}
+
+.progress-text {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  transform: translateY(-50%);
   text-align: center;
-  line-height: 30px;
-  color: white;
+  z-index: 1;
 }

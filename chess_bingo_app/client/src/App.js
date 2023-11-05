@@ -42,7 +42,7 @@ function App() {
         setUsername={setUsername}
         handleSubmit={handleSubmit}
       />
-      <ProgressBar progress={progress} />
+      {loading && <ProgressBar progress={progress} />}
       {!loading && <ResultsSummary data={data} username={username} />}
       {!loading && <DisplayTable data={data} />}
     </div>
