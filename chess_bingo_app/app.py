@@ -121,7 +121,7 @@ def get_user_data(username,defaultusername='khg002'):
         print('received response from lichess api')
         for chunk in response.iter_content(chunk_size=1024):
             percentage_complete = int((chunks / chunks_expected) * 100)
-            socketio.emit('progress', percentage_complete)
+            socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected})
             chunks += 1
             print(percentage_complete)
             response_test.append(chunk)

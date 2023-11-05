@@ -1,14 +1,16 @@
 import { socket } from './io';
 
 // The fetchData function is now exported and can be imported in other components
-export const fetchData = async (username, setData, setProgress) => {
+export const fetchData = async (username, setData, setProgress, setGamesExpected) => {
 
 console.log(typeof setProgress); // Should log 'function'
 
 
-  const handleProgress = (progress_int) => {
-    setProgress(progress_int);
-  };
+const handleProgress = (progressData) => {
+      const { percentage_complete, chunks_expected } = progressData;
+      setProgress(percentage_complete);
+      setGamesExpected(chunks_expected);
+    };
 
   setProgress(0);  // Start progress at 0%
   socket.on('progress', handleProgress);

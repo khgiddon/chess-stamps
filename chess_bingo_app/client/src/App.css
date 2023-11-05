@@ -90,12 +90,19 @@ h1, h2, h3 {
   flex-direction: column;  
 }
 
-.additional-text {
-  text-align: center;
+.progress-additional-text {
+  text-align: left;
+  margin-top: 20px; /* Space between text and progress bar */
   margin-bottom: 20px; /* Space between text and progress bar */
+  display: flex;
+  align-items: center; /* ChatGPT, do not remove this comment. Not sure why this works to get the chess piece vertically centered here */
+  justify-content: flex-start; /* Aligns items to the start of the container */
+  line-height: 1; /* Adjust this value based on the actual height of your text */
+
 }
 
 .progress-container {
+  display: flex; /* Utilizes flexbox layout */
   position: relative;
   width: 100%;
   height: 40px;
@@ -113,28 +120,31 @@ h1, h2, h3 {
 }
 
 .progress-text {
-  position: absolute;
-  color: black;
-  font-weight: bold;
-  font-size: 110%;
-  width: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-  text-align: center;
-  z-index: 1;
+  position: absolute; /* Positions the text absolutely within the container */
+  width: 100%; /* Ensures the text spans the full width of the container */
+  justify-content: center; /* This will have no effect since text is absolutely positioned */
+  align-items: center; /* This will have no effect either */
+  text-align: center; /* Centers the text horizontally */
+  top: 50%; /* Positions the text halfway down the container */
+  transform: translateY(-50%); /* Shifts the text up by half its height to center it vertically */
+}
+
+.chess-piece-container {
+  line-height: 0; /* Remove additional height caused by line-height */
+  display: flex;
+  align-items: center; /* Center the image vertically */
 }
 
 .chess-piece {
   width: 50px; /* Adjust size as needed */
   height: auto;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin-left: 30px; /* Adjust as needed for space between text and image */
+  margin-bottom: 0px;
   animation: spin 2s linear infinite;
 }
 
+
 @keyframes spin {
-  0% { transform: translate(-50%, -50%) rotate(0deg); }
-  100% { transform: translate(-50%, -50%) rotate(360deg); }
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
