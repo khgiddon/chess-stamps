@@ -18,8 +18,8 @@ html, body {
 
 h1 {
   text-align: center;
-  font-family: 'Stalemate', Arial, sans-serif;
-  font-size: 600%;
+  font-family: 'Lato', Arial, sans-serif;
+  font-size: 300%;
   font-weight: 0;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -74,6 +74,7 @@ table td, table th, table tr {
 
 .usernameContainer {
   padding-left: 15px; /* Adjust this value as needed */
+  margin-bottom: 15px;
 
 }
 
@@ -101,27 +102,33 @@ table td, table th, table tr {
   margin: 0 auto; /* Centers the wrapper */
   display: flex;
   flex-direction: column;  
+  background-color: lightblue;
+  border-radius: 20px;
+
 }
 
 .progress-additional-text {
-  text-align: left;
-  margin-top: 20px; /* Space between text and progress bar */
-  margin-bottom: 20px; /* Space between text and progress bar */
+  margin-top: 10px; /* Space between text and progress bar */
+  margin-bottom: 10px; /* Space between text and progress bar */
   display: flex;
-  align-items: center; /* ChatGPT, do not remove this comment. Not sure why this works to get the chess piece vertically centered here */
-  justify-content: flex-start; /* Aligns items to the start of the container */
+  align-items: center; /* Keeps items vertically centered */
+  justify-content: center; /* Horizontally centers items in the container */
   line-height: 1; /* Adjust this value based on the actual height of your text */
-
 }
 
-.progress-container {
+.progress-bar-container {
   display: flex; /* Utilizes flexbox layout */
   position: relative;
-  width: 100%;
+  width: 90%;
   height: 40px;
   background-color: #e0e0e0;
-  border-radius: 20px;
+  border-color: black;
+  border-radius: 5px;
   overflow: hidden;
+  margin-left: 5%;
+  margin-right: 5%;
+  margin-bottom: 30px;
+
 }
 
 .progress-bar {
@@ -130,6 +137,7 @@ table td, table th, table tr {
   top: 0;
   height: 100%;
   background-color: #4caf50;
+  border-color: black;
 }
 
 .progress-text {
@@ -140,6 +148,7 @@ table td, table th, table tr {
   text-align: center; /* Centers the text horizontally */
   top: 50%; /* Positions the text halfway down the container */
   transform: translateY(-50%); /* Shifts the text up by half its height to center it vertically */
+  font-weight: bold;
 }
 
 .chess-piece-container {
@@ -151,7 +160,7 @@ table td, table th, table tr {
 .chess-piece {
   width: 50px; /* Adjust size as needed */
   height: auto;
-  margin-left: 30px; /* Adjust as needed for space between text and image */
+  margin-left: 15px; /* Adjust as needed for space between text and image */
   margin-bottom: 0px;
   animation: spin 2s linear infinite;
 }
