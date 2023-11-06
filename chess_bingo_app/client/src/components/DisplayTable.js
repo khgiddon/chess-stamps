@@ -22,7 +22,7 @@ const DisplayTable = ({ data }) => {
         text={
         <>
         The most popular stamp you're missing is the <span className="openingHighlight">{data.most_popular_missing_stamp.name}</span>. 
-        You've never played this, but it's played in {percentageToOneInEveryX(data.most_popular_missing_stamp.all_pct)} of all Lichess games.
+        You've never played this, but it's played in {percentageToOneInEveryX(data.most_popular_missing_stamp.all_pct)} Lichess stamps.
         The other most popular stamps you're missing are: <span className="openingHighlight">{listToCleanList(data.other_missing_stamps)}</span>.
         Happy hunting!
         </>
@@ -51,26 +51,31 @@ const DisplayTable = ({ data }) => {
         id={4}
         text={`You've played this ${data.most_popular_black.player_black_with_children} times, or ${percentageToOneInEveryX(data.most_popular_black.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_black.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(data.most_popular_black.player_pct_with_children/data.most_popular_black.all_pct)}x as frequently as frequently as the population.`}
       />
-      <MemoizedRow
-        label="Repertoire: white"
-        label_description="(most played relative to population, min. 10 games)"
-        opening={data.most_popular_white_min10.name}
-        fen={data.most_popular_white_min10.fen}
-        id={5}
-        text={`You've played this ${data.most_popular_white_min10.player_white_with_children} times,
-               or ${percentageToOneInEveryX(data.most_popular_white_min10.player_pct_with_children)} stamps.
-              That means you play it ${customRoundForRatio(data.most_popular_white_min10.player_pct_with_children/data.most_popular_white_min10.all_pct)}x as frequently as the population.`}
-        />
-      <MemoizedRow
-        label="Repertoire: black"
-        label_description="(most played relative to population, min. 10 games)"
-        opening={data.most_popular_black_min10.name}
-        fen={data.most_popular_black_min10.fen}
-        id={6}
-        text={`You've played this ${data.most_popular_black_min10.player_black_with_children} times,
-              or ${percentageToOneInEveryX(data.most_popular_black_min10.player_pct_with_children)} stamps.
-              That means you play it ${customRoundForRatio(data.most_popular_black_min10.player_pct_with_children/data.most_popular_black_min10.all_pct)}x as frequently as the population.`}
-        />
+<MemoizedRow
+  label="Repertoire: white"
+  label_description="(most played relative to population, min. 10 games)"
+  opening={data.most_popular_white_min10.name}
+  fen={data.most_popular_white_min10.fen}
+  id={5}
+  text={data.most_popular_white_min10.name !== 'None' ? 
+        `You've played this ${data.most_popular_white_min10.player_white_with_children} times,
+         or ${percentageToOneInEveryX(data.most_popular_white_min10.player_pct_with_children)} stamps.
+        That means you play it ${customRoundForRatio(data.most_popular_white_min10.player_pct_with_children/data.most_popular_white_min10.all_pct)}x as frequently as the population.`
+        : "You haven't played any opening as white ten times."}
+/>
+<MemoizedRow
+  label="Repertoire: black"
+  label_description="(most played relative to population, min. 10 games)"
+  opening={data.most_popular_black_min10.name}
+  fen={data.most_popular_black_min10.fen}
+  id={6}
+  text={data.most_popular_black_min10.name !== 'None' ?
+        `You've played this ${data.most_popular_black_min10.player_black_with_children} times,
+        or ${percentageToOneInEveryX(data.most_popular_black_min10.player_pct_with_children)} stamps.
+        That means you play it ${customRoundForRatio(data.most_popular_black_min10.player_pct_with_children/data.most_popular_black_min10.all_pct)}x as frequently as the population.`
+        : "You haven't played any opening as black ten times."}
+/>
+
     </tbody>
   </table>
   );

@@ -26,6 +26,7 @@ const handleProgress = (progressData) => {
         console.log(data.most_obscure_stamp);
   } catch (error) {
         console.error("Error fetching data:", error);
+        // TODO: Handle errors
   } finally {
         setProgress(100);  // End progress at 100%
         socket.off('progress', handleProgress);
