@@ -4,9 +4,10 @@ TODO:
 - √ Opening diagrams (integrate with some display API)
 - √ Integrate grid with awards
 - √ Add unique stamps / after total unique stamps
-- Progress bar
+- √ Progress bar
 - Random opening you've never played (bounty)
 - API error handling (e.g., less than 10 games)
 - √ Lichess API auth (temporary single-player solution)
+- Put all components in own div with background
 
 - Upgrade lichess API auth
