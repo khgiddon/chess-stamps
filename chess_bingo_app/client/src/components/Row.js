@@ -13,7 +13,7 @@ const Row = ({ label, label_description, opening, fen, id, text }) => {
               <div><span className="nameDescriptionText">{label_description}</span></div>
             : null
             }          
-            <br/>{opening}
+            <br/><a href={`https://lichess.org/analysis/${fen}`}>{opening}</a>
           </div>
         </td>
         <td>

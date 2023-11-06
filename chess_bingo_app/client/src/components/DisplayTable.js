@@ -33,7 +33,7 @@ const DisplayTable = ({ data }) => {
         opening={data.most_obscure_stamp.name}
         fen={data.most_obscure_stamp.fen}
         id={2}
-        text={`The most obscure stamp you've collected is the ${data.most_obscure_stamp.name}.  You've played this ${data.most_obscure_stamp.player_total_with_children} times. This is only ${percentageToOneInEveryX(data.most_obscure_stamp.all_pct)} Lichess stamps!`}
+        text={`You've played this ${data.most_obscure_stamp.player_total_with_children} times. This is only ${percentageToOneInEveryX(data.most_obscure_stamp.all_pct)} Lichess stamps! What a find!`}
       />
       <MemoizedRow
         label="Secret weapon: white"
