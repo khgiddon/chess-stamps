@@ -42,7 +42,7 @@ function App() {
         setUsername={setUsername}
         handleSubmit={handleSubmit}
       />
-      {loading && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
+      {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
       {!loading && <ResultsSummary data={data} username={username} />}
       {!loading && <DisplayTable data={data} />}
     </div>
