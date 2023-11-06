@@ -4,9 +4,7 @@ import { fetchData } from './api/fetchData';
 
 // Components
 import BlockUsernameSubmit from './components/BlockUsernameSubmit';
-import ChessImage from './components/ChessImage';
 import BlockHeader from './components/BlockHeader';
-import BlockSummaryText from './components/BlockIntro';
 import ProgressBar from './components/ProgressBar';
 import ResultsSummary from './components/ResultsSummary';
 import DisplayTable from './components/DisplayTable';
