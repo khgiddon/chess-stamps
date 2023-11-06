@@ -104,7 +104,7 @@ table td, table th, table tr {
   flex-direction: column;  
   background-color: lightblue;
   border-radius: 20px;
-
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Horizontal offset, vertical offset, blur radius, color */
 }
 
 .progress-additional-text {
@@ -128,6 +128,7 @@ table td, table th, table tr {
   margin-left: 5%;
   margin-right: 5%;
   margin-bottom: 30px;
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2); /* Horizontal offset, vertical offset, blur radius, color */
 
 }
 
@@ -138,6 +139,7 @@ table td, table th, table tr {
   height: 100%;
   background-color: #4caf50;
   border-color: black;
+  
 }
 
 .progress-text {
