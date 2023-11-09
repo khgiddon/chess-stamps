@@ -38,6 +38,7 @@ table {
   margin-right: auto;
   border-collapse: collapse; /* Ensures borders touch each other */
   background-color: whitesmoke;
+  border: 1px solid darkgray;
 }
 
 /* Style for the table headers */
@@ -86,6 +87,7 @@ table td, table th, table tr {
 .openingHighlight {
   font-weight: bold;
   color: purple;
+  font-size: 1.1rem;
 }
 
 .stampImageContainer {
@@ -95,7 +97,7 @@ table td, table th, table tr {
 }
 
 .stampImage {
-  width: 200px;
+  width: 220px;
   height: auto;
   border: none;
 }

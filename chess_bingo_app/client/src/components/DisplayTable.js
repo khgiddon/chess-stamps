@@ -6,11 +6,6 @@ const DisplayTable = ({ data }) => {
 
   return (
     <table>
-    <thead>
-      <tr>
-        <th>Name</th>
-      </tr>
-    </thead>
     <tbody>
       <MemoizedRow
         label="Missing stamp"
@@ -20,7 +15,7 @@ const DisplayTable = ({ data }) => {
         text={
         <>
         You've never played this, but it's {percentageToOneInEveryX(data.most_popular_missing_stamp.all_pct)} Lichess stamps.
-        The other most popular stamps you're missing are: <span className="openingHighlight">{listToCleanList(data.other_missing_stamps)}</span>.
+        The other most popular stamps you're missing are: {listToCleanList(data.other_missing_stamps)}.
         Happy hunting!
         </>
         }
