@@ -88,8 +88,6 @@ table td, table th, table tr {
   color: purple;
 }
 
-
-
 .stampImageContainer {
   text-align: center;
   padding-top: 10px;
@@ -97,9 +95,9 @@ table td, table th, table tr {
 }
 
 .stampImage {
-  width: 100px;
+  width: 200px;
   height: auto;
-  border: 1px solid darkslategray;
+  border: none;
 }
 
 .progress-wrapper {
