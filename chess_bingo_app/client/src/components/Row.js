@@ -2,31 +2,55 @@ import React from 'react';
 import ChessImage from './ChessImage';
 
 const Row = ({ label, label_description, opening, fen, id, text }) => {
+  const rowStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: '10px',
+    alignItems: 'flex-start',
+  };
+
+  const chessImageStyle = {
+    flex: 1,
+    maxWidth: '250px', // Set maximum width for the chessboard image
+    maxHeight: '250px', // Set maximum height for the chessboard image
+    padding: '10px',
+    boxSizing: 'border-box',
+  };
+
+  const textStyle = {
+    flex: 2,
+    maxWidth: '70%',
+    padding: '10px',
+  };
+
+  const labelStyle = {
+    fontWeight: 'bold',
+    marginBottom: '4px',
+  };
+
+  const linkStyle = {
+    textDecoration: 'none',
+    color: '#000',
+  };
+
   return (
-    <tr>
-        <td>
-          <div align="center">
-            <span className="nameText"><b>{label}</b>:</span><br/>
-            {console.log('Text rendered', { fen, id })}
-            {/* Add extra line break if name_description is not null  */}
-            { label_description? 
-              <div><span className="nameDescriptionText">{label_description}</span></div>
-            : null
-            }          
-            <br/><a href={`https://lichess.org/analysis/${fen}`}>{opening}</a>
-          </div>
-        </td>
-        <td>
-          <div>
-          <a href={`https://lichess.org/analysis/${fen}`}>
-            {<ChessImage
-              fen={fen}
-              id={id}
-              />}
-            </a>
-          </div>
-        </td>
-        <td>{text}</td>    </tr>
+    <div style={rowStyle}>
+      <div style={chessImageStyle}>
+        <a href={`https://lichess.org/analysis/${fen}`} style={linkStyle}>
+          <ChessImage fen={fen} id={id} />
+        </a>
+      </div>
+      <div style={textStyle}>
+        <div style={labelStyle}>{label}:</div>
+        {label_description && (
+          <div className="nameDescriptionText">{label_description}</div>
+        )}
+        <a href={`https://lichess.org/analysis/${fen}`} style={linkStyle}>
+          {opening}
+        </a>
+        <div>{text}</div>
+      </div>
+    </div>
   );
 };
 

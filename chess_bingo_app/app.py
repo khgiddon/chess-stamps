@@ -2,7 +2,6 @@
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO
 from flask_cors import CORS
-from flask_socketio import SocketIO
 import pandas as pd
 import numpy as np
 import requests
@@ -91,7 +90,7 @@ def get_user_data(username,defaultusername='khg002'):
         print(f'querying lichess api for {username}...')
 
         # Get user data
-        max = 15
+        max = 150
 
         
 

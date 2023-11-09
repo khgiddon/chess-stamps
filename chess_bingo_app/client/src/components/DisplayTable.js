@@ -9,8 +9,6 @@ const DisplayTable = ({ data }) => {
     <thead>
       <tr>
         <th>Name</th>
-        <th style={{width:'15%',padding:'0px'}}>Image</th>
-        <th>Details</th>
       </tr>
     </thead>
     <tbody>
@@ -21,8 +19,7 @@ const DisplayTable = ({ data }) => {
         id={1}
         text={
         <>
-        The most popular stamp you're missing is the <span className="openingHighlight">{data.most_popular_missing_stamp.name}</span>. 
-        You've never played this, but it's played in {percentageToOneInEveryX(data.most_popular_missing_stamp.all_pct)} Lichess stamps.
+        You've never played this, but it's {percentageToOneInEveryX(data.most_popular_missing_stamp.all_pct)} Lichess stamps.
         The other most popular stamps you're missing are: <span className="openingHighlight">{listToCleanList(data.other_missing_stamps)}</span>.
         Happy hunting!
         </>

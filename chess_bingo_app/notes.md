@@ -11,3 +11,8 @@ TODO:
 - Put all components in own div with background
 
 - Upgrade lichess API auth
+
+
+UI:
+- Alternate full-length labels with explanatory images on top (AI stamps, etc.)
+- Render description below chessboard on mobile?
