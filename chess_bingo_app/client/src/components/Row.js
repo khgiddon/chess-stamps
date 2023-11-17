@@ -9,9 +9,7 @@ const Row = ({ label, label_description, opening, fen, id, text, icon }) => {
           {label}
         </span>
         {label_description && (
-          <div>
-            <span className="description">&nbsp;{`${label_description}`}</span>
-          </div>
+            <span className="label-description">{`${label_description}`}</span>
         )}
       </div>
       <div className="chess-image">
