@@ -1,17 +1,15 @@
 import React from 'react';
 import MemoizedRow from './Row';
 import { percentageToOneInEveryX, customRoundForRatio, formatPercentage, listToCleanList } from '../utilityFunctions';
+
+
 const DisplayTable = ({ data }) => {
-  const gridStyle = {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(3, 1fr)', // Adjust as needed
-    gap: '10px', // Adjust as needed
-  };
+
 
   if (!data.most_popular_missing_stamp) return null;
 
   return (
-    <div style={gridStyle}>
+    <div className="grid-container">
 
       <MemoizedRow
         label="Missing stamp"

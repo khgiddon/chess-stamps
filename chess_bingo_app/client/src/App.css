@@ -1,6 +1,9 @@
 /*
 https://coolors.co/3c3744-090c9b-3d52d5-b4c5e4-fbfff1
 These colors aren't bad for future
+
+
+Color of stmap image: #fefbea
 */
 
 .App {
@@ -9,7 +12,7 @@ These colors aren't bad for future
 }
 
 html, body {
-  background-color: rgb(241, 239, 239);
+  background-color: #EEF4ED;
   font-family: Arial, sans-serif;
 
   /* background-color: #2596be;  */
@@ -28,32 +31,6 @@ h1 {
   font-weight: 0;
   margin-top: 20px;
   margin-bottom: 20px;
-}
-
-
-table {
-  margin-top: 20px;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  border-collapse: collapse; /* Ensures borders touch each other */
-  background-color: whitesmoke;
-  border: 1px solid darkgray;
-}
-
-/* Style for the table headers */
-table thead th {
-  background-color: #BB3139; /* Example color; adjust as you see fit */
-  color: white;
-  border-bottom: 1px solid lightgray; /* Adds a border at the bottom of the header cells */
-}
-
-/* Style for all table cells */
-table td, table th, table tr {
-  border: 1px solid lightgray;
-  border-radius: 5px  ;
-  padding: 8px; /* Adding padding to make it look nicer; adjust as needed */
-  font-size: 0.9rem;
 }
 
 
@@ -176,4 +153,28 @@ table td, table th, table tr {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+
+.rowIcon {
+  width: 30px; /* Adjust size as needed */
+  height: auto;
+  margin-left: 15px; /* Adjust as needed for space between text and image */
+  margin-bottom: 0px;
+}
+
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px;
+  max-width: 80%;
+  margin: auto;  
+}
+
+@media (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
 }
