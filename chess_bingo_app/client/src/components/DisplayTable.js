@@ -2,11 +2,17 @@ import React from 'react';
 import MemoizedRow from './Row';
 import { percentageToOneInEveryX, customRoundForRatio, formatPercentage, listToCleanList } from '../utilityFunctions';
 const DisplayTable = ({ data }) => {
+  const gridStyle = {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)', // Adjust as needed
+    gap: '10px', // Adjust as needed
+  };
+
   if (!data.most_popular_missing_stamp) return null;
 
   return (
-    <table>
-    <tbody>
+    <div style={gridStyle}>
+
       <MemoizedRow
         label="Missing stamp"
         opening={data.most_popular_missing_stamp.name}
@@ -68,8 +74,7 @@ const DisplayTable = ({ data }) => {
         : "You haven't played any opening as black ten times."}
 />
 
-    </tbody>
-  </table>
+    </div>
   );
 };
 

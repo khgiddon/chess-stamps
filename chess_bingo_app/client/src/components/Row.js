@@ -1,19 +1,18 @@
 import React from 'react';
 import ChessImage from './ChessImage';
 
-const Row = ({ label, label_description, opening, fen, id, text }) => {
+const Row = ({ label, label_description, opening, fen, id, text, icon }) => {
   const rowStyle = {
-    display: 'flex',
-    flexDirection: 'column',
+    display: 'grid',
+    gridTemplateRows: 'auto 1fr',
     marginBottom: '10px',
   };
 
   const labelRowStyle = {
-    display: 'flex',
-    flexDirection: 'row',
+    display: 'grid',
     alignItems: 'center', // Center items vertically
     justifyContent: 'center', // Center items horizontally
-    backgroundColor: '#BB3139', // Background color for the label row
+    backgroundColor: '#3A75C4 ', // Background color for the label row
     color: 'white', // Text color for the label row
     fontWeight: 'bold', // Bold text for the label row
     padding: '0px 0', // Vertical padding for the label row
@@ -28,15 +27,15 @@ const Row = ({ label, label_description, opening, fen, id, text }) => {
   };
 
   const chessImageStyle = {
-    flex: 1,
-    maxWidth: '250px',
-    maxHeight: '250px',
+    gridArea: '1 / 1 / 2 / 2',
+    maxWidth: '225px',
+    maxHeight: '225px',
     padding: '10px',
     boxSizing: 'border-box',
   };
 
   const textStyle = {
-    flex: 2,
+    gridArea: '1 / 2 / 2 / 3',
     maxWidth: '70%',
     padding: '10px',
   };
@@ -50,7 +49,9 @@ const Row = ({ label, label_description, opening, fen, id, text }) => {
     <div style={rowStyle}>
       {/* Small row for label and description */}
       <div style={labelRowStyle}>
-        <span>{label}</span>
+        <span>
+          {label}
+        </span>
         {label_description && (
                   <div>
                     <span style={descriptionStyle}>&nbsp;{`${label_description}`}</span>
@@ -59,7 +60,7 @@ const Row = ({ label, label_description, opening, fen, id, text }) => {
 
       </div>
       {/* Existing row content */}
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'flex-start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', alignItems: 'flex-start' }}>
         <div style={chessImageStyle}>
           <a href={`https://lichess.org/analysis/${fen}`} style={linkStyle}>
             <ChessImage fen={fen} id={id} />
