@@ -178,3 +178,46 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+.row {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  margin-bottom: 10px;
+}
+
+.label-row {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  background-color: #3A75C4;
+  color: white;
+  font-weight: bold;
+  padding: 0px 0;
+  text-transform: uppercase;
+  font-size: 1em;
+}
+
+.description {
+  text-transform: lowercase;
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.chess-image {
+  grid-area: 1 / 1 / 2 / 2;
+  max-width: 225px;
+  max-height: 225px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.text {
+  grid-area: 1 / 2 / 2 / 3;
+  max-width: 70%;
+  padding: 10px;
+}
+
+.link {
+  text-decoration: none;
+  color: #000;
+}
