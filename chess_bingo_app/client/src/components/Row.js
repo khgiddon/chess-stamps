@@ -2,11 +2,7 @@ import React from 'react';
 import ChessImage from './ChessImage';
 
 const Row = ({ label, label_description, opening, fen, id, text, icon }) => {
-  const rowStyle = {
-    display: 'grid',
-    gridTemplateRows: 'auto 1fr',
-    marginBottom: '10px',
-  };
+
 
   const labelRowStyle = {
     display: 'grid',
@@ -46,7 +42,7 @@ const Row = ({ label, label_description, opening, fen, id, text, icon }) => {
   };
 
   return (
-    <div style={rowStyle}>
+    <div>
       {/* Small row for label and description */}
       <div style={labelRowStyle}>
         <span>
