@@ -12,18 +12,18 @@ const Row = ({ label, label_description, opening, fen, id, text, icon }) => {
             <span className="label-description">{`${label_description}`}</span>
         )}
       </div>
-      <div className="chess-image">
-        <a href={`https://lichess.org/analysis/${fen}`} className="link">
-          <ChessImage fen={fen} id={id} />
-        </a>
+        <div className="chess-image">
+          <a href={`https://lichess.org/analysis/${fen}`} className="link">
+            <ChessImage fen={fen} id={id} />
+          </a>
+        </div>
+        <div className="text">
+          <a href={`https://lichess.org/analysis/${fen}`} className="link">
+            <span className="openingHighlight">{opening}</span>
+          </a>
+          <div>{text}</div>
+        </div>
       </div>
-      <div className="text">
-        <a href={`https://lichess.org/analysis/${fen}`} className="link">
-          <span className="openingHighlight">{opening}</span>
-        </a>
-        <div>{text}</div>
-      </div>
-    </div>
   );
 };
 

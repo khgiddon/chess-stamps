@@ -36,12 +36,14 @@ function App() {
   return (
     <div>
       <BlockHeader />
-      <BlockIntro />
-      <BlockUsernameSubmit 
-        username={username}
-        setUsername={setUsername}
-        handleSubmit={handleSubmit}
-      />
+      <div className="introContainer">
+        <BlockIntro />
+        <BlockUsernameSubmit 
+          username={username}
+          setUsername={setUsername}
+          handleSubmit={handleSubmit}
+        />
+      </div>
       {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
       {!loading && <ResultsSummary data={data} username={username} />}
       {!loading && <DisplayTable data={data} />}

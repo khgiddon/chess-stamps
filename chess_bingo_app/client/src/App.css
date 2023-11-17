@@ -156,14 +156,6 @@ h1 {
 }
 
 
-.rowIcon {
-  width: 30px; /* Adjust size as needed */
-  height: auto;
-  margin-left: 15px; /* Adjust as needed for space between text and image */
-  margin-bottom: 0px;
-}
-
-
 
 .grid-container {
   display: grid;
@@ -186,7 +178,7 @@ h1 {
   grid-template-areas: 
     "label label"
     "chessboard text";
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 3fr;
   margin: 0px 5px; /* vertical margin 0px, horizontal margin 0 */
   margin-bottom: 10px;
   padding: 0px;
@@ -194,6 +186,7 @@ h1 {
   background-color: #f9f9f9;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
 }
 
 @media (max-width: 700px) {
@@ -207,6 +200,10 @@ h1 {
 
 
   }
+}
+
+.row-body {
+  display: flex;
 }
 
 .label-row {
@@ -239,10 +236,12 @@ h1 {
 
 .chess-image {
   grid-area: chessboard;
-  max-width: 225px;
-  max-height: 225px;
+  min-width: 150px;
+  max-width: 250px;
+  max-height: 250px;
   padding: 5px;
   box-sizing: border-box;
+  align-self: start; 
 }
 
 .text {
@@ -250,6 +249,7 @@ h1 {
   width: 90%;
   padding: 10px;
   color: #111;
+  align-self: start; 
 }
 
 .link {
