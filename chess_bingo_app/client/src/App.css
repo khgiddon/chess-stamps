@@ -173,7 +173,7 @@ h1 {
   margin: auto;  
 }
 
-@media (max-width: 600px) {
+@media (max-width: 700px) {
   .grid-container {
     grid-template-columns: 1fr;
   }
@@ -181,11 +181,25 @@ h1 {
 
 .row {
   display: grid;
-  grid-template-rows: auto 1fr;
+  grid-template-areas: 
+    "label label"
+    "chessboard text";
+  grid-template-columns: 1fr 2fr;
   margin-bottom: 10px;
 }
 
+@media (max-width: 700px) {
+  .row {
+    grid-template-areas: 
+      "label"
+      "chessboard"
+      "text";
+    grid-template-columns: 1fr;
+  }
+}
+
 .label-row {
+  grid-area: label;  
   display: grid;
   align-items: center;
   justify-content: center;
@@ -204,7 +218,7 @@ h1 {
 }
 
 .chess-image {
-  grid-area: 1 / 1 / 2 / 2;
+  grid-area: chessboard;
   max-width: 225px;
   max-height: 225px;
   padding: 10px;
@@ -212,7 +226,7 @@ h1 {
 }
 
 .text {
-  grid-area: 1 / 2 / 2 / 3;
+  grid-area: text;
   max-width: 70%;
   padding: 10px;
 }
