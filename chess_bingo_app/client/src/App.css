@@ -177,8 +177,8 @@ h1 {
   max-width: 60%;
   padding: 10px;
   margin-bottom: 10px;  
-  background-color: #3A75C4;
-  color: white;
+  background-color: #B4C5E4;
+  color: black;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
 }
@@ -272,7 +272,7 @@ h1 {
 
 .chess-image {
   grid-area: chessboard;
-  min-width: 150px;
+  min-width: 200px;
   max-width: 250px;
   max-height: 250px;
   padding: 5px;
