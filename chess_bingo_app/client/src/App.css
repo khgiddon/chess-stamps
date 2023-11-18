@@ -37,7 +37,6 @@ h1 {
 /* ChessOpeningsCollector.css */
 .smallText {
   font-size: 0.9rem;  /* Adjust this value as you see fit */
-  padding-left: 15px; /* Adjust this value as needed */
 
 }
 
@@ -50,9 +49,7 @@ h1 {
 }
 
 .summaryText {
-  font-size: 0.9rem;  /* Adjust this value as you see fit */
-  padding-left: 15px; /* Adjust this value as needed */
-
+  font-size: 1rem;  /* Adjust this value as you see fit */
 }
 
 .usernameContainer {
@@ -154,6 +151,45 @@ h1 {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+
+.intro-container {
+  margin: auto;
+  margin-bottom: 20px;
+  max-width: 60%;
+  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: navajowhite;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+}
+
+@media (max-width: 700px) {
+  .intro-container {
+    max-width: 80%;
+
+  }
+}
+
+.results-summary-container {
+  margin: auto;
+  margin-bottom: 0px;
+  max-width: 60%;
+  padding: 10px;
+  margin-bottom: 10px;  
+  background-color: #3A75C4;
+  color: white;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+}
+
+@media (max-width: 700px) {
+  .results-summary-container {
+    max-width: 80%;
+
+  }
+}
+
 
 
 
