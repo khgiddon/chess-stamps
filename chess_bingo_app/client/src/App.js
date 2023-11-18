@@ -36,14 +36,21 @@ function App() {
   return (
     <div>
       <BlockHeader />
-      <BlockIntro />
-      <BlockUsernameSubmit 
-        username={username}
-        setUsername={setUsername}
-        handleSubmit={handleSubmit}
-      />
-      {loading && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
-      {!loading && <ResultsSummary data={data} username={username} />}
+      <div className="intro-container">
+        <BlockIntro />
+        <BlockUsernameSubmit 
+          username={username}
+          setUsername={setUsername}
+          handleSubmit={handleSubmit}
+        />
+      </div>
+
+      {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
+      {!loading && (
+        <div className="results-summary-container">
+          <ResultsSummary data={data} username={username} />
+        </div>
+      )}
       {!loading && <DisplayTable data={data} />}
     </div>
   );

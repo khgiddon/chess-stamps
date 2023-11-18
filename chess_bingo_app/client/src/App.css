@@ -1,6 +1,9 @@
 /*
 https://coolors.co/3c3744-090c9b-3d52d5-b4c5e4-fbfff1
 These colors aren't bad for future
+
+
+Color of stmap image: #fefbea
 */
 
 .App {
@@ -9,7 +12,7 @@ These colors aren't bad for future
 }
 
 html, body {
-  background-color: rgb(241, 239, 239);
+  background-color: #EEF4ED;
   font-family: Arial, sans-serif;
 
   /* background-color: #2596be;  */
@@ -31,35 +34,9 @@ h1 {
 }
 
 
-table {
-  margin-top: 20px;
-  width: 80%;
-  margin-left: auto;
-  margin-right: auto;
-  border-collapse: collapse; /* Ensures borders touch each other */
-  background-color: whitesmoke;
-}
-
-/* Style for the table headers */
-table thead th {
-  background-color: #BB3139; /* Example color; adjust as you see fit */
-  color: white;
-  border-bottom: 1px solid lightgray; /* Adds a border at the bottom of the header cells */
-}
-
-/* Style for all table cells */
-table td, table th, table tr {
-  border: 1px solid lightgray;
-  border-radius: 5px  ;
-  padding: 8px; /* Adding padding to make it look nicer; adjust as needed */
-  font-size: 0.9rem;
-}
-
-
 /* ChessOpeningsCollector.css */
 .smallText {
   font-size: 0.9rem;  /* Adjust this value as you see fit */
-  padding-left: 15px; /* Adjust this value as needed */
 
 }
 
@@ -72,9 +49,7 @@ table td, table th, table tr {
 }
 
 .summaryText {
-  font-size: 0.9rem;  /* Adjust this value as you see fit */
-  padding-left: 15px; /* Adjust this value as needed */
-
+  font-size: 1rem;  /* Adjust this value as you see fit */
 }
 
 .usernameContainer {
@@ -86,9 +61,8 @@ table td, table th, table tr {
 .openingHighlight {
   font-weight: bold;
   color: purple;
+  font-size: 1.1rem;
 }
-
-
 
 .stampImageContainer {
   text-align: center;
@@ -97,9 +71,9 @@ table td, table th, table tr {
 }
 
 .stampImage {
-  width: 100px;
+  width: 220px;
   height: auto;
-  border: 1px solid darkslategray;
+  border: none;
 }
 
 .progress-wrapper {
@@ -176,4 +150,145 @@ table td, table th, table tr {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.intro-container {
+  margin: auto;
+  margin-bottom: 20px;
+  max-width: 60%;
+  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: navajowhite;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+}
+
+@media (max-width: 700px) {
+  .intro-container {
+    max-width: 80%;
+
+  }
+}
+
+.results-summary-container {
+  margin: auto;
+  margin-bottom: 0px;
+  max-width: 60%;
+  padding: 10px;
+  margin-bottom: 10px;  
+  background-color: #B4C5E4;
+  color: black;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+}
+
+@media (max-width: 700px) {
+  .results-summary-container {
+    max-width: 80%;
+
+  }
+}
+
+
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0px;
+  max-width: 70%;
+  margin: auto;  
+}
+
+@media (max-width: 700px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+    max-width: 90%;
+
+  }
+}
+
+.row {
+  display: grid;
+  grid-template-areas: 
+    "label label"
+    "chessboard text";
+  grid-template-columns: 1fr 3fr;
+  margin: 0px 5px; /* vertical margin 0px, horizontal margin 0 */
+  margin-bottom: 10px;
+  padding: 0px;
+  border: 1px solid #ccc; /* add this line */
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+}
+
+@media (max-width: 700px) {
+  .row {
+    grid-template-areas: 
+      "label"
+      "chessboard"
+      "text";
+    grid-template-columns: 1fr;
+    justify-items: center; /* centers the grid items horizontally */
+
+
+  }
+}
+
+.row-body {
+  display: flex;
+}
+
+.label-row {
+  grid-area: label;
+  font-family: 'M PLUS Rounded 1c', Arial, sans-serif;
+  font-size: 1em;
+  color: #333;
+  align-items: center;
+  justify-content: center;
+  background-color: #3A75C4;
+  color: white;
+  font-weight: bold;
+  margin: 0px;
+  padding: 0px;
+  text-transform: uppercase;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.label-description {
+  text-transform: lowercase;
+  font-size: 0.7em;
+  font-weight: bold;
+  font-family: Arial, sans-serif;
+  margin-bottom: 3px;
+  padding: 0px;
+
+}
+
+.chess-image {
+  grid-area: chessboard;
+  min-width: 200px;
+  max-width: 250px;
+  max-height: 250px;
+  padding: 5px;
+  box-sizing: border-box;
+  align-self: start; 
+}
+
+.text {
+  grid-area: text;
+  width: 90%;
+  padding: 10px;
+  color: #111;
+  align-self: start; 
+}
+
+.link {
+  text-decoration: none;
+  color: #000;
 }
