@@ -2,7 +2,6 @@
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO
 from flask_cors import CORS
-from flask_socketio import SocketIO
 import pandas as pd
 import numpy as np
 import requests
@@ -177,11 +176,20 @@ def send_data_to_frontend():
     # Top missing stamps
     """
 
-    most_popular_white = df.sort_values(by='ratio_white',ascending=False).head(1).iloc[0].to_dict()
-    most_popular_white_min10 = df.query('player_white_with_children >= 10').sort_values(by='ratio_white', ascending=False).head(1).iloc[0].to_dict()
+    # Most popular openings compared to average
+    most_popular_white = df.sort_values(by='ratio_white', ascending=False).head(1).to_dict('records')
+    most_popular_black = df.sort_values(by='ratio_black', ascending=False).head(1).to_dict('records')
 
-    most_popular_black = df.sort_values(by='ratio_black',ascending=False).head(1).iloc[0].to_dict()
-    most_popular_black_min10 = df.query('player_black_with_children >= 10').sort_values(by='ratio_black', ascending=False).head(1).iloc[0].to_dict()
+    # Initialize defaults for the case where no openings meet the criteria
+    default_most_popular = {'name': 'None', 'pgn': '', 'fen': '8/8/8/4k3/3K4/8/8/8 w - - 0 1', 'player_white_with_children': 0, 'player_black_with_children': 0, 'ratio_white': 0, 'ratio_black': 0}
+
+    # Least popular openings compared to average, but have played at least 10 games
+    df_most_popular_white_min10 = df.query('player_white_with_children >= 10').sort_values(by='ratio_white', ascending=False)
+    most_popular_white_min10 = df_most_popular_white_min10.head(1).to_dict('records') if not df_most_popular_white_min10.empty else [default_most_popular]
+
+    df_most_popular_black_min10 = df.query('player_black_with_children >= 10').sort_values(by='ratio_black', ascending=False)
+    most_popular_black_min10 = df_most_popular_black_min10.head(1).to_dict('records') if not df_most_popular_black_min10.empty else [default_most_popular]
+
 
     most_popular_missing_stamp =  df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(1).iloc[0].to_dict()
     most_obscure_stamp = df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0].to_dict()
@@ -203,10 +211,10 @@ def send_data_to_frontend():
         'unique_stamps': unique_stamps,
         'unique_stamps_all': unique_stamps_all,
         'loaded_username': username,
-        'most_popular_white': most_popular_white,
-        'most_popular_white_min10': most_popular_white_min10,
-        'most_popular_black': most_popular_black,
-        'most_popular_black_min10': most_popular_black_min10,
+        'most_popular_white': most_popular_white[0] if most_popular_white else default_most_popular,
+        'most_popular_white_min10': most_popular_white_min10[0],
+        'most_popular_black': most_popular_black[0] if most_popular_black else default_most_popular,
+        'most_popular_black_min10': most_popular_black_min10[0],
         'most_popular_missing_stamp': most_popular_missing_stamp,
         'most_obscure_stamp': most_obscure_stamp,
         'other_missing_stamps': other_missing_stamps
