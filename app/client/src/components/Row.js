@@ -27,4 +27,5 @@ const Row = ({ label, label_description, opening, fen, id, text, icon }) => {
   );
 };
 
-export default Row;
+const MemoizedRow = React.memo(Row);
+export default MemoizedRow;

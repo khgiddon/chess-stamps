@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import { fetchData } from './api/fetchData';
-import ChessImage from './components/ChessImage';
-
 
 // Components
 import BlockUsernameSubmit from './components/BlockUsernameSubmit';
