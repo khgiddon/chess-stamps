@@ -2,6 +2,8 @@
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO
 from flask_cors import CORS
+from flask_caching import Cache
+
 import pandas as pd
 import numpy as np
 import requests
@@ -10,9 +12,14 @@ import json
 from dotenv import load_dotenv
 
 app = Flask(__name__)
+app.debug = True
+
 socketio = SocketIO(app,cors_allowed_origins="*")
 CORS(app)  # This will allow the frontend to make requests to this server
 
+# Configure cache
+app.config['CACHE_TYPE'] = 'simple' # You can choose other types as well, like 'redis', 'memcached'
+cache = Cache(app)
 
 # Parse lichess games API response - data comes in newline-delimited JSON
 def response_parser(s):
@@ -62,6 +69,7 @@ def generate_base_statistics(df):
 
 
 # Get user data
+@cache.memoize(timeout=50)
 def get_user_data(username,defaultusername='khg002'):
 
     """
@@ -90,7 +98,7 @@ def get_user_data(username,defaultusername='khg002'):
         print(f'querying lichess api for {username}...')
 
         # Get user data
-        max = 15000
+        max = 150
 
         
 

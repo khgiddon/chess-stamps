@@ -1,9 +1,7 @@
 Transpositions are included in the player games, because it uses the assigned opening for that particular game, but not for overall games.
 
 TODO:
-- Two new categories:
-    Random opening you've never played (bounty)
-    White/black opening mismatch?
+
 - API error handling (e.g., less than 10 games)
 - Upgrade lichess API auth
 - Improve UI of entry form
@@ -13,10 +11,5 @@ TODO:
     Spinning loading piece
     Mouseover for FEN image?
 
-- lichess links use PGN instead of FEN for history
-
----
-
-Bootstrap
-and CSS grid
-
+- Button to reshuffle randomized openings
+- Requires implementing server-side caching after the initial request - Flask-Caching
