@@ -13,6 +13,7 @@ TODO:
     Spinning loading piece
     Mouseover for FEN image?
 
+- lichess links use PGN instead of FEN for history
 
 ---
 
