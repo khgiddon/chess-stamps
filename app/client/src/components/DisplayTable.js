@@ -90,8 +90,7 @@ const DisplayTable = ({ data }) => {
   fen={data.random_missing.fen}
   id={8}
   text={data.random_missing.name !== 'None' ?
-        `This is played ${percentageToOneInEveryX(data.random_missing.all_pct)} Lichess stamps, but you've played this not once.
-        ${data.random_missing.fen}`
+        `This is played ${percentageToOneInEveryX(data.random_missing.all_pct)} Lichess stamps, but you've played this not once.`
         : "Error."}
 />
 
