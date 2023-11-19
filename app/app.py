@@ -223,8 +223,8 @@ def send_data_to_frontend():
         'most_popular_missing_stamp': most_popular_missing_stamp,
         'most_obscure_stamp': most_obscure_stamp,
         'other_missing_stamps': other_missing_stamps,
-        'random_missing': random_missing,
-        'random_collected': random_collected
+        'random_collected': random_collected,
+        'random_missing': random_missing
     })
 
 if __name__ == '__main__':

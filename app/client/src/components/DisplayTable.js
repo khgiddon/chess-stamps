@@ -75,7 +75,7 @@ const DisplayTable = ({ data }) => {
   label="Random collected stamp"
   opening={data.random_collected.name}
   fen={data.random_collected.fen}
-  id={6}
+  id={7}
   text={data.random_collected.name !== 'None' ?
         `You've played this ${data.random_collected.player_total_with_children} times,
         or ${percentageToOneInEveryX(data.random_collected.player_pct_with_children)} stamps.
@@ -88,9 +88,10 @@ const DisplayTable = ({ data }) => {
   label="Random missing stamp"
   opening={data.random_missing.name}
   fen={data.random_missing.fen}
-  id={6}
+  id={8}
   text={data.random_missing.name !== 'None' ?
-        `This is played ${percentageToOneInEveryX(data.random_missing.all_pct)} Lichess stamps, but you've played this not once.`
+        `This is played ${percentageToOneInEveryX(data.random_missing.all_pct)} Lichess stamps, but you've played this not once.
+        ${data.random_missing.fen}`
         : "Error."}
 />
 
