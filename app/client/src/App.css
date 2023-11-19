@@ -6,15 +6,9 @@ These colors aren't bad for future
 Color of stmap image: #fefbea
 */
 
-.App {
-  text-align: center;
-  padding: 20px;
-}
-
 html, body {
   background-color: #EEF4ED;
   font-family: Arial, sans-serif;
-
   /* background-color: #2596be;  */
 
 }
@@ -71,7 +65,7 @@ h1 {
 }
 
 .stampImage {
-  width: 220px;
+  width: 180px;
   height: auto;
   border: none;
 }
