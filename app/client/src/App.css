@@ -56,6 +56,10 @@ h1 {
   font-weight: bold;
   color: purple;
   font-size: 1.1rem;
+  padding-bottom: 5px;
+  display: inline-block;
+  text-decoration: underline;
+
 }
 
 .stampImageContainer {
@@ -285,4 +289,13 @@ h1 {
 .link {
   text-decoration: none;
   color: #000;
+}
+
+.rarity {
+  font-size: 0.7em;
+  font-weight: bold;
+  text-transform: uppercase;
+  padding-bottom: 5px;
+
+
 }

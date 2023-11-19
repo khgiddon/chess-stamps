@@ -11,6 +11,15 @@ export function percentageToOneInEveryX(percentage) {
     const roundedOneInX = Math.round(oneInX).toLocaleString(); // Rounds to the nearest integer and adds thousands separators
     return `1 in every ${roundedOneInX}`;
   }
+
+  export function percentageToRarity(percentage) {
+    if (percentage === 0) {
+      return "∞";
+    }
+    const oneInX = 1 / percentage;
+    const roundedOneInX = Math.round(oneInX).toLocaleString(); // Rounds to the nearest integer and adds thousands separators
+    return `${roundedOneInX}`;
+  }
   
   // Custom rounding function for ratios
   export function customRoundForRatio(num) {

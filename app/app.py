@@ -90,7 +90,7 @@ def get_user_data(username,defaultusername='khg002'):
         print(f'querying lichess api for {username}...')
 
         # Get user data
-        max = 150
+        max = 15000
 
         
 
@@ -169,13 +169,6 @@ def send_data_to_frontend():
     unique_stamps = int(len(df.where(df['player_total'] > 0).dropna()))
     unique_stamps_all = int(len(df))    
 
-
-    """
-    # Most popular openings compared to average
-    # Least popular openings compared to average, but have played
-    # Top missing stamps
-    """
-
     # Most popular openings compared to average
     most_popular_white = df.sort_values(by='ratio_white', ascending=False).head(1).to_dict('records')
     most_popular_black = df.sort_values(by='ratio_black', ascending=False).head(1).to_dict('records')
@@ -196,13 +189,8 @@ def send_data_to_frontend():
     random_collected =  df[df['player_total_with_children'] > 0].sample(n=1).head(1).iloc[0].to_dict()
     random_missing =  df[df['player_total_with_children'] == 0].sample(n=1).head(1).iloc[0].to_dict()
 
-    print(most_obscure_stamp)
-    print(random_missing)
-
     other_missing_stamps = df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(4)['name'].tolist()[1:4]
         
-    #print('other_missing_stamps:',other_missing_stamps)
-
     # Specify columns and only return the columns that are needed to speed things up
     df = df[['name','pgn','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children']]
 
