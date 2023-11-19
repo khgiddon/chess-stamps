@@ -22,7 +22,7 @@ function App() {
     setLoading(true); // Set loading to true when the fetch starts
     fetchData(username, setData, setProgress, setGamesExpected)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
-  }, [setData, setProgress, setGamesExpected]); // Include setData and setProgress in the dependency array
+  }, []);
 
   // Fetch data when the component is first mounted using the default username
   useEffect(() => {
