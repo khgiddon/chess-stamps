@@ -69,7 +69,7 @@ def generate_base_statistics(df):
 
 
 # Get user data
-@cache.memoize(timeout=50)
+@cache.memoize(timeout=500, key_prefix='get_user_data')
 def get_user_data(username,defaultusername='khg002'):
 
     """
