@@ -23,7 +23,7 @@ const handleProgress = (progressData) => {
         const data = await response.json();
         setData(data);
         console.log(data);
-        console.log(data.most_obscure_stamp);
+        console.log(data.random_collected);
   } catch (error) {
         console.error("Error fetching data:", error);
         // TODO: Handle errors

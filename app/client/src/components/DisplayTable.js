@@ -1,7 +1,6 @@
 import React from 'react';
-import MemoizedRow from './Row';
 import { percentageToOneInEveryX, customRoundForRatio, formatPercentage, listToCleanList } from '../utilityFunctions';
-
+import Row from './Row';
 
 const DisplayTable = ({ data }) => {
 
@@ -11,7 +10,7 @@ const DisplayTable = ({ data }) => {
   return (
     <div className="grid-container">
 
-      <MemoizedRow
+      <Row
         label="Missing stamp"
         opening={data.most_popular_missing_stamp.name}
         fen={data.most_popular_missing_stamp.fen}
@@ -24,14 +23,14 @@ const DisplayTable = ({ data }) => {
         </>
         }
       />
-      <MemoizedRow
+      <Row
         label="Rarest stamp"
         opening={data.most_obscure_stamp.name}
         fen={data.most_obscure_stamp.fen}
         id={2}
         text={`You've played this ${data.most_obscure_stamp.player_total_with_children} times. This is only ${percentageToOneInEveryX(data.most_obscure_stamp.all_pct)} Lichess stamps! What a find!`}
       />
-      <MemoizedRow
+      <Row
         label="Secret weapon: white"
         label_description="(most played relative to population)"
         opening={data.most_popular_white.name}
@@ -39,7 +38,7 @@ const DisplayTable = ({ data }) => {
         id={3}
         text={`You've played this ${data.most_popular_white.player_white_with_children} times, or ${percentageToOneInEveryX(data.most_popular_white.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_white.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(data.most_popular_white.player_pct_with_children/data.most_popular_white.all_pct)}x as frequently as frequently as the population.`}
       />
-      <MemoizedRow
+      <Row
         label="Secret weapon: black"
         label_description="(most played relative to population)"
         opening={data.most_popular_black.name}
@@ -47,7 +46,7 @@ const DisplayTable = ({ data }) => {
         id={4}
         text={`You've played this ${data.most_popular_black.player_black_with_children} times, or ${percentageToOneInEveryX(data.most_popular_black.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_black.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(data.most_popular_black.player_pct_with_children/data.most_popular_black.all_pct)}x as frequently as frequently as the population.`}
       />
-<MemoizedRow
+      <Row
   label="Repertoire: white"
   label_description="(most played relative to population, min. 10 games)"
   opening={data.most_popular_white_min10.name}
@@ -59,7 +58,7 @@ const DisplayTable = ({ data }) => {
         That means you play it ${customRoundForRatio(data.most_popular_white_min10.player_pct_with_children/data.most_popular_white_min10.all_pct)}x as frequently as the population.`
         : "You haven't played any opening as white ten times."}
 />
-<MemoizedRow
+<Row
   label="Repertoire: black"
   label_description="(most played relative to population, min. 10 games)"
   opening={data.most_popular_black_min10.name}
@@ -71,7 +70,7 @@ const DisplayTable = ({ data }) => {
         That means you play it ${customRoundForRatio(data.most_popular_black_min10.player_pct_with_children/data.most_popular_black_min10.all_pct)}x as frequently as the population.`
         : "You haven't played any opening as black ten times."}
 />
-<MemoizedRow
+<Row
   label="Random collected stamp"
   opening={data.random_collected.name}
   fen={data.random_collected.fen}
@@ -84,7 +83,7 @@ const DisplayTable = ({ data }) => {
         `
         : "Error."}
 />
-<MemoizedRow
+<Row
   label="Random missing stamp"
   opening={data.random_missing.name}
   fen={data.random_missing.fen}
