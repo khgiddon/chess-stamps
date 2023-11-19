@@ -71,6 +71,28 @@ const DisplayTable = ({ data }) => {
         That means you play it ${customRoundForRatio(data.most_popular_black_min10.player_pct_with_children/data.most_popular_black_min10.all_pct)}x as frequently as the population.`
         : "You haven't played any opening as black ten times."}
 />
+<MemoizedRow
+  label="Random collected stamp"
+  opening={data.random_collected.name}
+  fen={data.random_collected.fen}
+  id={6}
+  text={data.random_collected.name !== 'None' ?
+        `You've played this ${data.random_collected.player_total_with_children} times,
+        or ${percentageToOneInEveryX(data.random_collected.player_pct_with_children)} stamps.
+        This is played ${percentageToOneInEveryX(data.random_collected.all_pct)} Lichess stamps.
+        You play it ${customRoundForRatio(data.random_collected.player_pct_with_children/data.random_collected.all_pct)}x as frequently as frequently as the population.
+        `
+        : "Error."}
+/>
+<MemoizedRow
+  label="Random missing stamp"
+  opening={data.random_missing.name}
+  fen={data.random_missing.fen}
+  id={6}
+  text={data.random_missing.name !== 'None' ?
+        `This is played ${percentageToOneInEveryX(data.random_missing.all_pct)} Lichess stamps, but you've played this not once.`
+        : "Error."}
+/>
 
     </div>
   );
