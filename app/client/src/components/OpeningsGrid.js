@@ -2,7 +2,7 @@ import React from 'react';
 
 const OpeningsGrid = ({ allopenings }) => {
     return (
-      <div className="all-openings-grid-container">
+      <div id="openingsGrid" className="all-openings-grid-container">
         {allopenings.map((opening, index) => (
           <div 
             key={index} 

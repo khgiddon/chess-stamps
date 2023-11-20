@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './App.css';
 import { fetchData } from './api/fetchData';
 import { fetchAllOpenings } from './api/fetchAllOpenings';
@@ -23,6 +23,8 @@ function App() {
   const [gamesexpected, setGamesExpected] = useState(0);
   const [loading, setLoading] = useState(false); // Added loading state
   const [hasallopenings, setHasAllOpenings] = useState(false);
+  const openingsGridRef = useRef(null);
+
 
   const handleFetchData = useCallback((username = 'khg002') => {
     setLoading(true); // Set loading to true when the fetch starts
@@ -39,6 +41,13 @@ function App() {
   useEffect(() => {
     handleFetchData();
   }, [handleFetchData]);
+
+  // Scroll to the openings grid when the openings are loaded
+  useEffect(() => {
+    if (hasallopenings) {
+      document.getElementById('openingsGrid').scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [hasallopenings]);
 
   const handleSubmit = (newUsername) => {
     handleFetchData(newUsername);
@@ -65,7 +74,7 @@ function App() {
       )}
       {!loading && <DisplayTable data={data} />}
       <LowerButtons handleFetchAllOpenings={handleFetchAllOpenings} />
-      {hasallopenings && <OpeningsGrid allopenings={allopenings} />}
+      {hasallopenings && <OpeningsGrid allopenings={allopenings}/>}
     </div>
   );
 }
