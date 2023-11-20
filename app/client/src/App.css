@@ -308,6 +308,9 @@ h1 {
 }
 
 .all-openings-grid-item {
+  display: flex;
+  align-items: center; /* Vertically align items in the center */
+  justify-content: center; /* Horizontally align items in the center */
   margin: 0px 5px; /* vertical margin 0px, horizontal margin 0 */
   margin-bottom: 10px;
   padding: 0px;

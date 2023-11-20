@@ -23,19 +23,24 @@ function App() {
   const [gamesexpected, setGamesExpected] = useState(0);
   const [loading, setLoading] = useState(false); // Added loading state
   const [hasallopenings, setHasAllOpenings] = useState(false);
-  const openingsGridRef = useRef(null);
 
 
   const handleFetchData = useCallback((username = 'khg002') => {
     setLoading(true); // Set loading to true when the fetch starts
+    setHasAllOpenings(false);
     fetchData(username, setData, setProgress, setGamesExpected)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
 
-  const handleFetchAllOpenings = async () => {
+// Inside App component
+const handleFetchAllOpenings = async () => {
+  if (hasallopenings) {
+    setHasAllOpenings(false);
+  } else {
     await fetchAllOpenings(username, setAllOpenings);
     setHasAllOpenings(true);
-  };
+  }
+};
 
   // Fetch data when the component is first mounted using the default username
   useEffect(() => {
@@ -73,7 +78,9 @@ function App() {
         </div>
       )}
       {!loading && <DisplayTable data={data} />}
-      <LowerButtons handleFetchAllOpenings={handleFetchAllOpenings} />
+      {!loading && <LowerButtons 
+      handleFetchAllOpenings={handleFetchAllOpenings} hasAllOpenings={hasallopenings}
+      />}
       {hasallopenings && <OpeningsGrid allopenings={allopenings}/>}
     </div>
   );
