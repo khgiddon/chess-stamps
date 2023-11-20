@@ -9,6 +9,7 @@ import ProgressBar from './components/ProgressBar';
 import ResultsSummary from './components/ResultsSummary';
 import DisplayTable from './components/DisplayTable';
 import BlockIntro from './components/BlockIntro';
+import LowerButtons from './components/LowerButtons';
 
 function App() {
   const [openings, setOpenings] = useState([]);
@@ -52,6 +53,13 @@ function App() {
         </div>
       )}
       {!loading && <DisplayTable data={data} />}
+      {!loading && <LowerButtons 
+          username={username}
+          setUsername={setUsername}
+          handleSubmit={handleSubmit}
+        />
+        }
+
     </div>
   );
 }

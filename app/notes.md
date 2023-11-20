@@ -1,3 +1,7 @@
+export FLASK_ENV=development
+
+
+
 Transpositions are included in the player games, because it uses the assigned opening for that particular game, but not for overall games.
 
 TODO:
