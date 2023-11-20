@@ -13,3 +13,6 @@ TODO:
 
 - Handle missing cache for "Show all openings"
 - Smooth scroll back up after clicking "Hide all openings"
+
+- Filter by ply, played openings, unplayed openings
+- Add "deepest variation" to summary

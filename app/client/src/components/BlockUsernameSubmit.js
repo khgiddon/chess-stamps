@@ -1,51 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
-
-const Container = styled.div`
-  margin: 1em;
-  padding: 1em;
-  border: 1px solid #ccc;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Align items horizontally center */
-  justify-content: center; /* Center vertically if there's extra space */
-`;
-
-const InputContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 1em;
-`;
-
-const StyledLabel = styled.label`
-  margin-right: 0.5em;
-`;
-
-const StyledInput = styled.input`
-  flex-grow: 1; /* Allow input to grow */
-  padding: 0.5em;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  font-size: 1em;
-
-`;
-
-const StyledButton = styled.button`
-  padding: 0.5em 1em;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 1.05em;
-
-  cursor: pointer;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
 const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   const [inputValue, setInputValue] = useState(username);
 
@@ -59,19 +16,39 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   };
 
   return (
-    <Container>
-      <InputContainer>
-        <StyledLabel>Enter your Lichess username:</StyledLabel>
-        <StyledInput
+    <Box 
+      sx={{
+        margin: '1em',
+        padding: '1em',
+        border: '1px solid #ccc',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Box 
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: '1em',
+        }}
+      >
+        <label style={{ marginRight: '0.5em' }}>Enter your Lichess username:</label>
+        <TextField
           type="text"
           placeholder="Username"
           value={inputValue}
           onChange={handleChange}
+          id="outlined-basic"
           required
+          fullWidth
         />
-      </InputContainer>
-      <StyledButton onClick={handleButtonClick}>Analyze</StyledButton>
-    </Container>
+      </Box>
+      <Button variant="contained" color="primary" onClick={handleButtonClick}>
+        Analyze
+      </Button>
+    </Box>
   );
 };
 

@@ -97,7 +97,7 @@ def get_user_data(username,defaultusername='khg002'):
         print(f'querying lichess api for {username}...')
 
         # Get user data
-        max = 15000
+        max = 300
 
         
 
