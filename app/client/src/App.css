@@ -301,13 +301,29 @@ h1 {
 
 .all-openings-grid-container {
   display: grid;
-  grid-template-columns: 1fr 1fr; /* Two equal columns */
-  gap: 10px; /* Space between grid items */
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0px;
+  max-width: 70%;
+  margin: auto;
 }
 
 .all-openings-grid-item {
-  border: 1px solid #ccc; /* Basic border for all items */
-  padding: 10px; /* Padding inside each grid item */
+  margin: 0px 5px; /* vertical margin 0px, horizontal margin 0 */
+  margin-bottom: 10px;
+  padding: 0px;
+  border: 1px solid #ccc; /* add this line */
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-size: 0.9em;
+}
+
+@media (max-width: 700px) {
+  .all-openings-grid-container {
+    grid-template-columns: 1fr;
+    max-width: 90%;
+  }
 }
 
 .colorful {
