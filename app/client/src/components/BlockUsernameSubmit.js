@@ -7,16 +7,21 @@ const Container = styled.div`
   padding: 1em;
   border: 1px solid #ccc;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column; /* Changed to column layout */
+  align-items: flex-start; /* Align items to the start */
+`;
+
+const StyledLabel = styled.label`
+  margin-bottom: 0.5em; /* Spacing between label and input */
 `;
 
 const StyledInput = styled.input`
   flex: 1;
-  margin-right: 1em;
+  margin-bottom: 1em; /* Spacing between input and button */
   padding: 0.5em;
   border-radius: 4px;
   border: 1px solid #ccc;
+  width: 100%; /* Ensure input takes full width */
 `;
 
 const StyledButton = styled.button`
@@ -46,6 +51,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
 
   return (
     <Container>
+      <StyledLabel>Enter your Lichess username:</StyledLabel>
       <StyledInput
         type="text"
         placeholder="Enter your lichess username"

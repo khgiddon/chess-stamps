@@ -3,6 +3,8 @@ import './App.css';
 import { fetchData } from './api/fetchData';
 
 // Components
+import TopNav from './components/TopNav';
+
 import BlockUsernameSubmit from './components/BlockUsernameSubmit';
 import BlockHeader from './components/BlockHeader';
 import ProgressBar from './components/ProgressBar';
@@ -36,6 +38,7 @@ function App() {
 
   return (
     <div>
+      <TopNav />
       <BlockHeader />
       <div className="intro-container">
         <BlockIntro />
