@@ -1,4 +1,3 @@
-export FLASK_ENV=development
 export FLASK_DEBUG=1
 
 
@@ -12,9 +11,5 @@ TODO:
 - Improve UI of entry form
     Own line for button
 
-- "See all data" with full openings data
-    Spinning loading piece
-    Mouseover for FEN image?
-
-- Button to reshuffle randomized openings
-- Requires implementing server-side caching after the initial request - Flask-Caching
+- Handle missing cache for "Show all openings"
+- Smooth scroll back up after clicking "Hide all openings"
