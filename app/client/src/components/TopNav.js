@@ -1,49 +1,35 @@
-// TopNav.js
-import React from 'react';
-import styled from 'styled-components';
+import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 
-
-const Nav = styled.nav`
-  background-color: darkgray;
-  color: white;
-  overflow: hidden;
-`;
-
-const Ul = styled.ul`
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  justify-content: space-around;
-`;
-
-const Li = styled.li`
-  float: left;
-`;
-
-const NavLink = styled.a`
-  display: block;
-  color: white;
-  text-align: center;
-  padding: 2px 16px;
-  text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-    text-decoration-color: red; /* Underline in red on hover */
-  }
-`;
-
-function TopNav() {
+const TopNav = () => {
   return (
-    <Nav>
-      <Ul>
-        <Li><NavLink href="/">Home</NavLink></Li>
-        <Li><NavLink href="/faq">FAQ</NavLink></Li>
-        <Li><NavLink href="/about">About</NavLink></Li>
-      </Ul>
-    </Nav>
+    <AppBar position="static" color="primary">
+      <Toolbar variant='dense' sx={{ 
+          minHeight: '30px', // Adjust height as needed
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-around', 
+          height: '100%',
+          padding: '0 8px', // Reduced padding, adjust values as needed
+        }}
+      >
+      <Button href="/" color="inherit" variant="text" sx={{ textTransform: 'none' }}>
+        <Typography variant="caption" sx={{ fontSize: '0.9rem' }}>
+          Home
+        </Typography>
+      </Button>
+      <Button href="/faq" color="inherit" variant="text" sx={{ textTransform: 'none' }}>
+        <Typography variant="caption" sx={{ fontSize: '0.9rem' }}>
+          FAQ
+        </Typography>
+      </Button>
+      <Button href="/about" color="inherit" variant="text" sx={{ textTransform: 'none' }}>
+        <Typography variant="caption" sx={{ fontSize: '0.9rem' }}>
+          About
+        </Typography>
+      </Button>
+      </Toolbar>
+    </AppBar>
   );
-}
+};
 
 export default TopNav;
