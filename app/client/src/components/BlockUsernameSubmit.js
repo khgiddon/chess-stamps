@@ -27,6 +27,8 @@ const StyledInput = styled.input`
   padding: 0.5em;
   border-radius: 4px;
   border: 1px solid #ccc;
+  font-size: 1em;
+
 `;
 
 const StyledButton = styled.button`
@@ -35,6 +37,8 @@ const StyledButton = styled.button`
   color: white;
   border: none;
   border-radius: 4px;
+  font-size: 1.05em;
+
   cursor: pointer;
 
   &:hover {
@@ -60,7 +64,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
         <StyledLabel>Enter your Lichess username:</StyledLabel>
         <StyledInput
           type="text"
-          placeholder="Enter your lichess username"
+          placeholder="Username"
           value={inputValue}
           onChange={handleChange}
           required

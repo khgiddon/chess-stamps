@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import './App.css';
 import { fetchData } from './api/fetchData';
+import { fetchAllOpenings } from './api/fetchAllOpenings';
+
 
 // Components
 import TopNav from './components/TopNav';
-
 import BlockUsernameSubmit from './components/BlockUsernameSubmit';
 import BlockHeader from './components/BlockHeader';
 import ProgressBar from './components/ProgressBar';
@@ -14,12 +15,13 @@ import BlockIntro from './components/BlockIntro';
 import LowerButtons from './components/LowerButtons';
 
 function App() {
-  const [openings, setOpenings] = useState([]);
+  const [allopenings, setAllOpenings] = useState([]);
   const [username, setUsername] = useState('khg002');
   const [data, setData] = useState([]);
   const [progress, setProgress] = useState(0);
   const [gamesexpected, setGamesExpected] = useState(0);
   const [loading, setLoading] = useState(false); // Added loading state
+  const [hasallopenings, setHasAllOpenings] = useState(false);
 
   const handleFetchData = useCallback((username = 'khg002') => {
     setLoading(true); // Set loading to true when the fetch starts
@@ -56,12 +58,7 @@ function App() {
         </div>
       )}
       {!loading && <DisplayTable data={data} />}
-      {!loading && <LowerButtons 
-          username={username}
-          setUsername={setUsername}
-          handleSubmit={handleSubmit}
-        />
-        }
+      <LowerButtons fetchAllOpenings={fetchAllOpenings} setAllOpenings={setAllOpenings} username={username} />
 
     </div>
   );

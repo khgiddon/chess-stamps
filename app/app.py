@@ -69,7 +69,7 @@ def generate_base_statistics(df):
 
 
 # Get user data
-@cache.memoize(timeout=500, key_prefix='get_user_data')
+@cache.memoize(timeout=500)
 def get_user_data(username,defaultusername='khg002'):
 
     """
@@ -222,6 +222,26 @@ def send_data_to_frontend():
         'random_collected': random_collected,
         'random_missing': random_missing
     })
+
+@app.route('/all_openings', methods=['GET'])
+def send_all_openings_data_to_frontend():
+
+    print('fetching ALL openings')
+    print('running get_data()')
+
+    # Core data pull
+    username = request.args.get('username')
+    df = get_user_data(username)
+
+    df = df[['name','pgn','fen','player_total_with_children']]
+    print('returning json')
+
+    # For now, we'll just return the dataframe data as JSON
+    return jsonify({
+        'openings': df.to_dict(orient='records')
+
+    })
+
 
 if __name__ == '__main__':
     app.run(debug=True)
