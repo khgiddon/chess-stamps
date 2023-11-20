@@ -1,8 +1,7 @@
 // TopNav.js
 import React from 'react';
 import styled from 'styled-components';
-// Uncomment the next line if you're using React Router
-// import { Link } from 'react-router-dom';
+
 
 const Nav = styled.nav`
   background-color: darkgray;
@@ -26,12 +25,12 @@ const NavLink = styled.a`
   display: block;
   color: white;
   text-align: center;
-  padding: 4px 14px;
+  padding: 2px 16px;
   text-decoration: none;
 
   &:hover {
-    background-color: #ddd;
-    color: black;
+    text-decoration: underline;
+    text-decoration-color: red; /* Underline in red on hover */
   }
 `;
 
@@ -40,8 +39,8 @@ function TopNav() {
     <Nav>
       <Ul>
         <Li><NavLink href="/">Home</NavLink></Li>
+        <Li><NavLink href="/faq">FAQ</NavLink></Li>
         <Li><NavLink href="/about">About</NavLink></Li>
-        <Li><NavLink href="/contact">Contact</NavLink></Li>
       </Ul>
     </Nav>
   );
