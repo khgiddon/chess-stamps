@@ -32,7 +32,6 @@ const StyledButton = styled.button`
 const LowerButtons = ({ handleFetchAllOpenings, hasAllOpenings }) => (
     <div>
       <Container>
-        <StyledButton>Reshuffle random stamps</StyledButton>
         <StyledButton onClick={handleFetchAllOpenings}>
           {hasAllOpenings ? 'Hide all openings' : 'Load all openings'}
         </StyledButton>
