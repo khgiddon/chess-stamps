@@ -13,6 +13,7 @@ import ResultsSummary from './components/ResultsSummary';
 import DisplayTable from './components/DisplayTable';
 import BlockIntro from './components/BlockIntro';
 import LowerButtons from './components/LowerButtons';
+import OpeningsGrid from './components/OpeningsGrid';
 
 function App() {
   const [allopenings, setAllOpenings] = useState([]);
@@ -28,6 +29,11 @@ function App() {
     fetchData(username, setData, setProgress, setGamesExpected)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
+
+  const handleFetchAllOpenings = async () => {
+    await fetchAllOpenings(username, setAllOpenings);
+    setHasAllOpenings(true);
+  };
 
   // Fetch data when the component is first mounted using the default username
   useEffect(() => {
@@ -58,8 +64,8 @@ function App() {
         </div>
       )}
       {!loading && <DisplayTable data={data} />}
-      <LowerButtons fetchAllOpenings={fetchAllOpenings} setAllOpenings={setAllOpenings} username={username} />
-
+      <LowerButtons handleFetchAllOpenings={handleFetchAllOpenings} />
+      {hasallopenings && <OpeningsGrid allopenings={allopenings} />}
     </div>
   );
 }

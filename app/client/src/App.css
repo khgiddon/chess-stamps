@@ -296,6 +296,20 @@ h1 {
   font-weight: bold;
   text-transform: uppercase;
   padding-bottom: 5px;
+}
 
 
+.all-openings-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 10px; /* Space between grid items */
+}
+
+.all-openings-grid-item {
+  border: 1px solid #ccc; /* Basic border for all items */
+  padding: 10px; /* Padding inside each grid item */
+}
+
+.colorful {
+  background-color: #90ee90; /* Light green background for items with player_total > 0 */
 }

@@ -12,7 +12,6 @@ import json
 from dotenv import load_dotenv
 
 app = Flask(__name__)
-app.debug = True
 
 socketio = SocketIO(app,cors_allowed_origins="*")
 CORS(app)  # This will allow the frontend to make requests to this server
@@ -158,7 +157,7 @@ def get_user_data(username,defaultusername='khg002'):
 
 @app.route('/')
 def hello_world():
-    return 'Hello, Worlds!'
+    return 'Hello, Worlds2!'
 
 @app.route('/openings', methods=['GET'])
 def send_data_to_frontend():
@@ -235,12 +234,12 @@ def send_all_openings_data_to_frontend():
 
     df = df[['name','pgn','fen','player_total_with_children']]
     print('returning json')
+    #print(df.to_dict(orient='records'))
 
     # For now, we'll just return the dataframe data as JSON
-    return jsonify({
-        'openings': df.to_dict(orient='records')
-
-    })
+    return jsonify(
+        df.to_dict(orient='records')
+    )
 
 
 if __name__ == '__main__':
