@@ -12,7 +12,6 @@ import json
 from dotenv import load_dotenv
 
 app = Flask(__name__)
-app.debug = True
 
 socketio = SocketIO(app,cors_allowed_origins="*")
 CORS(app)  # This will allow the frontend to make requests to this server
@@ -69,7 +68,7 @@ def generate_base_statistics(df):
 
 
 # Get user data
-@cache.memoize(timeout=500, key_prefix='get_user_data')
+@cache.memoize(timeout=1000)
 def get_user_data(username,defaultusername='khg002'):
 
     """
@@ -98,7 +97,7 @@ def get_user_data(username,defaultusername='khg002'):
         print(f'querying lichess api for {username}...')
 
         # Get user data
-        max = 150
+        max = 15000
 
         
 
@@ -158,7 +157,7 @@ def get_user_data(username,defaultusername='khg002'):
 
 @app.route('/')
 def hello_world():
-    return 'Hello, Worlds!'
+    return 'Hello, Worlds2!'
 
 @app.route('/openings', methods=['GET'])
 def send_data_to_frontend():
@@ -222,6 +221,26 @@ def send_data_to_frontend():
         'random_collected': random_collected,
         'random_missing': random_missing
     })
+
+@app.route('/all_openings', methods=['GET'])
+def send_all_openings_data_to_frontend():
+
+    print('fetching ALL openings')
+    print('running get_data()')
+
+    # Core data pull
+    username = request.args.get('username')
+    df = get_user_data(username)
+
+    df = df[['name','pgn','fen','player_total_with_children']]
+    print('returning json')
+    #print(df.to_dict(orient='records'))
+
+    # For now, we'll just return the dataframe data as JSON
+    return jsonify(
+        df.to_dict(orient='records')
+    )
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -7,16 +7,28 @@ const Container = styled.div`
   padding: 1em;
   border: 1px solid #ccc;
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  align-items: center; /* Align items horizontally center */
+  justify-content: center; /* Center vertically if there's extra space */
+`;
+
+const InputContainer = styled.div`
+  display: flex;
   align-items: center;
+  margin-bottom: 1em;
+`;
+
+const StyledLabel = styled.label`
+  margin-right: 0.5em;
 `;
 
 const StyledInput = styled.input`
-  flex: 1;
-  margin-right: 1em;
+  flex-grow: 1; /* Allow input to grow */
   padding: 0.5em;
   border-radius: 4px;
   border: 1px solid #ccc;
+  font-size: 1em;
+
 `;
 
 const StyledButton = styled.button`
@@ -25,6 +37,8 @@ const StyledButton = styled.button`
   color: white;
   border: none;
   border-radius: 4px;
+  font-size: 1.05em;
+
   cursor: pointer;
 
   &:hover {
@@ -46,13 +60,16 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
 
   return (
     <Container>
-      <StyledInput
-        type="text"
-        placeholder="Enter your lichess username"
-        value={inputValue}
-        onChange={handleChange}
-        required
-      />
+      <InputContainer>
+        <StyledLabel>Enter your Lichess username:</StyledLabel>
+        <StyledInput
+          type="text"
+          placeholder="Username"
+          value={inputValue}
+          onChange={handleChange}
+          required
+        />
+      </InputContainer>
       <StyledButton onClick={handleButtonClick}>Analyze</StyledButton>
     </Container>
   );

@@ -152,7 +152,7 @@ h1 {
 
 .intro-container {
   margin: auto;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
   max-width: 60%;
   padding: 10px;
   padding-top: 10px;
@@ -174,7 +174,7 @@ h1 {
   margin-bottom: 0px;
   max-width: 60%;
   padding: 10px;
-  margin-bottom: 10px;  
+  margin-bottom: 14px;  
   background-color: #B4C5E4;
   color: black;
   border-radius: 5px;
@@ -296,6 +296,39 @@ h1 {
   font-weight: bold;
   text-transform: uppercase;
   padding-bottom: 5px;
+}
 
 
+.all-openings-grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 0px;
+  max-width: 70%;
+  margin: auto;
+}
+
+.all-openings-grid-item {
+  display: flex;
+  align-items: center; /* Vertically align items in the center */
+  justify-content: center; /* Horizontally align items in the center */
+  margin: 0px 5px; /* vertical margin 0px, horizontal margin 0 */
+  margin-bottom: 10px;
+  padding: 0px;
+  border: 1px solid #ccc; /* add this line */
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-size: 0.9em;
+}
+
+@media (max-width: 700px) {
+  .all-openings-grid-container {
+    grid-template-columns: 1fr;
+    max-width: 90%;
+  }
+}
+
+.colorful {
+  background-color: #90ee90; /* Light green background for items with player_total > 0 */
 }

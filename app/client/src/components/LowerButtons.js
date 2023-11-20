@@ -27,13 +27,17 @@ const StyledButton = styled.button`
   }
 `;
 
-const LowerButtons = () => (
-  <div>
-    <Container>
-      <StyledButton>Reshuffle random stamps</StyledButton>
-      <StyledButton>Load all openings</StyledButton>
-    </Container>
-  </div>
-);
+
+// LowerButtons.js
+const LowerButtons = ({ handleFetchAllOpenings, hasAllOpenings }) => (
+    <div>
+      <Container>
+        <StyledButton>Reshuffle random stamps</StyledButton>
+        <StyledButton onClick={handleFetchAllOpenings}>
+          {hasAllOpenings ? 'Hide all openings' : 'Load all openings'}
+        </StyledButton>
+      </Container>
+    </div>
+  );
 
 export default LowerButtons;
