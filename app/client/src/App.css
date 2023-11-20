@@ -346,3 +346,10 @@ h1 {
 .colorful {
   background-color: #90ee90; /* Light green background for items with player_total > 0 */
 }
+
+#chessImageContainer {
+  position: fixed;
+  width: 200px; /* Adjust as needed */
+  height: 200px; /* Adjust as needed */
+  z-index: 1;
+}
