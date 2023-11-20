@@ -352,4 +352,6 @@ h1 {
   width: 200px; /* Adjust as needed */
   height: 200px; /* Adjust as needed */
   z-index: 1;
+  pointer-events: none; /* This will prevent the div from blocking mouse events */
+  border: 1px solid gray; /* This will add a gray border */
 }
