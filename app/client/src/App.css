@@ -320,7 +320,21 @@ h1 {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
   font-size: 0.9em;
+  color: black;
 }
+
+.all-openings-grid-item a {
+  color: inherit; /* This will make the link have the same color as the text in .all-openings-grid-item */
+  text-decoration: none; /* This will remove the underline from the link */
+}
+
+.all-openings-grid-item a:hover,
+.all-openings-grid-item a:active,
+.all-openings-grid-item a:focus {
+  color: inherit; /* This will make the link have the same color when hovered, clicked or focused */
+  text-decoration: underline; /* This will remove the underline from the link */
+}
+
 
 @media (max-width: 700px) {
   .all-openings-grid-container {

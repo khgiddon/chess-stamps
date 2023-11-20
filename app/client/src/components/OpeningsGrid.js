@@ -8,7 +8,9 @@ const OpeningsGrid = ({ allopenings }) => {
             key={index} 
             className={`all-openings-grid-item ${opening.player_total_with_children > 0 ? 'colorful' : ''}`}
           >
-            {opening.name}
+            <a href={`https://lichess.org/analysis/pgn/${[opening.pgn]}`}>
+              {opening.name}
+            </a>
           </div>
         ))}
       </div>
