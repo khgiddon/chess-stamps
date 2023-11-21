@@ -11,8 +11,7 @@ TODO:
 - Improve UI of entry form
     Own line for button
 
-- Handle missing cache for "Show all openings"
+- Load "all openings" at same time as main data
 - Smooth scroll back up after clicking "Hide all openings"
 
 - Filter by ply, played openings, unplayed openings
-- Add "deepest variation" to summary

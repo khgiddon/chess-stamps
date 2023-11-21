@@ -111,7 +111,8 @@ const DisplayTable = ({ data }) => {
         rarity={percentageToRarity(data.deepest_ply.all_pct)}
         id={8}
         text={data.deepest_ply.name !== 'None' ?
-              `You've played this ${data.deepest_ply.player_total_with_children} times,
+              `This opening is ${data.deepest_ply.ply} half-moves deep!
+              You've played this ${data.deepest_ply.player_total_with_children} times,
               or ${percentageToOneInEveryX(data.deepest_ply.player_pct_with_children)} stamps.
               That means you play it ${customRoundForRatio(data.deepest_ply.player_pct_with_children/data.deepest_ply.all_pct)}x as frequently as the population.`
               : "You haven't played any opening as black ten times."}

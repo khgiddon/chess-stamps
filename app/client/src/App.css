@@ -75,7 +75,7 @@ h1 {
 }
 
 .progress-wrapper {
-  width: 80%;
+  width: 70%;
   margin: 0 auto; /* Centers the wrapper */
   display: flex;
   flex-direction: column;  
