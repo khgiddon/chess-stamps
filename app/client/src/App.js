@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './App.css';
 import { fetchData } from './api/fetchData';
-import { fetchAllOpenings } from './api/fetchAllOpenings';
 
 
 // Components
@@ -32,15 +31,13 @@ function App() {
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
 
-// Inside App component
-const handleFetchAllOpenings = async () => {
-  if (hasallopenings) {
-    setHasAllOpenings(false);
-  } else {
-    await fetchAllOpenings(username, setAllOpenings);
-    setHasAllOpenings(true);
-  }
-};
+  const handleAllOpeningsButtonClick = async () => {
+    if (hasallopenings) {
+      setHasAllOpenings(false);
+    } else {
+      setHasAllOpenings(true);
+    }
+  };
 
   // Fetch data when the component is first mounted using the default username
   useEffect(() => {
@@ -79,9 +76,9 @@ const handleFetchAllOpenings = async () => {
       )}
       {!loading && <DisplayTable data={data} />}
       {!loading && <LowerButtons 
-      handleFetchAllOpenings={handleFetchAllOpenings} hasAllOpenings={hasallopenings}
+      handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
       />}
-      {hasallopenings && <OpeningsGrid allopenings={allopenings}/>}
+      {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
     </div>
   );
 }
