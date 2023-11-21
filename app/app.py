@@ -62,13 +62,14 @@ def generate_base_statistics(df):
     df['ratio_white'] = np.where(df['all_pct'] == 0, 0, df['white_pct_with_children'] / df['all_pct'])
     df['ratio_black'] = np.where(df['all_pct'] == 0, 0, df['black_pct_with_children'] / df['all_pct'])
     
-    #df.to_csv("assets/base_file.tsv", sep="\t", index=False)
+    # Uncomment to save the base file for a particular username
+    # df.to_csv("assets/base_file.tsv", sep="\t", index=False)
 
     return(df)
 
 
 # Get user data
-@cache.memoize(timeout=1000)
+@cache.memoize(timeout=10)
 def get_user_data(username,defaultusername='khg002'):
 
     """
