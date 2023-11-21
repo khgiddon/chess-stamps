@@ -11,6 +11,8 @@ const DisplayTable = ({ data }) => {
         label="Most popular missing stamp"
         opening={data.most_popular_missing_stamp.name}
         fen={data.most_popular_missing_stamp.fen}
+        pgn={data.most_popular_missing_stamp.pgn}
+        ply={data.most_popular_missing_stamp.ply}        
         rarity={percentageToRarity(data.most_popular_missing_stamp.all_pct)}
         id={1}
         text={
@@ -26,6 +28,7 @@ const DisplayTable = ({ data }) => {
         opening={data.most_obscure_stamp.name}
         fen={data.most_obscure_stamp.fen}
         pgn={data.most_obscure_stamp.pgn}
+        ply={data.most_obscure_stamp.ply}
         rarity={percentageToRarity(data.most_obscure_stamp.all_pct)}
         id={2}
         text={`You've played this ${data.most_obscure_stamp.player_total_with_children} times. This is only ${percentageToOneInEveryX(data.most_obscure_stamp.all_pct)} Lichess stamps! What a find!`}
@@ -36,6 +39,7 @@ const DisplayTable = ({ data }) => {
         opening={data.most_popular_white.name}
         fen={data.most_popular_white.fen}
         pgn={data.most_popular_white.pgn}
+        ply={data.most_popular_white.ply}
         rarity={percentageToRarity(data.most_popular_white.all_pct)}
         id={3}
         text={`You've played this ${data.most_popular_white.player_white_with_children} times, or ${percentageToOneInEveryX(data.most_popular_white.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_white.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(data.most_popular_white.player_pct_with_children/data.most_popular_white.all_pct)}x as frequently as the population.`}
@@ -46,6 +50,7 @@ const DisplayTable = ({ data }) => {
         opening={data.most_popular_black.name}
         fen={data.most_popular_black.fen}
         pgn={data.most_popular_black.pgn}
+        ply={data.most_popular_black.ply}
         rarity={percentageToRarity(data.most_popular_black.all_pct)}
         id={4}
         text={`You've played this ${data.most_popular_black.player_black_with_children} times, or ${percentageToOneInEveryX(data.most_popular_black.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_black.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(data.most_popular_black.player_pct_with_children/data.most_popular_black.all_pct)}x as frequently as the population.`}
@@ -56,6 +61,7 @@ const DisplayTable = ({ data }) => {
         opening={data.most_popular_white_min10.name}
         fen={data.most_popular_white_min10.fen}
         pgn={data.most_popular_white_min10.pgn}
+        ply={data.most_popular_white_min10.ply}
         rarity={percentageToRarity(data.most_popular_white_min10.all_pct)}
         id={5}
         text={data.most_popular_white_min10.name !== 'None' ? 
@@ -70,6 +76,7 @@ const DisplayTable = ({ data }) => {
         opening={data.most_popular_black_min10.name}
         fen={data.most_popular_black_min10.fen}
         pgn={data.most_popular_black_min10.pgn}
+        ply={data.most_popular_black_min10.ply}
         rarity={percentageToRarity(data.most_popular_black_min10.all_pct)}
         id={6}
         text={data.most_popular_black_min10.name !== 'None' ?
@@ -83,6 +90,7 @@ const DisplayTable = ({ data }) => {
         opening={data.random_collected.name}
         fen={data.random_collected.fen}
         pgn={data.random_collected.pgn}
+        ply={data.random_collected.ply}
         rarity={percentageToRarity(data.random_collected.all_pct)}
         id={7}
         text={data.random_collected.name !== 'None' ?
@@ -97,6 +105,7 @@ const DisplayTable = ({ data }) => {
         opening={data.random_missing.name}
         fen={data.random_missing.fen}
         pgn={data.random_missing.pgn}
+        ply={data.random_missing.ply}
         rarity={percentageToRarity(data.random_missing.all_pct)}
         id={8}
         text={data.random_missing.name !== 'None' ?

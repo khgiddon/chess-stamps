@@ -181,7 +181,7 @@ def send_data_to_frontend():
     most_popular_black = df.sort_values(by='ratio_black', ascending=False).head(1).to_dict('records')
 
     # Initialize defaults for the case where no openings meet the criteria
-    default = {'name': 'None', 'pgn': '', 'fen': '8/8/8/4k3/3K4/8/8/8 w - - 0 1', 'player_white_with_children': 0, 'player_black_with_children': 0, 'ratio_white': 0, 'ratio_black': 0}
+    default = {'name': 'None', 'pgn': '', 'ply': 0,'fen': '8/8/8/4k3/3K4/8/8/8 w - - 0 1', 'player_white_with_children': 0, 'player_black_with_children': 0, 'ratio_white': 0, 'ratio_black': 0}
 
     # Least popular openings compared to average, but have played at least 10 games
     df_most_popular_white_min10 = df.query('player_white_with_children >= 10').sort_values(by='ratio_white', ascending=False)
@@ -199,7 +199,7 @@ def send_data_to_frontend():
     other_missing_stamps = df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(4)['name'].tolist()[1:4]
         
     # Specify columns and only return the columns that are needed to speed things up
-    df = df[['name','pgn','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children']]
+    df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children']]
 
     print('returning json')
 
@@ -232,7 +232,7 @@ def send_all_openings_data_to_frontend():
     username = request.args.get('username')
     df = get_user_data(username)
 
-    df = df[['name','pgn','fen','player_total_with_children']]
+    df = df[['name','pgn','ply','fen','player_total_with_children']]
     print('returning json')
     #print(df.to_dict(orient='records'))
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import ChessImage from './ChessImage';
 
-const Row = ({ label, label_description, opening, rarity, fen, id, text, pgn }) => {
+const Row = ({ label, label_description, opening, rarity, fen, id, text, pgn, ply }) => {
   return (
     <div className="row">
       <div className="label-row">
@@ -21,7 +21,7 @@ const Row = ({ label, label_description, opening, rarity, fen, id, text, pgn }) 
           <a href={`https://lichess.org/analysis/pgn/${[pgn]}`} className="link">
             <span className="openingHighlight">{opening}</span>
           </a>
-          <div className = "rarity">Rarity score: {rarity}</div>
+          <div className = "rarity">Ply: {ply}  •  Rarity score: {rarity}</div>
           <div>{text}</div>
         </div>
       </div>
