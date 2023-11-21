@@ -62,13 +62,14 @@ def generate_base_statistics(df):
     df['ratio_white'] = np.where(df['all_pct'] == 0, 0, df['white_pct_with_children'] / df['all_pct'])
     df['ratio_black'] = np.where(df['all_pct'] == 0, 0, df['black_pct_with_children'] / df['all_pct'])
     
-    #df.to_csv("assets/base_file.tsv", sep="\t", index=False)
+    # Uncomment to save the base file for a particular username
+    # df.to_csv("assets/base_file.tsv", sep="\t", index=False)
 
     return(df)
 
 
 # Get user data
-@cache.memoize(timeout=1000)
+@cache.memoize(timeout=10)
 def get_user_data(username,defaultusername='khg002'):
 
     """
@@ -196,16 +197,20 @@ def send_data_to_frontend():
     random_collected =  df[df['player_total_with_children'] > 0].sample(n=1).head(1).iloc[0].to_dict()
     random_missing =  df[df['player_total_with_children'] == 0].sample(n=1).head(1).iloc[0].to_dict()
 
+    df['ratio'] = df['player_total_with_children'] / df['all_pct'] # Move this to stats function later
+    least_favorite_played = df.query('player_total_with_children >= 1').sort_values(by='ratio', ascending=True).head(1).iloc[0].to_dict()
+    deepest_ply = df.query('player_total_with_children >= 1').sort_values(by=['ply','player_total_with_children'], ascending=False).head(1).iloc[0].to_dict()
+
     other_missing_stamps = df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(4)['name'].tolist()[1:4]
         
     # Specify columns and only return the columns that are needed to speed things up
+    all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
     df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children']]
 
-    print('returning json')
 
     # For now, we'll just return the dataframe data as JSON
     return jsonify({
-        #'openings': df.to_dict(orient='records'),
+        'openings': all_openings.to_dict(orient='records'),
         'total_games': total_games,
         'total_stamps': total_stamps,
         'unique_stamps': unique_stamps,
@@ -219,7 +224,9 @@ def send_data_to_frontend():
         'most_obscure_stamp': most_obscure_stamp,
         'other_missing_stamps': other_missing_stamps,
         'random_collected': random_collected,
-        'random_missing': random_missing
+        'random_missing': random_missing,
+        'least_favorite_played': least_favorite_played,
+        'deepest_ply': deepest_ply
     })
 
 @app.route('/all_openings', methods=['GET'])

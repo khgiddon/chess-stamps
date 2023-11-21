@@ -21,7 +21,7 @@ const Row = ({ label, label_description, opening, rarity, fen, id, text, pgn, pl
           <a href={`https://lichess.org/analysis/pgn/${[pgn]}`} className="link">
             <span className="openingHighlight">{opening}</span>
           </a>
-          <div className = "rarity">Ply: {ply}  •  Rarity score: {rarity}</div>
+          <div className = "rarity">Rarity score: {rarity}  •  Ply: {ply}</div>
           <div>{text}</div>
         </div>
       </div>

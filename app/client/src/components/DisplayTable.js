@@ -42,7 +42,7 @@ const DisplayTable = ({ data }) => {
         ply={data.most_popular_white.ply}
         rarity={percentageToRarity(data.most_popular_white.all_pct)}
         id={3}
-        text={`You've played this ${data.most_popular_white.player_white_with_children} times, or ${percentageToOneInEveryX(data.most_popular_white.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_white.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(data.most_popular_white.player_pct_with_children/data.most_popular_white.all_pct)}x as frequently as the population.`}
+        text={`You've played this ${data.most_popular_white.player_white_with_children} times, or ${percentageToOneInEveryX(data.most_popular_white.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_white.all_pct)} Lichess stamps. You play it ${customRoundForRatio(data.most_popular_white.player_pct_with_children/data.most_popular_white.all_pct)}x as frequently as the population.`}
       />
       <MemoizedRow
         label="Specialist: black"
@@ -53,7 +53,7 @@ const DisplayTable = ({ data }) => {
         ply={data.most_popular_black.ply}
         rarity={percentageToRarity(data.most_popular_black.all_pct)}
         id={4}
-        text={`You've played this ${data.most_popular_black.player_black_with_children} times, or ${percentageToOneInEveryX(data.most_popular_black.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_black.all_pct)} of all Lichess stamps. You play it ${customRoundForRatio(data.most_popular_black.player_pct_with_children/data.most_popular_black.all_pct)}x as frequently as the population.`}
+        text={`You've played this ${data.most_popular_black.player_black_with_children} times, or ${percentageToOneInEveryX(data.most_popular_black.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_black.all_pct)} Lichess stamps. You play it ${customRoundForRatio(data.most_popular_black.player_pct_with_children/data.most_popular_black.all_pct)}x as frequently as the population.`}
       />
       <MemoizedRow
         label="Favorite stamp: white"
@@ -70,7 +70,7 @@ const DisplayTable = ({ data }) => {
               That means you play it ${customRoundForRatio(data.most_popular_white_min10.player_pct_with_children/data.most_popular_white_min10.all_pct)}x as frequently as the population.`
               : "You haven't played any opening as white ten times."}
       />
-      <MemoizedRow
+            <MemoizedRow
         label="Favorite stamp: black"
         label_description="(most played relative to population, min. 10 games)"
         opening={data.most_popular_black_min10.name}
@@ -83,6 +83,38 @@ const DisplayTable = ({ data }) => {
               `You've played this ${data.most_popular_black_min10.player_black_with_children} times,
               or ${percentageToOneInEveryX(data.most_popular_black_min10.player_pct_with_children)} stamps.
               That means you play it ${customRoundForRatio(data.most_popular_black_min10.player_pct_with_children/data.most_popular_black_min10.all_pct)}x as frequently as the population.`
+              : "Error."}
+      />
+      <MemoizedRow
+        label="Least favorite stamp"
+        label_description="(played at least once, least played relative to population)"
+        opening={data.least_favorite_played.name}
+        fen={data.least_favorite_played.fen}
+        pgn={data.least_favorite_played.pgn}
+        ply={data.least_favorite_played.ply}
+        rarity={percentageToRarity(data.least_favorite_played.all_pct)}
+        id={7}
+        text={data.least_favorite_played.name !== 'None' ?
+              `You've played this ${data.least_favorite_played.player_total_with_children} times,
+              or ${percentageToOneInEveryX(data.least_favorite_played.player_pct_with_children)} stamps.
+              This is ${percentageToOneInEveryX(data.least_favorite_played.all_pct)} Lichess stamps.
+              That means you play it ${customRoundForRatio(data.least_favorite_played.player_pct_with_children/data.least_favorite_played.all_pct)}x as frequently as the population.`
+              : "Error."}
+      />
+      <MemoizedRow
+        label="Deepest line"
+        label_description="(most moves in a played stamp)"
+        opening={data.deepest_ply.name}
+        fen={data.deepest_ply.fen}
+        pgn={data.deepest_ply.pgn}
+        ply={data.deepest_ply.ply}
+        rarity={percentageToRarity(data.deepest_ply.all_pct)}
+        id={8}
+        text={data.deepest_ply.name !== 'None' ?
+              `This opening is ${data.deepest_ply.ply} ply (half-moves) deep!
+              You've played this ${data.deepest_ply.player_total_with_children} times,
+              or ${percentageToOneInEveryX(data.deepest_ply.player_pct_with_children)} stamps.
+              That means you play it ${customRoundForRatio(data.deepest_ply.player_pct_with_children/data.deepest_ply.all_pct)}x as frequently as the population.`
               : "You haven't played any opening as black ten times."}
       />
       <MemoizedRow
@@ -92,7 +124,7 @@ const DisplayTable = ({ data }) => {
         pgn={data.random_collected.pgn}
         ply={data.random_collected.ply}
         rarity={percentageToRarity(data.random_collected.all_pct)}
-        id={7}
+        id={9}
         text={data.random_collected.name !== 'None' ?
               `You've played this ${data.random_collected.player_total_with_children} times,
               or ${percentageToOneInEveryX(data.random_collected.player_pct_with_children)} stamps.
@@ -107,7 +139,7 @@ const DisplayTable = ({ data }) => {
         pgn={data.random_missing.pgn}
         ply={data.random_missing.ply}
         rarity={percentageToRarity(data.random_missing.all_pct)}
-        id={8}
+        id={10}
         text={data.random_missing.name !== 'None' ?
               `This is played ${percentageToOneInEveryX(data.random_missing.all_pct)} Lichess stamps, but you've never played this.`
               : "Error."}

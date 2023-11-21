@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import './App.css';
 import { fetchData } from './api/fetchData';
-import { fetchAllOpenings } from './api/fetchAllOpenings';
 
 
 // Components
@@ -32,20 +31,15 @@ function App() {
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
 
-// Inside App component
-const handleFetchAllOpenings = async () => {
-  if (hasallopenings) {
-    setHasAllOpenings(false);
-  } else {
-    await fetchAllOpenings(username, setAllOpenings);
-    setHasAllOpenings(true);
-  }
-};
-
   // Fetch data when the component is first mounted using the default username
-  useEffect(() => {
-    handleFetchData();
-  }, [handleFetchData]);
+    useEffect(() => {
+      handleFetchData();
+    }, [handleFetchData]);
+
+  // Flip state of hasAllOpenings when the button is clicked
+  const handleAllOpeningsButtonClick = () => {
+    setHasAllOpenings(!hasallopenings);
+  };
 
   // Scroll to the openings grid when the openings are loaded
   useEffect(() => {
@@ -79,11 +73,10 @@ const handleFetchAllOpenings = async () => {
       )}
       {!loading && <DisplayTable data={data} />}
       {!loading && <LowerButtons 
-      handleFetchAllOpenings={handleFetchAllOpenings} hasAllOpenings={hasallopenings}
+      handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
       />}
-      {hasallopenings && <OpeningsGrid allopenings={allopenings}/>}
+      {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
     </div>
   );
 }
-
 export default App;
