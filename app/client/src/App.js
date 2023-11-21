@@ -31,18 +31,15 @@ function App() {
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
 
-  const handleAllOpeningsButtonClick = async () => {
-    if (hasallopenings) {
-      setHasAllOpenings(false);
-    } else {
-      setHasAllOpenings(true);
-    }
-  };
-
   // Fetch data when the component is first mounted using the default username
-  useEffect(() => {
-    handleFetchData();
-  }, [handleFetchData]);
+    useEffect(() => {
+      handleFetchData();
+    }, [handleFetchData]);
+
+  // Flip state of hasAllOpenings when the button is clicked
+  const handleAllOpeningsButtonClick = () => {
+    setHasAllOpenings(!hasallopenings);
+  };
 
   // Scroll to the openings grid when the openings are loaded
   useEffect(() => {
@@ -82,5 +79,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
