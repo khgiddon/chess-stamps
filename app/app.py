@@ -197,6 +197,10 @@ def send_data_to_frontend():
     random_collected =  df[df['player_total_with_children'] > 0].sample(n=1).head(1).iloc[0].to_dict()
     random_missing =  df[df['player_total_with_children'] == 0].sample(n=1).head(1).iloc[0].to_dict()
 
+    df['ratio'] = df['player_total_with_children'] / df['all_pct'] # Move this to stats function later
+    least_favorite_played = df.query('player_total_with_children >= 1').sort_values(by='ratio', ascending=True).head(1).iloc[0].to_dict()
+    deepest_ply = df.query('player_total_with_children >= 1').sort_values(by=['ply','player_total_with_children'], ascending=False).head(1).iloc[0].to_dict()
+
     other_missing_stamps = df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(4)['name'].tolist()[1:4]
         
     # Specify columns and only return the columns that are needed to speed things up
@@ -220,7 +224,9 @@ def send_data_to_frontend():
         'most_obscure_stamp': most_obscure_stamp,
         'other_missing_stamps': other_missing_stamps,
         'random_collected': random_collected,
-        'random_missing': random_missing
+        'random_missing': random_missing,
+        'least_favorite_played': least_favorite_played,
+        'deepest_ply': deepest_ply
     })
 
 @app.route('/all_openings', methods=['GET'])
