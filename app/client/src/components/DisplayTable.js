@@ -102,8 +102,8 @@ const DisplayTable = ({ data }) => {
               : "Error."}
       />
       <MemoizedRow
-        label="Deepest ply"
-        label_description="(most moves from a played stamp)"
+        label="Deepest line"
+        label_description="(most moves in a played stamp)"
         opening={data.deepest_ply.name}
         fen={data.deepest_ply.fen}
         pgn={data.deepest_ply.pgn}
@@ -111,7 +111,7 @@ const DisplayTable = ({ data }) => {
         rarity={percentageToRarity(data.deepest_ply.all_pct)}
         id={8}
         text={data.deepest_ply.name !== 'None' ?
-              `This opening is ${data.deepest_ply.ply} half-moves deep!
+              `This opening is ${data.deepest_ply.ply} ply (half-moves) deep!
               You've played this ${data.deepest_ply.player_total_with_children} times,
               or ${percentageToOneInEveryX(data.deepest_ply.player_pct_with_children)} stamps.
               That means you play it ${customRoundForRatio(data.deepest_ply.player_pct_with_children/data.deepest_ply.all_pct)}x as frequently as the population.`

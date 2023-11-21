@@ -6,10 +6,11 @@ Transpositions are included in the player games, because it uses the assigned op
 
 TODO:
 
-- API error handling (e.g., less than 10 games)
+- API error handling
 - Upgrade lichess API auth
 - Improve UI of entry form
     Own line for button
+- Open Lichess links in new tab
 
 - Load "all openings" at same time as main data
 - Smooth scroll back up after clicking "Hide all openings"
