@@ -44,6 +44,10 @@ export function percentageToOneInEveryX(percentage) {
     }
   }
 
+  export function addThousandsSeparator(num) {
+    return num.toLocaleString();
+  }
+
   export function listToCleanList(list) {
     // Convert a list to a string with commas and "and"
     if (list.length === 0) {

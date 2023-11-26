@@ -1,5 +1,6 @@
 import React from 'react';
 import ChessImage from './ChessImage';
+import { addThousandsSeparator } from '../utilityFunctions';
 
 const Row = ({ label, label_description, opening, rarity, fen, id, text, pgn, ply, popularity_rank, unique_stamps_all }) => {
   return (
@@ -21,7 +22,9 @@ const Row = ({ label, label_description, opening, rarity, fen, id, text, pgn, pl
           <a href={`https://lichess.org/analysis/pgn/${[pgn]}`} className="link">
             <span className="openingHighlight">{opening}</span>
           </a>
-          <div className = "rarity">Popularity rank: {popularity_rank} of {unique_stamps_all}  •  Rarity score: {rarity}   •  Ply: {ply}</div>
+          <div className = "rarity">
+            Popularity rank: {addThousandsSeparator(popularity_rank)} of {addThousandsSeparator(unique_stamps_all)}  •  Rarity score: {rarity}   •  Ply: {ply}
+          </div>
           <div>{text}</div>
         </div>
       </div>
