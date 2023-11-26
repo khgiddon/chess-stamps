@@ -61,6 +61,9 @@ def generate_base_statistics(df):
     # Ratios and handle division by zero
     df['ratio_white'] = np.where(df['all_pct'] == 0, 0, df['white_pct_with_children'] / df['all_pct'])
     df['ratio_black'] = np.where(df['all_pct'] == 0, 0, df['black_pct_with_children'] / df['all_pct'])
+
+    df['popularity_rank'] = df.sort_values(by='all_pct', ascending=False).reset_index().index + 1
+
     
     # Uncomment to save the base file for a particular username
     # df.to_csv("assets/base_file.tsv", sep="\t", index=False)
@@ -197,6 +200,7 @@ def send_data_to_frontend():
     random_collected =  df[df['player_total_with_children'] > 0].sample(n=1).head(1).iloc[0].to_dict()
     random_missing =  df[df['player_total_with_children'] == 0].sample(n=1).head(1).iloc[0].to_dict()
 
+
     df['ratio'] = df['player_total_with_children'] / df['all_pct'] # Move this to stats function later
     least_favorite_played = df.query('player_total_with_children >= 1').sort_values(by='ratio', ascending=True).head(1).iloc[0].to_dict()
     deepest_ply = df.query('player_total_with_children >= 1').sort_values(by=['ply','player_total_with_children'], ascending=False).head(1).iloc[0].to_dict()
@@ -205,7 +209,7 @@ def send_data_to_frontend():
         
     # Specify columns and only return the columns that are needed to speed things up
     all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
-    df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children']]
+    df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
 
 
     # For now, we'll just return the dataframe data as JSON

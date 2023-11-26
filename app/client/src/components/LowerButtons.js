@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '@mui/material/Button';
 
 const LowerButtons = ({ handleAllOpeningsButtonClick, hasAllOpenings }) => (
-    <div className='show-all-openings-button-container'>
+    <div className='show-all-openings-button-container'  id="openingsGridButton">
       <Button 
         variant="contained" 
         color="primary" 

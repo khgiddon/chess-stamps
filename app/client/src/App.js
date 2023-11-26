@@ -44,7 +44,7 @@ function App() {
   // Scroll to the openings grid when the openings are loaded
   useEffect(() => {
     if (hasallopenings) {
-      document.getElementById('openingsGrid').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('openingsGridButton').scrollIntoView({ behavior: 'smooth' });
     }
   }, [hasallopenings]);
 

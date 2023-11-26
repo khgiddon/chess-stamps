@@ -314,7 +314,7 @@ h1 {
   margin: 0px 5px; /* vertical margin 0px, horizontal margin 0 */
   margin-bottom: 10px;
   padding: 0px;
-  border: 1px solid #ccc; /* add this line */
+  border: 1px solid gray; /* add this line */
   background-color: #f9f9f9;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -335,6 +335,15 @@ h1 {
   text-decoration: underline; /* This will remove the underline from the link */
 }
 
+.all-openings-intro-text {
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 20px;
+
+}
+
 
 @media (max-width: 700px) {
   .all-openings-grid-container {
@@ -344,7 +353,7 @@ h1 {
 }
 
 .colorful {
-  background-color: #90ee90; /* Light green background for items with player_total > 0 */
+  background-color: lightgreen; /* Light green background for items with player_total > 0 */
 }
 
 #chessImageContainer {

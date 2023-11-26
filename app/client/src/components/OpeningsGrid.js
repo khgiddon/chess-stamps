@@ -28,31 +28,36 @@ const OpeningsGrid = ({ allopenings }) => {
   };
 
   return (
-    <div id="openingsGrid" className="all-openings-grid-container">
-      {isHovered && (
-        <div id="chessImageContainer" style={{ left: position.x, top: position.y }}>
-          <ChessImage fen={currentFen} id={currentId} />
-        </div>
-      )}
-      {allopenings.map((opening, index) => (
-        <div 
-          key={index} 
-          className={`all-openings-grid-item ${opening.player_total_with_children > 0 ? 'colorful' : ''}`}
-        >
-          <a 
-            href={`https://lichess.org/analysis/pgn/${[opening.pgn]}`}
-            onMouseEnter={() => {
-              setIsHovered(true);
-              setCurrentFen(opening.fen);
-              setCurrentId(opening.id);
-            }}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={() => setIsHovered(false)}
+    <div>
+      <div className='all-openings-intro-text'>
+        All openings
+      </div>
+      <div className="all-openings-grid-container">
+        {isHovered && (
+          <div id="chessImageContainer" style={{ left: position.x, top: position.y }}>
+            <ChessImage fen={currentFen} id={currentId} />
+          </div>
+        )}
+        {allopenings.map((opening, index) => (
+          <div 
+            key={index} 
+            className={`all-openings-grid-item ${opening.player_total_with_children > 0 ? 'colorful' : ''}`}
           >
-            {opening.name}
-          </a>
-        </div>
-      ))}
+            <a 
+              href={`https://lichess.org/analysis/pgn/${[opening.pgn]}`}
+              onMouseEnter={() => {
+                setIsHovered(true);
+                setCurrentFen(opening.fen);
+                setCurrentId(opening.id);
+              }}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={() => setIsHovered(false)}
+            >
+              {opening.name}
+            </a>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

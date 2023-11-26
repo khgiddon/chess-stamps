@@ -8,11 +8,19 @@ TODO:
 
 - API error handling
 - Upgrade lichess API auth
-- Improve UI of entry form
-    Own line for button
 - Open Lichess links in new tab
 
-- Load "all openings" at same time as main data
 - Smooth scroll back up after clicking "Hide all openings"
 
 - Filter by ply, played openings, unplayed openings
+- More interesting presentation of stats
+
+
+
+UI:
+- Explanatory text can expand out? - pop-up modal
+- Rarity score/ply less prominent
+- Stamp name center and more prominent
+- Tighten spacing
+
+
