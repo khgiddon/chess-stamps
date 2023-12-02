@@ -80,6 +80,14 @@ h1 {
   border: none;
 }
 
+.tooltip-text {
+  color: #222;
+  font-size: .75em;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
 .progress-wrapper {
   width: 70%;
   margin: 0 auto; /* Centers the wrapper */

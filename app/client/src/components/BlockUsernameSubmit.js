@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
+import Tooltip from '@mui/material/Tooltip';
+import HelpIcon from '@mui/icons-material/Help';
+
 const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   const [inputValue, setInputValue] = useState(username);
 
@@ -16,6 +19,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   };
 
   return (
+  <Box>
     <Box
   display="flex"
   flexDirection="row"
@@ -29,7 +33,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   flexDirection="row"
   justifyContent="center"
   alignItems="center"
-  marginBottom="1em"
+  marginBottom="0em"
   width="100%"
   border={1}
   borderColor="grey.500"
@@ -53,6 +57,34 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   <Button variant="contained" color="primary" onClick={handleButtonClick}>
     Analyze
   </Button>
+</Box>
+</Box>
+<Box
+  display="flex"
+  flexDirection="row"
+  justifyContent="right"
+  alignItems="center"
+  marginBottom="1em"
+  marginTop="0.3em"
+  width="100%"
+>
+  <Tooltip 
+    title={
+      <p className="smallText">
+        Every time you reach a <u>named opening position</u>, you collect a "stamp"! You can collect multiple stamps in the same game. For example, if you play the Ruy Lopez, you'll collect a stamp for the King's Pawn Game, the King's Knight Opening, the King's Knight Opening: Normal Variation, the Ruy Lopez, and whatever subsequent variation of the Ruy Lopez you end up in.
+      </p>
+    } 
+    enterTouchDelay={0}
+    arrow
+    placement="right"
+    sx={{
+      '.MuiTooltip-tooltip': {
+        border: '1px solid',
+      },  
+    }}
+  >
+    <span className='tooltip-text'>What are chess opening stamps&nbsp; <HelpIcon color="primary" /></span> 
+  </Tooltip>
 </Box>
 </Box>
   );
