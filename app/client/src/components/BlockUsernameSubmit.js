@@ -21,7 +21,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   flexDirection="row"
   justifyContent="center"
   alignItems="center"
-  marginBottom="1em"
+  marginBottom="0em"
   width="100%"
 >
 <Box

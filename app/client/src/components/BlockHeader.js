@@ -6,7 +6,7 @@ const BlockHeader = () => (
     <img src="assets/stamp_images/logo3.png" alt="Chess Opening Stamp Collector" className='stampImage'/>
     </div>
     {console.log('Header rendered')}
-    <h3>How many chess opening stamps have <u>you</u> collected?</h3>
+    <h1>How many chess opening stamps have you collected?</h1>
   </div>
 );
 
