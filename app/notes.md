@@ -15,6 +15,8 @@ TODO:
 - Filter by ply, played openings, unplayed openings
 - More interesting presentation of stats
 
+- H1 title "chess opening stamps" to tooltip
+
 
 
 UI:

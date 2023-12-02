@@ -18,6 +18,8 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
     setInputValue(value);
   };
 
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <Box>
       <Box
@@ -36,7 +38,9 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
           marginBottom="0em"
           width="100%"
           border={1}
-          borderColor="grey.500"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+          borderColor={isHovered ? "grey.800" : "grey.500"}
           borderRadius="8px"
           padding="1em"
         >
@@ -84,7 +88,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
           }}
         >
           <span className='tooltip-text'>
-                <span className='dotted-underline'>What are chess opening stamps</span>&nbsp;
+                <span className='dotted-underline'>What are "chess opening stamps"</span>&nbsp;
                  <HelpIcon color="primary" />
           </span> 
         </Tooltip>
