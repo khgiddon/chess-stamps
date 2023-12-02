@@ -56,6 +56,13 @@ function App() {
   return (
     <div>
 
+    
+    <img
+      src="/assets/misc_images/chessboard_partial.svg"
+      alt="Chessboard"
+      style={{ position: 'fixed', top: 0, right: 0, zIndex: 1}}
+    />
+
       <div className='background-upper'>
         <TopNav />
         <BlockHeader />

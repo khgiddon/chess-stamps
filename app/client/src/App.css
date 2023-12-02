@@ -7,10 +7,9 @@ Color of stmap image: #fefbea
 */
 
 html, body {
-  background-color: #EEF4ED;
+  background: #EEF4ED url("/public/assets/misc_images/chessboard_partial.svg") no-repeat top right;
   font-family: Arial, sans-serif;
   /* background-color: #2596be;  */
-
 }
 
  h2, h3 {
@@ -34,10 +33,18 @@ h1 {
 }
 
 
-/* ChessOpeningsCollector.css */
 .smallText {
   font-size: 0.9rem;  /* Adjust this value as you see fit */
+  text-align: center;
+}
 
+.smallText a {
+  color: purple; /* Change to your preferred color */
+  text-decoration: underline dotted
+}
+
+.smallText a:hover {
+  text-decoration: underline dashed
 }
 
 .nameText {
@@ -50,6 +57,14 @@ h1 {
 
 .summaryText {
   font-size: 1rem;  /* Adjust this value as you see fit */
+}
+
+.dotted-underline {
+  text-decoration: underline dotted;
+}
+
+.dotted-underline:hover {
+  text-decoration: underline dashed;
 }
 
 .usernameContainer {
