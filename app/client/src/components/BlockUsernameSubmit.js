@@ -16,39 +16,45 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   };
 
   return (
-    <Box 
-      sx={{
-        margin: '1em',
-        padding: '1em',
-        border: '1px solid #ccc',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <Box 
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          marginBottom: '1em',
-        }}
-      >
-        <label style={{ marginRight: '0.5em' }}>Enter your Lichess username:</label>
-        <TextField
-          type="text"
-          placeholder="Username"
-          value={inputValue}
-          onChange={handleChange}
-          id="outlined-basic"
-          required
-          fullWidth
-        />
-      </Box>
-      <Button variant="contained" color="primary" onClick={handleButtonClick}>
-        Analyze
-      </Button>
-    </Box>
+    <Box
+  display="flex"
+  flexDirection="row"
+  justifyContent="center"
+  alignItems="center"
+  marginBottom="1em"
+  width="100%"
+>
+<Box
+  display="flex"
+  flexDirection="row"
+  justifyContent="center"
+  alignItems="center"
+  marginBottom="1em"
+  width="100%"
+  border={1}
+  borderColor="grey.500"
+  borderRadius="8px"
+  padding="1em"
+>
+  <TextField
+    type="text"
+    placeholder="Enter your Lichess username"
+    value={inputValue}
+    onChange={handleChange}
+    id="outlined-basic"
+    required
+    fullWidth
+    variant="standard"
+    style={{ marginRight: '20px' }}
+    InputProps={{
+      disableUnderline: true,
+    }}
+  />
+  <Button variant="contained" color="primary" onClick={handleButtonClick}>
+    Analyze
+  </Button>
+</Box>
+</Box>
   );
 };
 

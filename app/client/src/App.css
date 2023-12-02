@@ -27,6 +27,10 @@ h1 {
   margin-bottom: 20px;
 }
 
+.background-upper {
+  background-color: #FFF5EE;
+}
+
 
 /* ChessOpeningsCollector.css */
 .smallText {
@@ -153,13 +157,11 @@ h1 {
 .intro-container {
   margin: auto;
   margin-bottom: 14px;
-  max-width: 60%;
+  max-width: 40%;
   padding: 10px;
   padding-top: 10px;
   padding-bottom: 10px;
-  background-color: navajowhite;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
 }
 
 @media (max-width: 700px) {
