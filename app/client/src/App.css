@@ -7,9 +7,20 @@ Color of stmap image: #fefbea
 */
 
 html, body {
-  background: #EEF4ED url("/public/assets/misc_images/chessboard_partial.svg") no-repeat top right;
+  background: #EEF4ED;
   font-family: Arial, sans-serif;
   /* background-color: #2596be;  */
+}
+
+html::before, body::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url("/public/assets/misc_images/chessboard_partial.svg") no-repeat top right;
+  z-index: -1;
 }
 
  h2, h3 {
