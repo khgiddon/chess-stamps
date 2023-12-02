@@ -6,12 +6,8 @@ import HelpIcon from '@mui/icons-material/Help';
 const BlockIntro = () => (
   <div>
 
-
   
 
-<p className="smallText">
-      Or click to see results from <a href='#'>Magnus Carlsen</a>, <a href='#'>Hikaru Nakamura</a>, or <a href='#'>Daniel Naroditsky</a>.
-    </p>
   </div>
 
   
