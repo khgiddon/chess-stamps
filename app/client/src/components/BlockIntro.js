@@ -10,7 +10,7 @@ const BlockIntro = () => (
   
 
 <p className="smallText">
-      Or click to see stamps from Magnus Carlsen, Hikaru Nakamura, or Daniel Naroditsky.
+      Or: see stamps from Magnus Carlsen, Hikaru Nakamura, or Daniel Naroditsky.
     </p>
   </div>
 

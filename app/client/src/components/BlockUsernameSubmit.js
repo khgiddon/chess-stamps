@@ -83,7 +83,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
       },  
     }}
   >
-    <span className='tooltip-text'>What are chess opening stamps&nbsp; <HelpIcon color="primary" /></span> 
+    <span className='tooltip-text'><u>What are chess opening stamps</u> &nbsp; <HelpIcon color="primary" /></span> 
   </Tooltip>
 </Box>
 </Box>
@@ -97,3 +97,4 @@ BlockUsernameSubmit.propTypes = {
 };
 
 export default BlockUsernameSubmit;
+

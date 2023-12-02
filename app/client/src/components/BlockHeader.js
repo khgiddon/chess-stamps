@@ -8,6 +8,10 @@ const BlockHeader = () => (
     {console.log('Header rendered')}
     <h1>How many chess opening stamps have you collected?</h1>
   </div>
+
+
+
+  
 );
 
 export default BlockHeader;

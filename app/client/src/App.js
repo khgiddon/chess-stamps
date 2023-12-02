@@ -54,29 +54,32 @@ function App() {
 //         
 
   return (
-    <div className='background-upper'>
-      <TopNav />
-      <BlockHeader />
-      <div className="intro-container">
-        <BlockUsernameSubmit 
-          username={username}
-          setUsername={setUsername}
-          handleSubmit={handleSubmit}
-        />
-        <BlockIntro />
-      </div>
+    <div>
 
-      {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
-      {!loading && (
-        <div className="results-summary-container">
-          <ResultsSummary data={data} username={username} />
+      <div className='background-upper'>
+        <TopNav />
+        <BlockHeader />
+        <div className="intro-container">
+          <BlockUsernameSubmit 
+            username={username}
+            setUsername={setUsername}
+            handleSubmit={handleSubmit}
+          />
+          <BlockIntro />
         </div>
-      )}
-      {!loading && <DisplayTable data={data} />}
-      {!loading && <LowerButtons 
-      handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
-      />}
-      {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
+
+        {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
+        {!loading && (
+          <div className="results-summary-container">
+            <ResultsSummary data={data} username={username} />
+          </div>
+        )}
+        {!loading && <DisplayTable data={data} />}
+        {!loading && <LowerButtons 
+        handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
+        />}
+        {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
+      </div>
     </div>
   );
 }
