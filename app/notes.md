@@ -16,6 +16,7 @@ TODO:
 - More interesting presentation of stats
 
 - Format tooltip text
+- Use React state to leave username box blank until user clicks "Submit"
 
 
 

@@ -43,6 +43,10 @@ h1 {
   background-color: #FFF5EE;
 }
 
+.opaque-tooltip .MuiTooltip-tooltip {
+  opacity: 1;
+  background-color: red;
+}
 
 .smallText {
   font-size: 0.9rem;  /* Adjust this value as you see fit */
@@ -98,6 +102,16 @@ h1 {
   text-align: center;
   padding-top: 10px;
   padding-bottom: 0px;
+}
+
+.header-tooltip-icon {
+  display: flex;
+  align-items: center;
+}
+
+.tooltip-content {
+  text-align: left;
+  font-size: 1rem;
 }
 
 .stampImage {

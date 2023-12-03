@@ -76,9 +76,10 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
     </p>
 
 
-    
-      </Box>
-   
+            
+
+    </Box>
+     
     </Box>
   );
 };
