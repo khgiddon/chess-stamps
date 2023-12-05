@@ -14,7 +14,6 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   const [inputValue, setInputValue] = useState(username);
   const [timeframe, setTimeframe] = useState('last 3 months');
 
-
   const handleButtonClick = () => {
     setUsername(inputValue);
     console.log(timeframe)
@@ -54,7 +53,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
           <TextField
             type="text"
             placeholder="Enter your Lichess username"
-            value={inputValue}
+            value={inputValue === 'khg002' ? '' : inputValue}
             onChange={handleChange}
             id="outlined-basic"
             required
@@ -81,7 +80,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
             width="100%">
 
       </Box>
-      <p className="smallText">
+      <p className="select-timeframe-text">
           Check games from: 
           <Select
               value={timeframe}
@@ -108,7 +107,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
         paddingTop='0em'
         width="100%"
       >   
-        <p className="smallText">
+        <p className="grandmaster-names-block">
           Or see all-time results from <a>Magnus Carlsen</a>, <a>Hikaru Nakamura</a>, or <a>Daniel Naroditsky</a>.
         </p>
 

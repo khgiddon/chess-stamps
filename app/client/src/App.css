@@ -48,26 +48,30 @@ h1 {
   background-color: red;
 }
 
-.smallText {
-  font-size: 0.9rem;  /* Adjust this value as you see fit */
-  text-align: center;
-}
 
-.small-select {
-  width: 100px;
-  height: 30px;
+
+.select-timeframe-text {
+  font-size: 0.8rem;  /* Adjust this value as you see fit */
+  text-align: right;
+  margin-top: 3px;
 }
 
 .small-select .MuiMenuItem-root {
   font-size: 0.5rem;
 }
 
-.smallText a {
+.grandmaster-names-block {
+  font-size: 0.9rem;  /* Adjust this value as you see fit */
+  text-align: center;
+  margin-top: 8px;
+}
+
+.grandmaster-names-block a {
   color: purple; /* Change to your preferred color */
   text-decoration: underline dotted
 }
 
-.smallText a:hover {
+.grandmaster-names-block a:hover {
   text-decoration: underline dashed
 }
 
