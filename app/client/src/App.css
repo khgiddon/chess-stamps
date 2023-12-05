@@ -53,6 +53,15 @@ h1 {
   text-align: center;
 }
 
+.small-select {
+  width: 100px;
+  height: 30px;
+}
+
+.small-select .MuiMenuItem-root {
+  font-size: 0.5rem;
+}
+
 .smallText a {
   color: purple; /* Change to your preferred color */
   text-decoration: underline dotted
