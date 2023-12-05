@@ -7,21 +7,26 @@ Color of stmap image: #fefbea
 */
 
 html, body {
-  background: #FFF5EE;
+  background: #FFFFFF;
   font-family: Arial, sans-serif;
   /* background-color: #2596be;  */
 }
 
-html::before, body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url("/public/assets/misc_images/chessboard_partial.svg") no-repeat top right;
-  z-index: -1;
-}
+.upper-container {
+  background-color: #FFF5EE;
+  }
+
+  @media screen and (min-width: 768px) {
+    .upper-container {
+      background-image: url("/public/assets/misc_images/chessboard_partial.svg");
+      background-position: right;
+      background-repeat: no-repeat;
+    }
+  } 
+
+  .lower-container {
+    background-color: #f5f5f5;
+    }
 
  h2, h3 {
   text-align: center;
@@ -38,11 +43,6 @@ h1 {
   padding-right: 20px;
   padding-left: 20px;
 }
-
-.background-upper {
-  background-color: #FFF5EE;
-}
-
 .opaque-tooltip .MuiTooltip-tooltip {
   opacity: 1;
   background-color: red;
@@ -63,7 +63,8 @@ h1 {
 .grandmaster-names-block {
   font-size: 0.9rem;  /* Adjust this value as you see fit */
   text-align: center;
-  margin-top: 8px;
+  margin-top: 0px;
+  margin-bottom: 25px;
 }
 
 .grandmaster-names-block a {
@@ -219,11 +220,11 @@ h1 {
 
 .intro-container {
   margin: auto;
-  margin-bottom: 14px;
+  margin-bottom: 0px;
   max-width: 40%;
   padding: 10px;
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 0px;
   border-radius: 10px;
 }
 

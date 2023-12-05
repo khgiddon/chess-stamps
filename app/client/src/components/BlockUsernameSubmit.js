@@ -108,7 +108,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
         width="100%"
       >   
         <p className="grandmaster-names-block">
-          Or see all-time results from <a>Magnus Carlsen</a>, <a>Hikaru Nakamura</a>, or <a>Daniel Naroditsky</a>.
+          Or click to see all-time results from <a>Magnus Carlsen</a>, <a>Hikaru Nakamura</a>, or <a>Daniel Naroditsky</a>.
         </p>
 
 

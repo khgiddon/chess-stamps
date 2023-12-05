@@ -59,15 +59,7 @@ function App() {
   return (
     <div>
 
-    
-    <img
-      src="/assets/misc_images/chessboard_partial.svg"
-      alt="Chessboard"
-      style={{ position: 'fixed', top: 0, right: 0, zIndex: 1}}
-    />
-
-      <div className='background-upper'>
-        <TopNav />
+      <div className='upper-container'>
         <BlockHeader />
         <div className="intro-container">
           <BlockUsernameSubmit 
@@ -77,7 +69,8 @@ function App() {
           />
           <BlockIntro />
         </div>
-
+      </div>
+      <div className = 'lower-container'>
         {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
         {!loading && (
           <div className="results-summary-container">
@@ -89,8 +82,8 @@ function App() {
         handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
         />}
         {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
-      </div>
     </div>
+  </div>
   );
 }
 export default App;
