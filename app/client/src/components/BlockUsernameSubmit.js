@@ -9,12 +9,16 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
 
+
 const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   const [inputValue, setInputValue] = useState(username);
+  const [timeframe, setTimeframe] = useState('last 3 months');
+
 
   const handleButtonClick = () => {
     setUsername(inputValue);
-    handleSubmit(inputValue);
+    console.log(timeframe)
+    handleSubmit(inputValue, timeframe);
   };
 
   const handleChange = ({ target: { value } }) => {
@@ -73,13 +77,15 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
             alignItems="center"
             marginBottom="0em"
             marginTop="0em"
+            padding="0px"
             width="100%">
 
       </Box>
       <p className="smallText">
           Check games from: 
           <Select
-              defaultValue="last 3 months"
+              value={timeframe}
+              onChange={(event) => setTimeframe(event.target.value)}
               variant="standard"
               size="small"
               style={{ fontSize: '1em', marginLeft: '10px' }}
@@ -89,7 +95,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
               <MenuItem value="last month">last month</MenuItem>
               <MenuItem value="last 3 months">last 3 months</MenuItem>
               <MenuItem value="last 12 months">last 12 months</MenuItem>
-              <MenuItem value="forever">Forever</MenuItem>
+              <MenuItem value="forever">forever</MenuItem>
             </Select>
         </p>
       <Box

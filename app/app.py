@@ -9,6 +9,8 @@ import numpy as np
 import requests
 import os
 import json
+import time
+
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -73,7 +75,7 @@ def generate_base_statistics(df):
 
 # Get user data
 @cache.memoize(timeout=10)
-def get_user_data(username,defaultusername='khg002'):
+def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
 
     """
     This script uses the Lichess API to export the games of a user
@@ -84,7 +86,9 @@ def get_user_data(username,defaultusername='khg002'):
 
     """
 
-    # If no username is provided, load the default file (for dev purposes)
+    # If no username, or the default username, is provided, load the default file (for dev purposes
+    # Note that the time range is ignored here
+    # Add all stores usernames here
     if username == None or username == defaultusername:
         # Load default file
         base_file = "assets/base_file.tsv"
@@ -116,7 +120,7 @@ def get_user_data(username,defaultusername='khg002'):
             "Content-Type": "application/x-ndjson",
             "Authorization": f"Bearer {lichessToken}"
         }
-        url = f"https://lichess.org/api/user/{username}"   
+        url = f"https://lichess.org/api/user/{username}?since={timestamp_to_use}"   
         response = requests.get(url,headers=headers)
         d = json.loads(response.content.decode('utf-8'))
         games_to_pull = sum(d['perfs'][game_type]['games'] for game_type in ['bullet', 'blitz', 'rapid', 'classical'])
@@ -126,7 +130,7 @@ def get_user_data(username,defaultusername='khg002'):
         chunks_expected = min(games_to_pull,max)   
         chunks = 0
         response_test = []
-        url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical"
+        url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
         response = requests.get(url,headers=headers,stream=True)
         print('received response from lichess api')
         for chunk in response.iter_content(chunk_size=1024):
@@ -158,6 +162,20 @@ def get_user_data(username,defaultusername='khg002'):
         # Generate statistics
         df = generate_base_statistics(df)
         return df
+    
+def timeframe_to_timestamp(timeframe):
+    if timeframe == 'forever':
+        return 31536000*10*1000
+    elif timeframe == 'last 12 months':
+        return 31536000*1000
+    elif timeframe == 'last 3 months':
+        return 7776000*1000
+    elif timeframe == 'last month':
+        return 2592000*1000
+    elif timeframe == 'last week':
+        return 604800*1000
+    elif timeframe == 'last 24 hours':
+        return 86400*1000
 
 @app.route('/')
 def hello_world():
@@ -170,7 +188,14 @@ def send_data_to_frontend():
 
     # Core data pull
     username = request.args.get('username')
-    df = get_user_data(username)
+    timeframe = request.args.get('timeframe')
+
+    # Current unix timestamp (ms) minus delta
+    timestamp_to_use = int(time.time())*1000 - timeframe_to_timestamp(timeframe)
+    print(timeframe,timestamp_to_use)
+
+
+    df = get_user_data(username,timestamp_to_use)
 
     #print(df.columns)
 

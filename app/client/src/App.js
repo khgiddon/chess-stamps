@@ -17,6 +17,7 @@ import OpeningsGrid from './components/OpeningsGrid';
 function App() {
   const [allopenings, setAllOpenings] = useState([]);
   const [username, setUsername] = useState('khg002');
+  const [timeframe, setTimeframe] = useState('last 12 months');
   const [data, setData] = useState([]);
   const [progress, setProgress] = useState(0);
   const [gamesexpected, setGamesExpected] = useState(0);
@@ -24,10 +25,11 @@ function App() {
   const [hasallopenings, setHasAllOpenings] = useState(false);
 
 
-  const handleFetchData = useCallback((username = 'khg002') => {
+  const handleFetchData = useCallback((username = 'khg002', timeframe = 'last 3 months') => {
+    // console.log(timeframe)
     setLoading(true); // Set loading to true when the fetch starts
     setHasAllOpenings(false);
-    fetchData(username, setData, setProgress, setGamesExpected)
+    fetchData(username, timeframe, setData, setProgress, setGamesExpected)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
 
@@ -48,8 +50,9 @@ function App() {
     }
   }, [hasallopenings]);
 
-  const handleSubmit = (newUsername) => {
-    handleFetchData(newUsername);
+  const handleSubmit = (newUsername,newTimeframe) => {
+    handleFetchData(newUsername,newTimeframe);
+    console.log(newTimeframe)
   }
 //         
 
