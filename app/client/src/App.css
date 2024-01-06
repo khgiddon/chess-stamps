@@ -88,6 +88,12 @@ h1 {
   font-size: 1rem;  /* Adjust this value as you see fit */
 }
 
+.summaryChart {
+  max-width: 80%;  /* Adjust this value as you see fit */
+  margin: auto;
+  text-align: center;
+}
+
 .dotted-underline {
   text-decoration: underline dotted;
 }
