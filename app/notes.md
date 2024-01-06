@@ -6,17 +6,19 @@ Transpositions are included in the player games, because it uses the assigned op
 
 TODO:
 
+
+MVP release
 - API error handling
 - Upgrade lichess API auth
 - Open Lichess links in new tab
 
-- Smooth scroll back up after clicking "Hide all openings"
 
+
+COSMETIC
 - Filter by ply, played openings, unplayed openings
 - More interesting presentation of stats
-
+- Smooth scroll back up after clicking "Hide all openings"
 - Format tooltip text
-- Use React state to leave username box blank until user clicks "Submit"
 
 
 

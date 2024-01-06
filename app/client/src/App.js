@@ -69,14 +69,15 @@ function App() {
           />
           <BlockIntro />
         </div>
-      </div>
-      <div className = 'lower-container'>
         {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
         {!loading && (
           <div className="results-summary-container">
             <ResultsSummary data={data} username={username} />
           </div>
         )}
+      </div>
+      <div className = 'lower-container'>
+
         {!loading && <DisplayTable data={data} />}
         {!loading && <LowerButtons 
         handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
