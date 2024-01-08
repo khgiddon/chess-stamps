@@ -2,6 +2,7 @@ import React from 'react';
 import { formatPercentage } from '../utilityFunctions';
 import { addThousandsSeparator } from '../utilityFunctions';
 import { BarChart } from '@mui/x-charts/BarChart';
+import Stack from '@mui/material/Stack';
 import BarChartIcon from '@mui/icons-material/BarChart';
 
 
@@ -54,18 +55,26 @@ const ResultsSummary = ({ data, username }) => {
   if (!data.total_stamps) return null;
 
   return (
-    <div className='results-summary-container'>
-       <BarChartIcon className="summaryIcon" />
-      <div className="summaryText">
-        Analyzed <b>{addThousandsSeparator(data.total_stamps)}</b> opening stamps from <b>{addThousandsSeparator(data.total_games)}</b> games played by <b>{username}</b>.
-        <br/><br/>
-        You've collected <b>{addThousandsSeparator(data.unique_stamps)}</b> unique stamps out of <b>{addThousandsSeparator(data.unique_stamps_all)}</b> possible stamps, or <b>{formatPercentage(data.unique_stamps/data.unique_stamps_all)}%</b> of all stamps.
+    <div className='results-summary-parent-container'>
+      <div className='results-summary-container'>
+        <span className="summaryTitle">
+          <h2>
+          <Stack direction="row" alignItems="center" gap={1}>
+            Overall statistics
+            <BarChartIcon color="primary"/>
+            </Stack>
+          </h2>
+          </span>  
+        <div className="summaryText">
+          Analyzed <b>{addThousandsSeparator(data.total_stamps)}</b> opening stamps from <b>{addThousandsSeparator(data.total_games)}</b> games played by <b>{username}</b>.
+          <br/><br/>
+          You've collected <b>{addThousandsSeparator(data.unique_stamps)}</b> unique stamps out of <b>{addThousandsSeparator(data.unique_stamps_all)}</b> possible stamps, or <b>{formatPercentage(data.unique_stamps/data.unique_stamps_all)}%</b> of all stamps.
+        </div>
+
+        <div className="summaryChart">
+          {horizontalBars()}
+        </div>  
       </div>
-
-      <div className="summaryChart">
-        {horizontalBars()}
-      </div>  
-
     </div>
   );
 };

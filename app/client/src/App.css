@@ -22,6 +22,7 @@ html, body {
       background-position: right;
       background-repeat: no-repeat;
     }
+      
   } 
 
   .lower-container {
@@ -31,6 +32,7 @@ html, body {
  h2, h3 {
   text-align: center;
   font-family: 'Lato', Arial, sans-serif;
+  font-size: 125%;
 }
 
 h1 {
@@ -86,7 +88,6 @@ h1 {
 
 .summaryText {
   font-size: 1rem;  /* Adjust this value as you see fit */
-  text-align: center;
 }
 
 .summaryChart {
@@ -241,21 +242,30 @@ h1 {
   }
 }
 
-.results-summary-container {
-  margin: auto;
-  margin-bottom: 0px;
-  max-width: 40%;
-  padding: 10px;
-  padding-top: 10px;
-  margin-bottom: 20px;  
-  /* background-color: #B4C5E4; */
-  background-color: #FFFFFE;
-  color: black;
+.results-summary-parent-container {
+  background-color: #f9f9f9;
+  
   border-color: lightgrey;
   border-style: solid;
-  border-radius: 5px;
-  border-width: 1px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  /* border-radius: 5px; */
+  border-width: 1px 0px 1px 0px;
+  padding: 10px;
+  padding-top: 3px;
+
+  /*
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+  */
+
+}
+
+.results-summary-container {
+  margin: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  max-width: 40%;
+  /* background-color: #B4C5E4; */
+  color: black;
+
 }
 
 @media (max-width: 700px) {
@@ -265,7 +275,17 @@ h1 {
   }
 }
 
+.results-summary-container h2 {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  text-align: center;
+  color: #2074d4;
+  text-decoration: underline;
+  
 
+}
 
 
 .grid-container {
