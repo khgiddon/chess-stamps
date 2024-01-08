@@ -2,7 +2,7 @@ import React from 'react';
 import { formatPercentage } from '../utilityFunctions';
 import { addThousandsSeparator } from '../utilityFunctions';
 import { BarChart } from '@mui/x-charts/BarChart';
-
+import BarChartIcon from '@mui/icons-material/BarChart';
 
 
 
@@ -15,11 +15,9 @@ const ResultsSummary = ({ data, username }) => {
         , max: data.unique_stamps_all
         , label: 'Played unique stamps' 
         , tickInterval: [1000,2000,data.unique_stamps_all]
-  
       },
     ],
-    height: 150,
-    
+    height: 200,    
   };
   const dataset = [
     {
@@ -27,9 +25,17 @@ const ResultsSummary = ({ data, username }) => {
       cat: username,
     },
     {
-      val: data.unique_stamps,
-      cat: 'Magnus Carlsen',
+      val: 1023,
+      cat: 'Carlsen',
     },    
+    {
+      val: 1223,
+      cat: 'Nakamura',
+    },   
+    {
+      val: 2023,
+      cat: 'Naroditsky',
+    },           
   ];
   
   const horizontalBars = () => {
@@ -48,7 +54,8 @@ const ResultsSummary = ({ data, username }) => {
   if (!data.total_stamps) return null;
 
   return (
-    <div>
+    <div className='results-summary-container'>
+       <BarChartIcon className="summaryIcon" />
       <div className="summaryText">
         Analyzed <b>{addThousandsSeparator(data.total_stamps)}</b> opening stamps from <b>{addThousandsSeparator(data.total_games)}</b> games played by <b>{username}</b>.
         <br/><br/>

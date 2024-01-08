@@ -7,6 +7,7 @@ import Tooltip from '@mui/material/Tooltip';
 import HelpIcon from '@mui/icons-material/Help';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
 
 
 
@@ -110,12 +111,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
         <p className="grandmaster-names-block">
           Or click to see all-time results from <a>Magnus Carlsen</a>, <a>Hikaru Nakamura</a>, or <a>Daniel Naroditsky</a>.
         </p>
-
-
-            
-
       </Box>
-     
     </Box>
   );
 };

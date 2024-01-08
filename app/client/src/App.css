@@ -86,12 +86,12 @@ h1 {
 
 .summaryText {
   font-size: 1rem;  /* Adjust this value as you see fit */
+  text-align: center;
 }
 
 .summaryChart {
-  max-width: 80%;  /* Adjust this value as you see fit */
-  margin: auto;
-  text-align: center;
+  max-width: 100%;  /* Adjust this value as you see fit */
+  padding-left: 50px;
 }
 
 .dotted-underline {
@@ -246,11 +246,16 @@ h1 {
   margin-bottom: 0px;
   max-width: 40%;
   padding: 10px;
-  margin-bottom: 14px;  
-  background-color: #B4C5E4;
+  padding-top: 10px;
+  margin-bottom: 20px;  
+  /* background-color: #B4C5E4; */
+  background-color: #FFFFFE;
   color: black;
+  border-color: lightgrey;
+  border-style: solid;
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+  border-width: 1px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 700px) {
