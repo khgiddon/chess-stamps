@@ -29,8 +29,9 @@ const OpeningsGrid = ({ allopenings }) => {
 
   return (
     <div>
-      <div className='all-openings-intro-text'>
-        All openings
+      <div className='all-openings-intro-container'>
+        <h2>All openings</h2>
+        <span className='all-openings-intro-subtitle'>Openings you've played are highlighted in green. Mouseover to see board position.</span>
       </div>
       <div className="all-openings-grid-container">
         {isHovered && (

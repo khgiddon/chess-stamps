@@ -7,7 +7,7 @@ Color of stmap image: #fefbea
 */
 
 html, body {
-  background: #FFFFFF;
+  background: #FFF5EE;
   font-family: Arial, sans-serif;
   /* background-color: #2596be;  */
 }
@@ -32,7 +32,7 @@ html, body {
  h2, h3 {
   text-align: center;
   font-family: 'Lato', Arial, sans-serif;
-  font-size: 125%;
+  font-size: 130%;
 }
 
 h1 {
@@ -92,7 +92,8 @@ h1 {
 
 .summaryChart {
   max-width: 100%;  /* Adjust this value as you see fit */
-  padding-left: 50px;
+  margin-top: 0px;
+  padding-top: 0px;
 }
 
 .dotted-underline {
@@ -154,8 +155,11 @@ h1 {
   margin: 0 auto; /* Centers the wrapper */
   display: flex;
   flex-direction: column;  
-  background-color: lightblue;
+  background-color: white;
   border-radius: 20px;
+  border-color: #2074d4;
+  border-width: 1px;
+  border-style: solid;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Horizontal offset, vertical offset, blur radius, color */
 }
 
@@ -166,6 +170,12 @@ h1 {
   align-items: center; /* Keeps items vertically centered */
   justify-content: center; /* Horizontally centers items in the container */
   line-height: 1; /* Adjust this value based on the actual height of your text */
+}
+
+.progress-bar-subtitle {
+  font-size: 0.8em;
+  padding-bottom: 5px;
+
 }
 
 .progress-bar-container {
@@ -179,7 +189,7 @@ h1 {
   overflow: hidden;
   margin-left: 5%;
   margin-right: 5%;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2); /* Horizontal offset, vertical offset, blur radius, color */
 
 }
@@ -212,7 +222,7 @@ h1 {
 }
 
 .chess-piece {
-  width: 50px; /* Adjust size as needed */
+  width: 20px; /* Adjust size as needed */
   height: auto;
   margin-left: 15px; /* Adjust as needed for space between text and image */
   margin-bottom: 0px;
@@ -237,7 +247,7 @@ h1 {
 
 @media (max-width: 700px) {
   .intro-container {
-    max-width: 80%;
+    max-width: 85%;
 
   }
 }
@@ -250,7 +260,7 @@ h1 {
   /* border-radius: 5px; */
   border-width: 1px 0px 1px 0px;
   padding: 10px;
-  padding-top: 3px;
+  padding-top: 10px;
 
   /*
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
@@ -270,7 +280,7 @@ h1 {
 
 @media (max-width: 700px) {
   .results-summary-container {
-    max-width: 80%;
+    max-width: 85%;
 
   }
 }
@@ -279,12 +289,30 @@ h1 {
   margin-top: 5px;
   margin-bottom: 10px;
   padding-top: 0px;
-  padding-bottom: 0px;
+  padding-bottom: 4px;
   text-align: center;
   color: #2074d4;
   text-decoration: underline;
-  
+}
 
+.grid-outer-container {
+  margin: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  /* background-color: #B4C5E4; */
+  color: black;
+
+
+}
+
+.lower-container h2 {
+  margin-top: 0px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 4px;
+  text-align: center;
+  color: #2074d4;
+  text-decoration: underline;
 }
 
 
@@ -432,13 +460,16 @@ h1 {
   text-decoration: underline; /* This will remove the underline from the link */
 }
 
-.all-openings-intro-text {
-  text-align: center;
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-top: 20px;
+.all-openings-intro-container {
+  margin-top: 0px;
   margin-bottom: 20px;
+  text-align: center;
+}
 
+.all-openings-intro-subtitle {
+  font-size: 0.9em;
+  text-align: center;
+  font-style: italic;
 }
 
 

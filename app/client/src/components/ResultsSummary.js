@@ -18,12 +18,13 @@ const ResultsSummary = ({ data, username }) => {
         , tickInterval: [1000,2000,data.unique_stamps_all]
       },
     ],
-    height: 200,    
+    height: 200,  
   };
   const dataset = [
     {
       val: data.unique_stamps,
       cat: username,
+      color: '#1976d2',
     },
     {
       val: 1023,
@@ -47,7 +48,11 @@ const ResultsSummary = ({ data, username }) => {
         series={[{ dataKey: 'val', label: 'Played unique stamps'}]}
         layout="horizontal"
         slotProps={{ legend: { hidden: 'True' } }}
+        margin={{ left: 100 , top: 0}}
+        colors={[
+          '#2074d4']}
         {...chartSetting}
+        
       />
     );
   }
@@ -57,20 +62,18 @@ const ResultsSummary = ({ data, username }) => {
   return (
     <div className='results-summary-parent-container'>
       <div className='results-summary-container'>
-        <span className="summaryTitle">
           <h2>
-          <Stack direction="row" alignItems="center" gap={1}>
-            Overall statistics
+          <Stack direction="row" alignItems="center" gap={1} justifyContent="center">
+            Summary statistics
             <BarChartIcon color="primary"/>
             </Stack>
           </h2>
-          </span>  
         <div className="summaryText">
-          Analyzed <b>{addThousandsSeparator(data.total_stamps)}</b> opening stamps from <b>{addThousandsSeparator(data.total_games)}</b> games played by <b>{username}</b>.
-          <br/><br/>
-          You've collected <b>{addThousandsSeparator(data.unique_stamps)}</b> unique stamps out of <b>{addThousandsSeparator(data.unique_stamps_all)}</b> possible stamps, or <b>{formatPercentage(data.unique_stamps/data.unique_stamps_all)}%</b> of all stamps.
+          <ul>
+            <li>Analyzed <b>{addThousandsSeparator(data.total_stamps)}</b> opening stamps from <b>{addThousandsSeparator(data.total_games)}</b> games played by <b>{username}</b>.</li>
+            <li>You've collected <b>{addThousandsSeparator(data.unique_stamps)}</b> unique stamps out of <b>{addThousandsSeparator(data.unique_stamps_all)}</b> possible stamps, or <b>{formatPercentage(data.unique_stamps/data.unique_stamps_all)}%</b> of all stamps.</li>
+          </ul>
         </div>
-
         <div className="summaryChart">
           {horizontalBars()}
         </div>  
