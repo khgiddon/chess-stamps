@@ -70,10 +70,12 @@ def generate_base_statistics(df,username,stored_usernames):
     
     # Uncomment to save the base file for a particular username
     
-    if username.lower() in stored_usernames:
+    #if username.lower() in stored_usernames:
+    """
+    if username.lower() == 'nihalsarin2004':
         print('saving base file')
-        df.to_csv("assets/" + username +".tsv", sep="\t", index=False)
-        
+        df.to_csv("assets/" + username.lower() +".tsv", sep="\t", index=False)
+    """  
 
     return(df)
 
@@ -95,7 +97,7 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
     # Note that the time range is ignored here
     # Add all stores usernames here
 
-    stored_usernames = ['drnykterstein','rebeccaharris','alireza2003']
+    stored_usernames = ['drnykterstein','rebeccaharris','alireza2003','nihalsarin2004']
 
     print('username',username)
     if username.lower() in stored_usernames:

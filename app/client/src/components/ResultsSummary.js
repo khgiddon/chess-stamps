@@ -29,12 +29,17 @@ const ResultsSummary = ({ data, username }) => {
     ],
     height: 200,  
   };
+
   const dataset = [
-    {
-      val: data.unique_stamps,
-      cat: username,
-      color: '#1976d2',
-    },
+  ...(username in usernameMapping ? [] : [{
+    val: data.unique_stamps,
+    cat: username,
+    color: '#1976d2',
+  }]),
+  {
+    val: 1098, /* ACTUAL Jan 8 2024 */ 
+    cat: 'Carlsen',
+  },    
     {
       val: 1098, /* ACTUAL Jan 8 2024 */ 
       cat: 'Carlsen',

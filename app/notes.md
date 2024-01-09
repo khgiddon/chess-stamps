@@ -12,6 +12,9 @@ MVP release
 - Upgrade lichess API auth
 - Open Lichess links in new tab
 
+- Abort if GM link clicked while loading
+- Format game count with commas
+
 
 
 COSMETIC
