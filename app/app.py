@@ -9,6 +9,8 @@ import numpy as np
 import requests
 import os
 import json
+import time
+
 from dotenv import load_dotenv
 
 app = Flask(__name__)
@@ -34,7 +36,8 @@ def response_parser(s):
 
     return data
 
-def generate_base_statistics(df):
+def generate_base_statistics(df,username,stored_usernames):
+
     # Begin generating stats
 
     # Credit openings with children
@@ -66,14 +69,20 @@ def generate_base_statistics(df):
 
     
     # Uncomment to save the base file for a particular username
-    #df.to_csv("assets/base_file.tsv", sep="\t", index=False)
+    
+    #if username.lower() in stored_usernames:
+    """
+    if username.lower() == 'nihalsarin2004':
+        print('saving base file')
+        df.to_csv("assets/" + username.lower() +".tsv", sep="\t", index=False)
+    """  
 
     return(df)
 
 
 # Get user data
 @cache.memoize(timeout=10)
-def get_user_data(username,defaultusername='khg002'):
+def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
 
     """
     This script uses the Lichess API to export the games of a user
@@ -84,7 +93,21 @@ def get_user_data(username,defaultusername='khg002'):
 
     """
 
-    # If no username is provided, load the default file (for dev purposes)
+    # If no username, or the default username, is provided, load the default file (for dev purposes
+    # Note that the time range is ignored here
+    # Add all stores usernames here
+
+    stored_usernames = ['drnykterstein','rebeccaharris','alireza2003','nihalsarin2004']
+
+    print('username',username)
+    if username.lower() in stored_usernames:
+        print('loading stored file')
+        df = pd.read_csv("assets/" + username + ".tsv", sep="\t")
+
+        #df = generate_base_statistics(df,username,stored_usernames)
+
+        return df
+
     if username == None or username == defaultusername:
         # Load default file
         base_file = "assets/base_file.tsv"
@@ -101,8 +124,7 @@ def get_user_data(username,defaultusername='khg002'):
         print(f'querying lichess api for {username}...')
 
         # Get user data
-        max = 300
-
+        max = 30000
         
 
         print(f'querying lichess api for {username}...')
@@ -116,7 +138,7 @@ def get_user_data(username,defaultusername='khg002'):
             "Content-Type": "application/x-ndjson",
             "Authorization": f"Bearer {lichessToken}"
         }
-        url = f"https://lichess.org/api/user/{username}"   
+        url = f"https://lichess.org/api/user/{username}?since={timestamp_to_use}"   
         response = requests.get(url,headers=headers)
         d = json.loads(response.content.decode('utf-8'))
         games_to_pull = sum(d['perfs'][game_type]['games'] for game_type in ['bullet', 'blitz', 'rapid', 'classical'])
@@ -126,7 +148,7 @@ def get_user_data(username,defaultusername='khg002'):
         chunks_expected = min(games_to_pull,max)   
         chunks = 0
         response_test = []
-        url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical"
+        url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
         response = requests.get(url,headers=headers,stream=True)
         print('received response from lichess api')
         for chunk in response.iter_content(chunk_size=1024):
@@ -150,14 +172,28 @@ def get_user_data(username,defaultusername='khg002'):
         df['player_black'] = 0
         for game in l:
             game_parsed = response_parser(game)
-            if game_parsed['White'] == username:
+            if game_parsed['White'].lower() == username.lower():
                 df.loc[df['name'] == game_parsed['Opening'],'player_white'] += 1
             else:
                 df.loc[df['name'] == game_parsed['Opening'],'player_black'] += 1
 
         # Generate statistics
-        df = generate_base_statistics(df)
+        df = generate_base_statistics(df,username,stored_usernames)
         return df
+    
+def timeframe_to_timestamp(timeframe):
+    if timeframe == 'forever':
+        return 31536000*10*1000
+    elif timeframe == 'last 12 months':
+        return 31536000*1000
+    elif timeframe == 'last 3 months':
+        return 7776000*1000
+    elif timeframe == 'last month':
+        return 2592000*1000
+    elif timeframe == 'last week':
+        return 604800*1000
+    elif timeframe == 'last 24 hours':
+        return 86400*1000
 
 @app.route('/')
 def hello_world():
@@ -170,7 +206,14 @@ def send_data_to_frontend():
 
     # Core data pull
     username = request.args.get('username')
-    df = get_user_data(username)
+    timeframe = request.args.get('timeframe')
+
+    # Current unix timestamp (ms) minus delta
+    timestamp_to_use = int(time.time())*1000 - timeframe_to_timestamp(timeframe)
+    print(timeframe,timestamp_to_use)
+
+
+    df = get_user_data(username,timestamp_to_use)
 
     #print(df.columns)
 
@@ -210,6 +253,8 @@ def send_data_to_frontend():
     # Specify columns and only return the columns that are needed to speed things up
     all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
     df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
+
+    print(deepest_ply)
 
 
     # For now, we'll just return the dataframe data as JSON

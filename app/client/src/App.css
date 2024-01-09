@@ -7,31 +7,75 @@ Color of stmap image: #fefbea
 */
 
 html, body {
-  background-color: #EEF4ED;
+  background: #FFF5EE;
   font-family: Arial, sans-serif;
   /* background-color: #2596be;  */
-
 }
+
+.upper-container {
+  background-color: #FFF5EE;
+  }
+
+  @media screen and (min-width: 768px) {
+    .upper-container {
+      background-image: url("/public/assets/misc_images/chessboard_partial.svg");
+      background-position: right;
+      background-repeat: no-repeat;
+    }
+      
+  } 
+
+  .lower-container {
+    background-color: #f5f5f5;
+    }
 
  h2, h3 {
   text-align: center;
   font-family: 'Lato', Arial, sans-serif;
+  font-size: 130%;
 }
 
 h1 {
   text-align: center;
   font-family: 'Lato', Arial, sans-serif;
-  font-size: 300%;
+  font-size: 175%;
   font-weight: 0;
   margin-top: 20px;
   margin-bottom: 20px;
+  padding-right: 20px;
+  padding-left: 20px;
+}
+.opaque-tooltip .MuiTooltip-tooltip {
+  opacity: 1;
+  background-color: red;
 }
 
 
-/* ChessOpeningsCollector.css */
-.smallText {
-  font-size: 0.9rem;  /* Adjust this value as you see fit */
 
+.select-timeframe-text {
+  font-size: 0.8rem;  /* Adjust this value as you see fit */
+  text-align: right;
+  margin-top: 3px;
+}
+
+.small-select .MuiMenuItem-root {
+  font-size: 0.5rem;
+}
+
+.grandmaster-names-block {
+  font-size: 0.9rem;  /* Adjust this value as you see fit */
+  text-align: center;
+  margin-top: 0px;
+  margin-bottom: 25px;
+}
+
+.grandmaster-names-block a {
+  color: purple; /* Change to your preferred color */
+  text-decoration: underline dotted
+}
+
+.grandmaster-names-block a:hover {
+  text-decoration: underline dashed
 }
 
 .nameText {
@@ -44,6 +88,20 @@ h1 {
 
 .summaryText {
   font-size: 1rem;  /* Adjust this value as you see fit */
+}
+
+.summaryChart {
+  max-width: 100%;  /* Adjust this value as you see fit */
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+.dotted-underline {
+  text-decoration: underline dotted;
+}
+
+.dotted-underline:hover {
+  text-decoration: underline dashed;
 }
 
 .usernameContainer {
@@ -68,29 +126,73 @@ h1 {
   padding-bottom: 0px;
 }
 
+.header-tooltip-icon {
+  display: flex;
+  align-items: center;
+}
+
+.tooltip-content {
+  text-align: left;
+  font-size: 1rem;
+}
+
 .stampImage {
   width: 180px;
   height: auto;
   border: none;
 }
 
+.tooltip-text {
+  color: #222;
+  font-size: .75em;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
 .progress-wrapper {
-  width: 70%;
+  width: 60%;
   margin: 0 auto; /* Centers the wrapper */
+  padding: 5px;
   display: flex;
   flex-direction: column;  
-  background-color: lightblue;
+  background-color: white;
   border-radius: 20px;
+  border-color: #2074d4;
+  border-width: 1px;
+  border-style: solid;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Horizontal offset, vertical offset, blur radius, color */
+}
+
+@media (max-width: 700px) {
+  .progress-wrapper {
+    width: 90%;
+
+  }
+}
+
+.progress-cancel-button {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .progress-additional-text {
   margin-top: 10px; /* Space between text and progress bar */
-  margin-bottom: 10px; /* Space between text and progress bar */
+  margin-bottom: 0px; /* Space between text and progress bar */
   display: flex;
   align-items: center; /* Keeps items vertically centered */
   justify-content: center; /* Horizontally centers items in the container */
+  text-align: center;
+
   line-height: 1; /* Adjust this value based on the actual height of your text */
+}
+
+.progress-bar-subtitle {
+  font-size: 0.8em;
+  padding-bottom: 5px;
+  text-align: center;
+
 }
 
 .progress-bar-container {
@@ -104,7 +206,8 @@ h1 {
   overflow: hidden;
   margin-left: 5%;
   margin-right: 5%;
-  margin-bottom: 30px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2); /* Horizontal offset, vertical offset, blur radius, color */
 
 }
@@ -137,7 +240,7 @@ h1 {
 }
 
 .chess-piece {
-  width: 50px; /* Adjust size as needed */
+  width: 20px; /* Adjust size as needed */
   height: auto;
   margin-left: 15px; /* Adjust as needed for space between text and image */
   margin-bottom: 0px;
@@ -152,43 +255,83 @@ h1 {
 
 .intro-container {
   margin: auto;
-  margin-bottom: 14px;
-  max-width: 60%;
+  margin-bottom: 0px;
+  max-width: 40%;
   padding: 10px;
   padding-top: 10px;
-  padding-bottom: 10px;
-  background-color: navajowhite;
+  padding-bottom: 0px;
   border-radius: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
 }
 
 @media (max-width: 700px) {
   .intro-container {
-    max-width: 80%;
+    max-width: 85%;
 
   }
+}
+
+.results-summary-parent-container {
+  background-color: #f9f9f9;
+  
+  border-color: lightgrey;
+  border-style: solid;
+  /* border-radius: 5px; */
+  border-width: 1px 0px 1px 0px;
+  padding: 10px;
+  padding-top: 10px;
+
+  /*
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+  */
+
 }
 
 .results-summary-container {
   margin: auto;
+  margin-top: 0px;
   margin-bottom: 0px;
-  max-width: 60%;
-  padding: 10px;
-  margin-bottom: 14px;  
-  background-color: #B4C5E4;
+  max-width: 40%;
+  /* background-color: #B4C5E4; */
   color: black;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
+
 }
 
 @media (max-width: 700px) {
   .results-summary-container {
-    max-width: 80%;
+    max-width: 85%;
 
   }
 }
 
+.results-summary-container h2 {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  padding-top: 0px;
+  padding-bottom: 4px;
+  text-align: center;
+  color: #2074d4;
+  text-decoration: underline;
+}
 
+.grid-outer-container {
+  margin: auto;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  /* background-color: #B4C5E4; */
+  color: black;
+
+
+}
+
+.lower-container h2 {
+  margin-top: 0px;
+  margin-bottom: 10px;
+  padding-top: 10px;
+  padding-bottom: 4px;
+  text-align: center;
+  color: #2074d4;
+  text-decoration: underline;
+}
 
 
 .grid-container {
@@ -335,13 +478,16 @@ h1 {
   text-decoration: underline; /* This will remove the underline from the link */
 }
 
-.all-openings-intro-text {
-  text-align: center;
-  font-size: 1.2em;
-  font-weight: bold;
-  margin-top: 20px;
+.all-openings-intro-container {
+  margin-top: 0px;
   margin-bottom: 20px;
+  text-align: center;
+}
 
+.all-openings-intro-subtitle {
+  font-size: 0.9em;
+  text-align: center;
+  font-style: italic;
 }
 
 

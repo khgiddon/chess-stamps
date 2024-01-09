@@ -16,18 +16,27 @@ import OpeningsGrid from './components/OpeningsGrid';
 
 function App() {
   const [allopenings, setAllOpenings] = useState([]);
-  const [username, setUsername] = useState('khg002');
+  const [username, setUsername] = useState('drnykterstein');
+  const [timeframe, setTimeframe] = useState('last 12 months');
   const [data, setData] = useState([]);
   const [progress, setProgress] = useState(0);
   const [gamesexpected, setGamesExpected] = useState(0);
   const [loading, setLoading] = useState(false); // Added loading state
   const [hasallopenings, setHasAllOpenings] = useState(false);
+  const abortController = useRef(null);  // Use useRef to hold the AbortController
 
 
-  const handleFetchData = useCallback((username = 'khg002') => {
+
+
+  const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months') => {
+    if (abortController.current) {  // If there's an existing AbortController
+      abortController.current.abort();  // Abort any ongoing fetch request
+    }
+    abortController.current = new AbortController();  // Create a new AbortController for the new fetch request
+    // console.log(timeframe)
     setLoading(true); // Set loading to true when the fetch starts
     setHasAllOpenings(false);
-    fetchData(username, setData, setProgress, setGamesExpected)
+    fetchData(username, timeframe, setData, setProgress, setGamesExpected, abortController)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
 
@@ -48,35 +57,40 @@ function App() {
     }
   }, [hasallopenings]);
 
-  const handleSubmit = (newUsername) => {
-    handleFetchData(newUsername);
+  const handleSubmit = (newUsername,newTimeframe) => {
+    handleFetchData(newUsername,newTimeframe);
+    console.log(newTimeframe)
   }
+
+  const storedUsernames = ['khg002', 'drnykterstein', 'alireza2003', 'rebeccaharris'];         
 
   return (
     <div>
-      <TopNav />
-      <BlockHeader />
-      <div className="intro-container">
-        <BlockIntro />
-        <BlockUsernameSubmit 
-          username={username}
-          setUsername={setUsername}
-          handleSubmit={handleSubmit}
-        />
-      </div>
 
-      {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
-      {!loading && (
-        <div className="results-summary-container">
-          <ResultsSummary data={data} username={username} />
+      <div className='upper-container'>
+        <BlockHeader />
+        <div className="intro-container">
+          <BlockUsernameSubmit 
+            username={username}
+            setUsername={setUsername}
+            handleSubmit={handleSubmit}
+            loading={loading}
+          />
+          <BlockIntro />
         </div>
-      )}
-      {!loading && <DisplayTable data={data} />}
-      {!loading && <LowerButtons 
-      handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
-      />}
-      {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
+        {loading && !storedUsernames.some(storedUsername => storedUsername.toLowerCase() === username.toLowerCase()) && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
+        {!loading && (
+            <ResultsSummary data={data} username={username} />
+        )}
+      </div>
+      <div className = 'lower-container'>
+        {!loading && <DisplayTable data={data} />}
+        {!loading && <LowerButtons 
+        handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
+        />}
+        {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
     </div>
+  </div>
   );
 }
 export default App;
