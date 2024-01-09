@@ -23,13 +23,20 @@ function App() {
   const [gamesexpected, setGamesExpected] = useState(0);
   const [loading, setLoading] = useState(false); // Added loading state
   const [hasallopenings, setHasAllOpenings] = useState(false);
+  const abortController = useRef(null);  // Use useRef to hold the AbortController
+
+
 
 
   const handleFetchData = useCallback((username = 'khg002', timeframe = 'last 3 months') => {
+    if (abortController.current) {  // If there's an existing AbortController
+      abortController.current.abort();  // Abort any ongoing fetch request
+    }
+    abortController.current = new AbortController();  // Create a new AbortController for the new fetch request
     // console.log(timeframe)
     setLoading(true); // Set loading to true when the fetch starts
     setHasAllOpenings(false);
-    fetchData(username, timeframe, setData, setProgress, setGamesExpected)
+    fetchData(username, timeframe, setData, setProgress, setGamesExpected, abortController)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
 
@@ -70,7 +77,7 @@ function App() {
           />
           <BlockIntro />
         </div>
-        {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} />}
+        {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
         {!loading && (
             <ResultsSummary data={data} username={username} />
         )}
