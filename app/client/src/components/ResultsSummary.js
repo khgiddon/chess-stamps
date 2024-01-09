@@ -40,13 +40,13 @@ const ResultsSummary = ({ data, username }) => {
       cat: 'Carlsen',
     },    
     {
-      val: 1024,/* ACTUAL Jan 8 2024 */ 
-      cat: 'Firouzja',
-    },   
-    {
       val: 1059, /* ACTUAL Jan 8 2024 */ 
       cat: 'Naroditsky',
-    },           
+    }, 
+    {
+      val: 1024,/* ACTUAL Jan 8 2024 */ 
+      cat: 'Firouzja',
+    },             
   ];
   
   const horizontalBars = () => {

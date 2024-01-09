@@ -16,7 +16,7 @@ import OpeningsGrid from './components/OpeningsGrid';
 
 function App() {
   const [allopenings, setAllOpenings] = useState([]);
-  const [username, setUsername] = useState('khg002');
+  const [username, setUsername] = useState('drnykterstein');
   const [timeframe, setTimeframe] = useState('last 12 months');
   const [data, setData] = useState([]);
   const [progress, setProgress] = useState(0);
@@ -28,7 +28,7 @@ function App() {
 
 
 
-  const handleFetchData = useCallback((username = 'khg002', timeframe = 'last 3 months') => {
+  const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months') => {
     if (abortController.current) {  // If there's an existing AbortController
       abortController.current.abort();  // Abort any ongoing fetch request
     }

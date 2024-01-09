@@ -61,7 +61,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
           <TextField
             type="text"
             placeholder="Enter your Lichess username"
-            value={inputValue === 'khg002' ? '' : inputValue}
+            value={inputValue === 'drnykterstein' ? '' : inputValue}
             onChange={handleChange}
             id="outlined-basic"
             required
