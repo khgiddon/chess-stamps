@@ -36,8 +36,10 @@ def response_parser(s):
 
     return data
 
-def generate_base_statistics(df):
+def generate_base_statistics(df,username):
+
     # Begin generating stats
+    stored_usernames = ['drnykterstein','rebeccaharris','alireza2003']
 
     # Credit openings with children
     df['player_white_with_children'] = df['player_white']
@@ -68,7 +70,9 @@ def generate_base_statistics(df):
 
     
     # Uncomment to save the base file for a particular username
-    #df.to_csv("assets/base_file.tsv", sep="\t", index=False)
+    if username.lower() in stored_usernames:
+        print('saving base file')
+        df.to_csv("assets/" + username +".tsv", sep="\t", index=False)
 
     return(df)
 
@@ -105,8 +109,7 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
         print(f'querying lichess api for {username}...')
 
         # Get user data
-        max = 300
-
+        max = 30000
         
 
         print(f'querying lichess api for {username}...')
@@ -160,7 +163,7 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
                 df.loc[df['name'] == game_parsed['Opening'],'player_black'] += 1
 
         # Generate statistics
-        df = generate_base_statistics(df)
+        df = generate_base_statistics(df,username)
         return df
     
 def timeframe_to_timestamp(timeframe):

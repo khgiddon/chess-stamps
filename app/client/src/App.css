@@ -26,8 +26,7 @@ html, body {
   } 
 
   .lower-container {
-    background-color: #FFF5EE;
-    
+    background-color: #f5f5f5;
     }
 
  h2, h3 {
@@ -152,8 +151,9 @@ h1 {
 }
 
 .progress-wrapper {
-  width: 70%;
+  width: 60%;
   margin: 0 auto; /* Centers the wrapper */
+  padding: 5px;
   display: flex;
   flex-direction: column;  
   background-color: white;
@@ -164,18 +164,34 @@ h1 {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2); /* Horizontal offset, vertical offset, blur radius, color */
 }
 
+@media (max-width: 700px) {
+  .progress-wrapper {
+    width: 90%;
+
+  }
+}
+
+.progress-cancel-button {
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .progress-additional-text {
   margin-top: 10px; /* Space between text and progress bar */
-  margin-bottom: 10px; /* Space between text and progress bar */
+  margin-bottom: 0px; /* Space between text and progress bar */
   display: flex;
   align-items: center; /* Keeps items vertically centered */
   justify-content: center; /* Horizontally centers items in the container */
+  text-align: center;
+
   line-height: 1; /* Adjust this value based on the actual height of your text */
 }
 
 .progress-bar-subtitle {
   font-size: 0.8em;
   padding-bottom: 5px;
+  text-align: center;
 
 }
 
@@ -190,7 +206,8 @@ h1 {
   overflow: hidden;
   margin-left: 5%;
   margin-right: 5%;
-  margin-bottom: 20px;
+  margin-top: 15px;
+  margin-bottom: 15px;
   box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2); /* Horizontal offset, vertical offset, blur radius, color */
 
 }
@@ -254,7 +271,7 @@ h1 {
 }
 
 .results-summary-parent-container {
-  background-color: #f5f5f5;
+  background-color: #f9f9f9;
   
   border-color: lightgrey;
   border-style: solid;

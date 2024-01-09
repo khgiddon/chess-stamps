@@ -9,6 +9,15 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 
 const ResultsSummary = ({ data, username }) => {
 
+  const usernameMapping = {
+    'drnykterstein': 'DrNykterstein (aka Magnus Carlsen)',
+    'rebeccaharris': 'RebeccaHarris (aka Daniel Naroditsky)',
+    'alireza2003': 'alireza2003',
+  };
+
+  const displayUsername = usernameMapping[username.toLowerCase()] || username;
+
+
   const chartSetting = {
     xAxis: [
       {
@@ -27,15 +36,15 @@ const ResultsSummary = ({ data, username }) => {
       color: '#1976d2',
     },
     {
-      val: 1023,
+      val: 1098, /* ACTUAL Jan 8 2024 */ 
       cat: 'Carlsen',
     },    
     {
-      val: 1223,
-      cat: 'Nakamura',
+      val: 1024,/* ACTUAL Jan 8 2024 */ 
+      cat: 'Firouzja',
     },   
     {
-      val: 2023,
+      val: 1024, /* ACTUAL Jan 8 2024 */ 
       cat: 'Naroditsky',
     },           
   ];
@@ -70,7 +79,7 @@ const ResultsSummary = ({ data, username }) => {
           </h2>
         <div className="summaryText">
           <ul>
-            <li>Analyzed <b>{addThousandsSeparator(data.total_stamps)}</b> opening stamps from <b>{addThousandsSeparator(data.total_games)}</b> games played by <b>{username}</b>.</li>
+            <li>Analyzed <b>{addThousandsSeparator(data.total_stamps)}</b> opening stamps from <b>{addThousandsSeparator(data.total_games)}</b> games played by <b>{displayUsername}</b>.</li>
             <li>You've collected <b>{addThousandsSeparator(data.unique_stamps)}</b> unique stamps out of <b>{addThousandsSeparator(data.unique_stamps_all)}</b> possible stamps, or <b>{formatPercentage(data.unique_stamps/data.unique_stamps_all)}%</b> of all stamps.</li>
           </ul>
         </div>
