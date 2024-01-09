@@ -62,7 +62,7 @@ function App() {
     console.log(newTimeframe)
   }
 
-  const storedUsernames = ['khg002', 'drnykterstein', 'alireza2003', 'rebeccaharris'];         
+  const storedUsernames = ['khg002', 'drnykterstein', 'alireza2003', 'rebeccaharris','nihalsarin2004'];         
 
   return (
     <div>
@@ -80,7 +80,7 @@ function App() {
         </div>
         {loading && !storedUsernames.some(storedUsername => storedUsername.toLowerCase() === username.toLowerCase()) && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
         {!loading && (
-            <ResultsSummary data={data} username={username} />
+            <ResultsSummary data={data} username={username} timeframe={timeframe} />
         )}
       </div>
       <div className = 'lower-container'>

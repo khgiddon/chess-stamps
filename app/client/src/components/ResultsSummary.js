@@ -7,16 +7,28 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 
 
 
-const ResultsSummary = ({ data, username }) => {
+const ResultsSummary = ({ data, username, timeframe }) => {
 
   const usernameMapping = {
     'drnykterstein': 'DrNykterstein (aka Magnus Carlsen)',
     'rebeccaharris': 'RebeccaHarris (aka Daniel Naroditsky)',
     'alireza2003': 'alireza2003',
+    'nihalsarin2004': 'nihalsarin2004',
   };
 
   const displayUsername = usernameMapping[username.toLowerCase()] || username;
 
+  const displayTimeframeMapping = {
+    'last 24 hours': 'over the last 24 hours',
+    'last week': 'over the last week',
+    'last month': 'over the last month',
+    'last 3 months': 'over the last 3 months',
+    'last 12 months': 'over the last 12 months',
+    'forever': 'since forever',
+  };
+  
+
+  const displayTimeframe = username in usernameMapping ? 'since forever' : displayTimeframeMapping[timeframe];
 
   const chartSetting = {
     xAxis: [
@@ -37,20 +49,20 @@ const ResultsSummary = ({ data, username }) => {
     color: '#1976d2',
   }]),
   {
-    val: 1098, /* ACTUAL Jan 8 2024 */ 
-    cat: 'Carlsen',
+    val: 1251, /* ACTUAL Jan 8 2024 */ 
+    cat: 'GM Sarin',
   },    
     {
       val: 1098, /* ACTUAL Jan 8 2024 */ 
-      cat: 'Carlsen',
+      cat: 'GM Carlsen',
     },    
     {
       val: 1059, /* ACTUAL Jan 8 2024 */ 
-      cat: 'Naroditsky',
+      cat: 'GM Naroditsky',
     }, 
     {
       val: 1024,/* ACTUAL Jan 8 2024 */ 
-      cat: 'Firouzja',
+      cat: 'GM Firouzja',
     },             
   ];
   
@@ -84,7 +96,7 @@ const ResultsSummary = ({ data, username }) => {
           </h2>
         <div className="summaryText">
           <ul>
-            <li>Analyzed <b>{addThousandsSeparator(data.total_stamps)}</b> opening stamps from <b>{addThousandsSeparator(data.total_games)}</b> games played by <b>{displayUsername}</b>.</li>
+            <li>Analyzed <b>{addThousandsSeparator(data.total_stamps)}</b> opening stamps from <b>{addThousandsSeparator(data.total_games)}</b> games played by <b>{displayUsername}</b> {displayTimeframe}.</li>
             <li>You've collected <b>{addThousandsSeparator(data.unique_stamps)}</b> unique stamps out of <b>{addThousandsSeparator(data.unique_stamps_all)}</b> possible stamps, or <b>{formatPercentage(data.unique_stamps/data.unique_stamps_all)}%</b> of all stamps.</li>
           </ul>
         </div>
