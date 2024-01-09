@@ -61,7 +61,8 @@ function App() {
     handleFetchData(newUsername,newTimeframe);
     console.log(newTimeframe)
   }
-//         
+
+  const storedUsernames = ['khg002', 'drnykterstein', 'alireza2003', 'rebeccaharris'];         
 
   return (
     <div>
@@ -77,7 +78,7 @@ function App() {
           />
           <BlockIntro />
         </div>
-        {loading && username !== 'khg002' && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
+        {loading && !storedUsernames.some(storedUsername => storedUsername.toLowerCase() === username.toLowerCase()) && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
         {!loading && (
             <ResultsSummary data={data} username={username} />
         )}

@@ -44,7 +44,7 @@ const ResultsSummary = ({ data, username }) => {
       cat: 'Firouzja',
     },   
     {
-      val: 1024, /* ACTUAL Jan 8 2024 */ 
+      val: 1059, /* ACTUAL Jan 8 2024 */ 
       cat: 'Naroditsky',
     },           
   ];

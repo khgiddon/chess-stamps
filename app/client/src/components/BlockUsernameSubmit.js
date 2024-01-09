@@ -21,6 +21,13 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
     handleSubmit(inputValue, timeframe);
   };
 
+  const handleStoredUsernameClick = (storedUsername) => {
+    console.log(storedUsername)
+    setUsername(storedUsername);
+    console.log(username)
+    handleSubmit(storedUsername, timeframe); //Note: Timeframe ignored here on the backend
+  }
+
   const handleChange = ({ target: { value } }) => {
     setInputValue(value);
   };
@@ -108,9 +115,12 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
         paddingTop='0em'
         width="100%"
       >   
-        <p className="grandmaster-names-block">
-          Or click to see all-time results from <a>Magnus Carlsen</a>, <a>Hikaru Nakamura</a>, or <a>Daniel Naroditsky</a>.
-        </p>
+    <p className="grandmaster-names-block">
+      Or click to see all-time results from {' '}
+        <a onClick={() => handleStoredUsernameClick('drnykterstein')}>GM Magnus Carlsen</a>{', '}
+        <a onClick={() => handleStoredUsernameClick('alireza2003')}>GM Alireza Firouja</a>{', or '}
+        <a onClick={() => handleStoredUsernameClick('rebeccaharris')}>GM Daniel Naroditsky</a>.
+    </p>
       </Box>
     </Box>
   );

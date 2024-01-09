@@ -69,11 +69,11 @@ def generate_base_statistics(df,username,stored_usernames):
 
     
     # Uncomment to save the base file for a particular username
-    """
+    
     if username.lower() in stored_usernames:
         print('saving base file')
         df.to_csv("assets/" + username +".tsv", sep="\t", index=False)
-    """        
+        
 
     return(df)
 
@@ -97,10 +97,13 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
 
     stored_usernames = ['drnykterstein','rebeccaharris','alireza2003']
 
-
+    print('username',username)
     if username.lower() in stored_usernames:
         print('loading stored file')
         df = pd.read_csv("assets/" + username + ".tsv", sep="\t")
+
+        #df = generate_base_statistics(df,username,stored_usernames)
+
         return df
 
     if username == None or username == defaultusername:
@@ -167,7 +170,7 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
         df['player_black'] = 0
         for game in l:
             game_parsed = response_parser(game)
-            if game_parsed['White'] == username:
+            if game_parsed['White'].lower() == username.lower():
                 df.loc[df['name'] == game_parsed['Opening'],'player_white'] += 1
             else:
                 df.loc[df['name'] == game_parsed['Opening'],'player_black'] += 1
@@ -248,6 +251,8 @@ def send_data_to_frontend():
     # Specify columns and only return the columns that are needed to speed things up
     all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
     df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
+
+    print(deepest_ply)
 
 
     # For now, we'll just return the dataframe data as JSON
