@@ -66,6 +66,7 @@ function App() {
             username={username}
             setUsername={setUsername}
             handleSubmit={handleSubmit}
+            loading={loading}
           />
           <BlockIntro />
         </div>

@@ -11,7 +11,7 @@ import Divider from '@mui/material/Divider';
 
 
 
-const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
+const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading }) => {
   const [inputValue, setInputValue] = useState(username);
   const [timeframe, setTimeframe] = useState('last 3 months');
 
@@ -65,7 +65,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
               disableUnderline: true,
             }}
           />
-          <Button variant="contained" color="primary" onClick={handleButtonClick}>
+          <Button variant="contained" color="primary" onClick={handleButtonClick} disabled={loading}>
             Analyze
           </Button>
         </Box>
@@ -116,11 +116,6 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit }) => {
   );
 };
 
-BlockUsernameSubmit.propTypes = {
-  username: PropTypes.string,
-  setUsername: PropTypes.func.isRequired,
-  handleSubmit: PropTypes.func.isRequired,
-};
 
 export default BlockUsernameSubmit;
 

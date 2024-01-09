@@ -36,10 +36,9 @@ def response_parser(s):
 
     return data
 
-def generate_base_statistics(df,username):
+def generate_base_statistics(df,username,stored_usernames):
 
     # Begin generating stats
-    stored_usernames = ['drnykterstein','rebeccaharris','alireza2003']
 
     # Credit openings with children
     df['player_white_with_children'] = df['player_white']
@@ -70,9 +69,11 @@ def generate_base_statistics(df,username):
 
     
     # Uncomment to save the base file for a particular username
+    """
     if username.lower() in stored_usernames:
         print('saving base file')
         df.to_csv("assets/" + username +".tsv", sep="\t", index=False)
+    """        
 
     return(df)
 
@@ -93,6 +94,15 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
     # If no username, or the default username, is provided, load the default file (for dev purposes
     # Note that the time range is ignored here
     # Add all stores usernames here
+
+    stored_usernames = ['drnykterstein','rebeccaharris','alireza2003']
+
+
+    if username.lower() in stored_usernames:
+        print('loading stored file')
+        df = pd.read_csv("assets/" + username + ".tsv", sep="\t")
+        return df
+
     if username == None or username == defaultusername:
         # Load default file
         base_file = "assets/base_file.tsv"
@@ -163,7 +173,7 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
                 df.loc[df['name'] == game_parsed['Opening'],'player_black'] += 1
 
         # Generate statistics
-        df = generate_base_statistics(df,username)
+        df = generate_base_statistics(df,username,stored_usernames)
         return df
     
 def timeframe_to_timestamp(timeframe):
