@@ -8,6 +8,7 @@ import HelpIcon from '@mui/icons-material/Help';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Divider from '@mui/material/Divider';
+import Stack from '@mui/material/Stack';
 
 
 
@@ -115,11 +116,17 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
         width="100%"
       >   
     <p className="grandmaster-names-block">
-      Or click to see all-time results from {' '}
-        <a onClick={() => handleStoredUsernameClick('drnykterstein')}>GM Magnus Carlsen</a>{', '}
-        <a onClick={() => handleStoredUsernameClick('alireza2003')}>GM Alireza Firouzja</a>{', '}
-        <a onClick={() => handleStoredUsernameClick('nihalsarin2004')}>GM Nihal Sarin</a>{', or '}
-        <a onClick={() => handleStoredUsernameClick('rebeccaharris')}>GM Daniel Naroditsky</a>.
+      Or click to see all-time results from:
+      <Stack direction="row" spacing={2} sx={{ mt: 1 }}>
+        <Stack spacing={1}>
+          <a onClick={() => handleStoredUsernameClick('drnykterstein')}>GM Magnus Carlsen</a>
+          <a onClick={() => handleStoredUsernameClick('alireza2003')}>GM Alireza Firouzja</a>
+        </Stack>
+        <Stack spacing={1}>
+          <a onClick={() => handleStoredUsernameClick('nihalsarin2004')}>GM Nihal Sarin</a>
+          <a onClick={() => handleStoredUsernameClick('rebeccaharris')}>GM Daniel Naroditsky</a>
+        </Stack>
+      </Stack>
     </p>
       </Box>
     </Box>
