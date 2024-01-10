@@ -34,12 +34,12 @@ const ResultsSummary = ({ data, username, timeframe }) => {
     xAxis: [
       {
         min: 0
-        , max: data.unique_stamps_all
+        // , max: data.unique_stamps_all
         , label: 'Played unique stamps' 
-        , tickInterval: [1000,2000,data.unique_stamps_all]
+       // , tickInterval: [1000,2000,data.unique_stamps_all]
       },
     ],
-    height: 200,  
+    height: 200,
   };
 
   const dataset = [
