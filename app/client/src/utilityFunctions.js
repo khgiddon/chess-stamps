@@ -45,6 +45,9 @@ export function percentageToOneInEveryX(percentage) {
   }
 
   export function addThousandsSeparator(num) {
+    if (num === undefined) {
+      return undefined;
+    }
     return num.toLocaleString();
   }
 

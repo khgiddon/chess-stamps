@@ -7,8 +7,6 @@ const ProgressWrapper = ({ progress, gamesexpected, username, abortController })
     console.log('abortController.current.signal:', abortController.current.signal);
     abortController.current.abort();
     console.log('abortController.current.signal:', abortController.current.signal);
-
-
   };
 
   return (

@@ -11,9 +11,8 @@ import Divider from '@mui/material/Divider';
 
 
 
-const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading }) => {
+const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading, timeframe, setTimeframe }) => {
   const [inputValue, setInputValue] = useState(username);
-  const [timeframe, setTimeframe] = useState('last 3 months');
 
   const handleButtonClick = () => {
     setUsername(inputValue);
