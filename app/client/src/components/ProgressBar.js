@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '@mui/material/Button';
+import {addThousandsSeparator} from '../utilityFunctions';
 
 const ProgressWrapper = ({ progress, gamesexpected, username, abortController }) => {
   const cancelRequest = () => {
@@ -13,7 +14,7 @@ const ProgressWrapper = ({ progress, gamesexpected, username, abortController })
     <div className="progress-wrapper">
       <div className="progress-additional-text">
         <span>
-          Loading data and analyzing stamps for&nbsp;<b>{gamesexpected}</b>&nbsp;games played by&nbsp;<b>{username}</b>
+          Loading data and analyzing stamps for&nbsp;<b>{addThousandsSeparator(gamesexpected)}</b>&nbsp;games played by&nbsp;<b>{username}</b>
         </span>
         { (
           <img src="assets/misc_images/pawn_svg.svg" alt="Loading..." className="chess-piece" />

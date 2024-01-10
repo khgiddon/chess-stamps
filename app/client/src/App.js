@@ -86,7 +86,7 @@ function App() {
         )}
       </div>
       <div className = 'lower-container'>
-        {!loading && <DisplayTable data={data} />}
+        {!loading && <DisplayTable data={data} username={username} />}
         {!loading && <LowerButtons 
         handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
         />}

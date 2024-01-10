@@ -4,14 +4,14 @@ import CollectionsIcon from '@mui/icons-material/Collections';
 import Stack from '@mui/material/Stack';
 import { percentageToOneInEveryX, customRoundForRatio, listToCleanList, percentageToRarity } from '../utilityFunctions';
 
-const DisplayTable = ({ data }) => {
+const DisplayTable = ({ data, username }) => {
   if (!data.most_popular_missing_stamp) return null;
 
   return (
     <div className="grid-outer-container">
           <h2>
           <Stack direction="row" alignItems="center" gap={1} justifyContent="center">
-            Your stamp collection
+            {username}'s stamp collection
             <CollectionsIcon color="primary"/>
             </Stack>
           </h2>
