@@ -66,13 +66,13 @@ h1 {
   font-size: 0.9rem;  /* Adjust this value as you see fit */
   text-align: center;
   margin-top: 0px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
   max-width: 80%;
 }
 
 .grandmaster-names-block a {
   color: purple; /* Change to your preferred color */
-  text-decoration: underline dotted
+  text-decoration: underline 
 }
 
 .grandmaster-names-block a:hover {
@@ -152,7 +152,7 @@ h1 {
 }
 
 .progress-wrapper {
-  width: 60%;
+  width: 40%;
   margin: 0 auto; /* Centers the wrapper */
   padding: 5px;
   display: flex;
@@ -289,7 +289,7 @@ h1 {
 
 .results-summary-container {
   margin: auto;
-  margin-top: 0px;
+  margin-top: px;
   margin-bottom: 0px;
   max-width: 40%;
   /* background-color: #B4C5E4; */
@@ -327,8 +327,8 @@ h1 {
 .lower-container h2 {
   margin-top: 0px;
   margin-bottom: 10px;
-  padding-top: 10px;
-  padding-bottom: 4px;
+  padding-top: 15px;
+  padding-bottom: 5px;
   text-align: center;
   color: #2074d4;
   text-decoration: underline;
