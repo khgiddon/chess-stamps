@@ -116,15 +116,21 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
         width="100%"
       >   
     <p className="grandmaster-names-block">
-      Or click to see all-time results from:
-      <Stack direction="row" spacing={2} sx={{ mt: 1 }}>
-        <Stack spacing={1}>
-          <a onClick={() => handleStoredUsernameClick('drnykterstein')}>GM Magnus Carlsen</a>
-          <a onClick={() => handleStoredUsernameClick('alireza2003')}>GM Alireza Firouzja</a>
+    <div className='centered'>
+     Or click to see all-time results from:
+     </div>
+      <Stack direction="row" spacing={1} sx={{ mt: 1, p:0}}>
+      <Stack spacing={1}>
+         <ul>
+          <li><a onClick={() => handleStoredUsernameClick('drnykterstein')}>GM Magnus Carlsen</a></li>
+          <li><a onClick={() => handleStoredUsernameClick('alireza2003')}>GM Alireza Firouzja</a></li>
+         </ul>
         </Stack>
-        <Stack spacing={1}>
-          <a onClick={() => handleStoredUsernameClick('nihalsarin2004')}>GM Nihal Sarin</a>
-          <a onClick={() => handleStoredUsernameClick('rebeccaharris')}>GM Daniel Naroditsky</a>
+        <Stack spacing={1} sx={{ p: 0 }}>
+        <ul>
+          <li><a onClick={() => handleStoredUsernameClick('nihalsarin2004')}>GM Nihal Sarin</a></li>
+          <li><a onClick={() => handleStoredUsernameClick('rebeccaharris')}>GM Daniel Naroditsky</a></li>
+        </ul>  
         </Stack>
       </Stack>
     </p>
