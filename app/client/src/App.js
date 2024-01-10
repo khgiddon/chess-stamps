@@ -17,7 +17,7 @@ import OpeningsGrid from './components/OpeningsGrid';
 function App() {
   const [allopenings, setAllOpenings] = useState([]);
   const [username, setUsername] = useState('drnykterstein');
-  const [timeframe, setTimeframe] = useState('last 12 months');
+  const [timeframe, setTimeframe] = useState('last 3 months');
   const [data, setData] = useState([]);
   const [progress, setProgress] = useState(0);
   const [gamesexpected, setGamesExpected] = useState(0);
@@ -59,10 +59,10 @@ function App() {
 
   const handleSubmit = (newUsername,newTimeframe) => {
     handleFetchData(newUsername,newTimeframe);
-    console.log(newTimeframe)
+    console.log('newTimeframe',newTimeframe)
   }
 
-  const storedUsernames = ['khg002', 'drnykterstein', 'alireza2003', 'rebeccaharris'];         
+  const storedUsernames = ['khg002', 'drnykterstein', 'alireza2003', 'rebeccaharris','nihalsarin2004'];         
 
   return (
     <div>
@@ -75,12 +75,14 @@ function App() {
             setUsername={setUsername}
             handleSubmit={handleSubmit}
             loading={loading}
+            setTimeframe={setTimeframe}
+            timeframe={timeframe}
           />
           <BlockIntro />
         </div>
         {loading && !storedUsernames.some(storedUsername => storedUsername.toLowerCase() === username.toLowerCase()) && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
         {!loading && (
-            <ResultsSummary data={data} username={username} />
+            <ResultsSummary data={data} username={username} timeframe={timeframe} />
         )}
       </div>
       <div className = 'lower-container'>

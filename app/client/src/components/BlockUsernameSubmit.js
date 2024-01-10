@@ -11,9 +11,8 @@ import Divider from '@mui/material/Divider';
 
 
 
-const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading }) => {
+const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading, timeframe, setTimeframe }) => {
   const [inputValue, setInputValue] = useState(username);
-  const [timeframe, setTimeframe] = useState('last 3 months');
 
   const handleButtonClick = () => {
     setUsername(inputValue);
@@ -118,7 +117,8 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
     <p className="grandmaster-names-block">
       Or click to see all-time results from {' '}
         <a onClick={() => handleStoredUsernameClick('drnykterstein')}>GM Magnus Carlsen</a>{', '}
-        <a onClick={() => handleStoredUsernameClick('alireza2003')}>GM Alireza Firouja</a>{', or '}
+        <a onClick={() => handleStoredUsernameClick('alireza2003')}>GM Alireza Firouzja</a>{', '}
+        <a onClick={() => handleStoredUsernameClick('nihalsarin2004')}>GM Nihal Sarin</a>{', or '}
         <a onClick={() => handleStoredUsernameClick('rebeccaharris')}>GM Daniel Naroditsky</a>.
     </p>
       </Box>

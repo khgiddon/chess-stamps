@@ -67,6 +67,7 @@ h1 {
   text-align: center;
   margin-top: 0px;
   margin-bottom: 25px;
+  max-width: 80%;
 }
 
 .grandmaster-names-block a {
