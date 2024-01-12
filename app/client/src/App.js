@@ -3,6 +3,7 @@ import './App.css';
 import { fetchData } from './api/fetchData';
 
 
+
 // Components
 import TopNav from './components/TopNav';
 import BlockUsernameSubmit from './components/BlockUsernameSubmit';
@@ -17,6 +18,8 @@ import OpeningsGrid from './components/OpeningsGrid';
 function App() {
   const [allopenings, setAllOpenings] = useState([]);
   const [username, setUsername] = useState('drnykterstein');
+  const previousUsername = useRef(null);
+  const previousTimeframe = useRef(null);
   const [timeframe, setTimeframe] = useState('last 3 months');
   const [data, setData] = useState([]);
   const [progress, setProgress] = useState(0);
@@ -36,7 +39,8 @@ function App() {
     // console.log(timeframe)
     setLoading(true); // Set loading to true when the fetch starts
     setHasAllOpenings(false);
-    fetchData(username, timeframe, setData, setProgress, setGamesExpected, abortController)
+    console.log('previousUsername',previousUsername);
+    fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
 

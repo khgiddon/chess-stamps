@@ -1,7 +1,7 @@
 import { socket } from './io';
 
-// The fetchData function is now exported and can be imported in other components
-export const fetchData = async (username, timeframe, setData, setProgress, setGamesExpected, abortController) => {
+export const fetchData = async (username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController) => {
+
 
 const handleProgress = (progressData) => {
       const { percentage_complete, chunks_expected } = progressData;
@@ -10,6 +10,9 @@ const handleProgress = (progressData) => {
     };
 
   setProgress(0);  // Start progress at 0%
+
+  // Data into previous data
+
   socket.on('progress', handleProgress);
 
   try {
@@ -21,7 +24,19 @@ const handleProgress = (progressData) => {
         setData(data);
         console.log(data);
         console.log(data.most_obscure_stamp);
+
+        // Set previous username (last correct username) if API call succeeds
+        console.log('setting previous username to',username)
+        previousUsername.current = username;
+        previousTimeframe.current = timeframe;
+
       } catch (error) {
+
+            // Return to previous username (last correct username) if API call fails
+            console.log('call failed: setting username to',previousUsername)
+            setUsername(previousUsername.current);
+            setTimeframe(previousTimeframe.current);
+
             if (error.name === 'AbortError') {
               console.log('Fetch request was cancelled');
             } else {

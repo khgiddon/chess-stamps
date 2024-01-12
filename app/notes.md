@@ -8,13 +8,12 @@ TODO:
 
 
 MVP release
-- API error handling
+- API error handling - e.g. zero games
+- Handle cancellation
 - Upgrade lichess API auth
 - Open Lichess links in new tab
 
-- Abort if GM link clicked while loading
-- Format game count with commas
-
+- 
 
 
 COSMETIC

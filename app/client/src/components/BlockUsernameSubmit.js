@@ -12,19 +12,16 @@ import Stack from '@mui/material/Stack';
 
 
 
-const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading, timeframe, setTimeframe }) => {
+const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading, timeframe, setTimeframe}) => {
   const [inputValue, setInputValue] = useState(username);
 
   const handleButtonClick = () => {
     setUsername(inputValue);
-    console.log(timeframe)
     handleSubmit(inputValue, timeframe);
   };
 
   const handleStoredUsernameClick = (storedUsername) => {
-    console.log(storedUsername)
     setUsername(storedUsername);
-    console.log(username)
     handleSubmit(storedUsername, timeframe); //Note: Timeframe ignored here on the backend
   }
 
