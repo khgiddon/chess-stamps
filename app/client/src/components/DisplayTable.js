@@ -1,18 +1,27 @@
 import React from 'react';
 import MemoizedRow from './Row';
-import CollectionsIcon from '@mui/icons-material/Collections';
+// import CollectionsIcon from '@mui/icons-material/Collections';
 import Stack from '@mui/material/Stack';
 import { percentageToOneInEveryX, customRoundForRatio, listToCleanList, percentageToRarity } from '../utilityFunctions';
 
 const DisplayTable = ({ data, username }) => {
+
+  const usernameMapping = {
+    'drnykterstein': 'Magnus Carlsen',
+    'rebeccaharris': 'Daniel Naroditsky',
+    'alireza2003': 'Alireza Firouzja',
+    'nihalsarin2004': 'Nihal Sarin',
+  };
+
+  const displayUsername = usernameMapping[username.toLowerCase()] || username;
+
   if (!data.most_popular_missing_stamp) return null;
 
   return (
     <div className="grid-outer-container">
           <h2>
           <Stack direction="row" alignItems="center" gap={1} justifyContent="center">
-            {username}'s stamp collection
-            <CollectionsIcon color="primary"/>
+            {displayUsername}'s stamp collection
             </Stack>
           </h2>
 

@@ -3,7 +3,7 @@ import { Chessboard } from 'react-chessboard';
 
 const ChessImage = React.memo(({ fen, id }) => {
   useEffect(() => {
-    console.log('ChessImage rendered', { fen, id })
+    //console.log('ChessImage rendered', { fen, id })
   }, [fen, id]);
 
   return (
