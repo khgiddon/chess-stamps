@@ -117,7 +117,7 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
         print(f'querying lichess api for {username}...')
 
         # Get user data
-        max = 30000
+        max_games = 30000
         
 
         print(f'querying lichess api for {username}...')
@@ -127,18 +127,29 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
         lichessToken = os.getenv("lichessToken")
 
         # First request is to get the number of games
+        # We need to determine the number of games played since the timestamp so we can estimate completion
+        # This isn't perfect, but we will assume that the user plays at the same rate since account inception        
         headers = {
             "Content-Type": "application/x-ndjson",
             "Authorization": f"Bearer {lichessToken}"
         }
-        url = f"https://lichess.org/api/user/{username}?since={timestamp_to_use}"   
+        url = f"https://lichess.org/api/user/{username}"   
         response = requests.get(url,headers=headers)
         d = json.loads(response.content.decode('utf-8'))
-        games_to_pull = sum(d['perfs'][game_type]['games'] for game_type in ['bullet', 'blitz', 'rapid', 'classical'])
-        print(f'games to pull: {games_to_pull} for {username}')
+        total_games = sum(d['perfs'][game_type]['games'] for game_type in ['bullet', 'blitz', 'rapid', 'classical'])
+
+        user_created_at = d['createdAt']
+
+        # Proportion of games played since timestamp
+        if timestamp_to_use > user_created_at:
+            estimated_games = int(total_games * ((int(time.time())*1000 - timestamp_to_use) / (int(time.time())*1000 - user_created_at)))
+            print(f'Estimated games: {estimated_games}', f'Total games: {total_games}', f'Ratio: {estimated_games / total_games}', timestamp_to_use, user_created_at, int(time.time())*1000)
+        else:
+            estimated_games = total_games
+
 
         # Second request is to pull the actual games
-        chunks_expected = min(games_to_pull,max)   
+        chunks_expected = min(estimated_games,max_games)   
         chunks = 0
         response_test = []
         url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
