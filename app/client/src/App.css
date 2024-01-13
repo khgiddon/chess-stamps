@@ -390,6 +390,7 @@ h1 {
   align-items: center;
   justify-content: center;
   background-color: #3A75C4;
+  border: 1px solid #3A75C4; /* add this line */
   color: white;
   font-weight: bold;
   margin: 0px;
