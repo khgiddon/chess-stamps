@@ -83,7 +83,6 @@ function App() {
             setTimeframe={setTimeframe}
             timeframe={timeframe}
             error={error}
-            setError={setError} 
           />
           <BlockIntro />
         </div>

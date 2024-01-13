@@ -7,12 +7,12 @@ import Tooltip from '@mui/material/Tooltip';
 import HelpIcon from '@mui/icons-material/Help';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
 
 
 
-const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading, timeframe, setTimeframe}) => {
+const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading, timeframe, setTimeframe, error}) => {
   const [inputValue, setInputValue] = useState(username);
 
   const handleButtonClick = () => {
@@ -102,6 +102,17 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
               <MenuItem value="forever">forever</MenuItem>
             </Select>
         </p>
+        {error && (
+            <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            marginBottom="0em"
+            width="100%">
+              <Alert variant='filled' severity="error" sx={{ width: '100%', marginBottom: '1em' }}>ERROR: {error.message}</Alert>
+            </Box>)}
+
       <Box
         display="flex"
         flexDirection="row"
@@ -131,7 +142,11 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
         </Stack>
       </Stack>
     </p>
+
+
       </Box>
+
+
     </Box>
   );
 };

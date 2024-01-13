@@ -9,7 +9,7 @@ const handleProgress = (progressData) => {
     };
 
   setError(null);
-  
+
   setProgress(0);  // Start progress at 0%
   socket.on('progress', handleProgress);
 
@@ -46,6 +46,8 @@ const handleProgress = (progressData) => {
 
             // Return to previous username (last correct username) if API call fails
             console.log('call failed: setting username to',previousUsername)
+
+            setError(error);
             setUsername(previousUsername.current);
             setTimeframe(previousTimeframe.current);
 

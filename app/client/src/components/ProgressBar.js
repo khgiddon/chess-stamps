@@ -27,7 +27,7 @@ const ProgressWrapper = ({ progress, gamesexpected, username, abortController })
       <div className="progress-additional-text">
         <span className='progress-bar-subtitle'>
           The Lichess API is rate-limited. Depending on the number of games, this may take a few minutes.
-          <br />Because the API response is streamed, game count is estimated until all data is received.
+          <br /><br />Because the API response is streamed, game count is estimated until all data is received.
         </span>
       </div>
       <div className="progress-cancel-button">
