@@ -1,22 +1,18 @@
-
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, abort
 from flask_socketio import SocketIO
 from flask_cors import CORS
-
 import pandas as pd
 import numpy as np
 import requests
 import os
 import json
 import time
-
 from dotenv import load_dotenv
 
+# Setup
 app = Flask(__name__)
-
 socketio = SocketIO(app,cors_allowed_origins="*")
-CORS(app)  # This will allow the frontend to make requests to this server
-
+CORS(app) 
 
 # Parse lichess games API response - data comes in newline-delimited JSON
 def response_parser(s):
@@ -29,7 +25,6 @@ def response_parser(s):
             key = line.split(' "')[0][1:]
             value = line.split(' "')[1].rstrip('"]')
             data[key] = value
-
     return data
 
 def generate_base_statistics(df,username,stored_usernames):
@@ -62,7 +57,6 @@ def generate_base_statistics(df,username,stored_usernames):
     df['ratio_black'] = np.where(df['all_pct'] == 0, 0, df['black_pct_with_children'] / df['all_pct'])
 
     df['popularity_rank'] = df.sort_values(by='all_pct', ascending=False).reset_index().index + 1
-
     
     # Uncomment to save the base file for selected usernames
     """
@@ -134,7 +128,14 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
             "Authorization": f"Bearer {lichessToken}"
         }
         url = f"https://lichess.org/api/user/{username}"   
-        response = requests.get(url,headers=headers)
+
+        try:
+            response = requests.get(url,headers=headers)
+            print('received response from lichess api')
+            response.raise_for_status()
+        except:
+            abort(400, description="Username not found")
+
         d = json.loads(response.content.decode('utf-8'))
         total_games = sum(d['perfs'][game_type]['games'] for game_type in ['bullet', 'blitz', 'rapid', 'classical'])
 
@@ -216,10 +217,8 @@ def send_data_to_frontend():
     timestamp_to_use = int(time.time())*1000 - timeframe_to_timestamp(timeframe)
     print(timeframe,timestamp_to_use)
 
-
+    # Load user data
     df = get_user_data(username,timestamp_to_use)
-
-    #print(df.columns)
 
     # Add additional info
     total_games = int(df['player_total'].sum())
@@ -247,7 +246,6 @@ def send_data_to_frontend():
     random_collected =  df[df['player_total_with_children'] > 0].sample(n=1).head(1).iloc[0].to_dict()
     random_missing =  df[df['player_total_with_children'] == 0].sample(n=1).head(1).iloc[0].to_dict()
 
-
     df['ratio'] = df['player_total_with_children'] / df['all_pct'] # Move this to stats function later
     least_favorite_played = df.query('player_total_with_children >= 1').sort_values(by='ratio', ascending=True).head(1).iloc[0].to_dict()
     deepest_ply = df.query('player_total_with_children >= 1').sort_values(by=['ply','player_total_with_children'], ascending=False).head(1).iloc[0].to_dict()
@@ -257,9 +255,6 @@ def send_data_to_frontend():
     # Specify columns and only return the columns that are needed to speed things up
     all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
     df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
-
-    print(deepest_ply)
-
 
     # For now, we'll just return the dataframe data as JSON
     return jsonify({
@@ -294,13 +289,11 @@ def send_all_openings_data_to_frontend():
 
     df = df[['name','pgn','ply','fen','player_total_with_children']]
     print('returning json')
-    #print(df.to_dict(orient='records'))
 
-    # For now, we'll just return the dataframe data as JSON
+    # Return the dataframe data as JSON
     return jsonify(
         df.to_dict(orient='records')
     )
-
 
 if __name__ == '__main__':
     app.run(debug=True)
