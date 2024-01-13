@@ -24,8 +24,8 @@ function TooltipContent() {
 
 const BlockHeader = () => (
   <div>
-    <div className="stampImageContainer">
-    <img src="assets/stamp_images/logo3.png" alt="Chess Opening Stamp Collector" className='stampImage'/>
+    <div className="stamp-image-container">
+    <img src="assets/stamp_images/logo3.png" alt="Chess Opening Stamp Collector" className='stamp-image'/>
     </div>
     {console.log('Header rendered')}
     <h1>How many&nbsp;

@@ -42,7 +42,7 @@ const OpeningsGrid = ({ allopenings }) => {
         {allopenings.map((opening, index) => (
           <div 
             key={index} 
-            className={`all-openings-grid-item ${opening.player_total_with_children > 0 ? 'colorful' : ''}`}
+            className={`all-openings-grid-item ${opening.player_total_with_children > 0 ? 'colored-grid-item' : ''}`}
           >
             <a 
               href={`https://lichess.org/analysis/pgn/${[opening.pgn]}`}

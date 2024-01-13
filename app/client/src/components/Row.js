@@ -20,7 +20,7 @@ const Row = ({ label, label_description, opening, rarity, fen, id, text, pgn, pl
         </div>
         <div className="text">
           <a href={`https://lichess.org/analysis/pgn/${[pgn]}`} target="_blank" rel="noopener noreferrer" className="link">
-            <span className="openingHighlight">{opening}</span>
+            <span className="opening-highlight-text">{opening}</span>
           </a>
           <div className = "rarity">
             Popularity rank: {addThousandsSeparator(popularity_rank)} of {addThousandsSeparator(unique_stamps_all)}  •  Rarity score: {rarity}

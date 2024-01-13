@@ -1,15 +1,6 @@
-/*
-https://coolors.co/3c3744-090c9b-3d52d5-b4c5e4-fbfff1
-These colors aren't bad for future
-
-
-Color of stmap image: #fefbea
-*/
-
 html, body {
   background: #FFF5EE;
   font-family: Arial, sans-serif;
-  /* background-color: #2596be;  */
 }
 
 .upper-container {
@@ -21,8 +12,7 @@ html, body {
       background-image: url("/public/assets/misc_images/chessboard_partial.svg");
       background-position: right;
       background-repeat: no-repeat;
-    }
-      
+    }  
   } 
 
   .lower-container {
@@ -108,13 +98,7 @@ h1 {
   text-decoration: underline dashed;
 }
 
-.usernameContainer {
-  padding-left: 15px; /* Adjust this value as needed */
-  margin-bottom: 15px;
-
-}
-
-.openingHighlight {
+.opening-highlight-text {
   font-weight: bold;
   color: purple;
   font-size: 1.1rem;
@@ -124,7 +108,7 @@ h1 {
 
 }
 
-.stampImageContainer {
+.stamp-image-container {
   text-align: center;
   padding-top: 10px;
   padding-bottom: 0px;
@@ -140,7 +124,7 @@ h1 {
   font-size: 1rem;
 }
 
-.stampImage {
+.stamp-image {
   width: 180px;
   height: auto;
   border: none;
@@ -271,17 +255,12 @@ h1 {
 
 .results-summary-parent-container {
   background-color: #f9f9f9;
-  
   border-color: lightgrey;
   border-style: solid;
-  /* border-radius: 5px; */
   border-width: 1px 0px 1px 0px;
   padding: 10px;
   padding-top: 10px;
 
-  /*
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);  
-  */
 
 }
 
@@ -498,11 +477,11 @@ h1 {
   }
 }
 
-.colorful {
+.colored-grid-item {
   background-color: lightgreen; /* Light green background for items with player_total > 0 */
 }
 
-#chessImageContainer {
+.chessImageContainer {
   position: fixed;
   width: 200px; /* Adjust as needed */
   height: 200px; /* Adjust as needed */
