@@ -4,7 +4,7 @@ import { addThousandsSeparator } from '../utilityFunctions';
 import { BarChart } from '@mui/x-charts/BarChart';
 import Stack from '@mui/material/Stack';
 import BarChartIcon from '@mui/icons-material/BarChart';
-
+import Share from './Share';
 
 
 const ResultsSummary = ({ data, username, timeframe }) => {
@@ -89,6 +89,7 @@ const ResultsSummary = ({ data, username, timeframe }) => {
         {...chartSetting}
         
       />
+      
     );
   }
 
@@ -115,6 +116,16 @@ const ResultsSummary = ({ data, username, timeframe }) => {
         <div className="summaryChart">
           {horizontalBars()}
         </div>  
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+        <Share
+          data={data}
+          displayUsername={displayUsername}
+          displayTimeframe={displayTimeframe}
+          displayUsernameSecondMention={displayUsernameSecondMention}
+          addThousandsSeparator={addThousandsSeparator}
+          formatPercentage={formatPercentage}
+        />
+        </div>
       </div>
     </div>
   );

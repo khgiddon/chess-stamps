@@ -114,6 +114,18 @@ h1 {
   padding-bottom: 0px;
 }
 
+.stamp-image-container-dialog {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 0px;
+}
+
+.stamp-image-dialog {
+  width: 150px;
+  height: auto;
+  border: none;
+}
+
 .header-tooltip-icon {
   display: flex;
   align-items: center;
@@ -297,8 +309,15 @@ h1 {
   margin-bottom: 0px;
   /* background-color: #B4C5E4; */
   color: black;
+  max-width: 70%;
+}
 
+@media (max-width: 700px) {
+  .grid-outer-container {
+    grid-template-columns: 1fr;
+    max-width: 90%;
 
+  }
 }
 
 .lower-container h2 {
@@ -316,14 +335,14 @@ h1 {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 0px;
-  max-width: 70%;
+  max-width: 100%;
   margin: auto;  
 }
 
 @media (max-width: 700px) {
   .grid-container {
     grid-template-columns: 1fr;
-    max-width: 90%;
+    max-width: 100%;
 
   }
 }
@@ -513,4 +532,33 @@ h1 {
 .footer-text a {
   color: rgb(109, 109, 109);; /* Change to your preferred color */
   text-decoration: underline 
+}
+
+.dialog-title h2 {
+  text-align: center;
+  font-family: 'Lato', Arial, sans-serif;
+  font-size: 100%;
+  color: #2074d4;
+  font-weight: bold;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  
+}
+
+.dialog-content {
+  margin-top: -7px; /* Adjust this value as needed */
+  margin-bottom:10px;
+  max-width: 90%;
+  
+}
+
+.dialog-copyable-text {
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.dialog-content button {
+  margin-top: 10px;
 }

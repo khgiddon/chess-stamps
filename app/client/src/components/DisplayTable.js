@@ -2,6 +2,8 @@ import React from 'react';
 import MemoizedRow from './Row';
 // import CollectionsIcon from '@mui/icons-material/Collections';
 import Stack from '@mui/material/Stack';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import { percentageToOneInEveryX, customRoundForRatio, listToCleanList, percentageToRarity, timesPluralization } from '../utilityFunctions';
 
 const DisplayTable = ({ data, username }) => {
@@ -19,11 +21,13 @@ const DisplayTable = ({ data, username }) => {
 
   return (
     <div className="grid-outer-container">
-          <h2>
-          <Stack direction="row" alignItems="center" gap={1} justifyContent="center">
-            {displayUsername}'s stamp collection
-            </Stack>
-          </h2>
+         
+          <Stack direction="row" alignItems="center" gap={1} justifyContent="space-between">
+  <Box flexGrow={1}>
+  <h2>{displayUsername}'s stamp collection</h2>
+  </Box>
+</Stack>
+          
 
       <div className="grid-container">
         <MemoizedRow
