@@ -8,17 +8,14 @@ TODO:
 
 
 MVP release
-- API error handling - e.g. zero games
-- Handle cancellation
 - Upgrade lichess API auth
 - Open Lichess links in new tab
 
-- 
 
 
 COSMETIC
 - Filter by ply, played openings, unplayed openings
-- More interesting presentation of stats
+- More interesting presentation of stats - add graph?
 - Smooth scroll back up after clicking "Hide all openings"
 - Format tooltip text
 
@@ -31,3 +28,4 @@ UI:
 - Tighten spacing
 
 
+Lichess account: api_tester

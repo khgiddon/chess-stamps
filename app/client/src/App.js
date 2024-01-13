@@ -27,6 +27,7 @@ function App() {
   const [loading, setLoading] = useState(false); // Added loading state
   const [hasallopenings, setHasAllOpenings] = useState(false);
   const abortController = useRef(null);  // Use useRef to hold the AbortController
+  const [error, setError] = useState(null);
 
 
 
@@ -40,7 +41,7 @@ function App() {
     setLoading(true); // Set loading to true when the fetch starts
     setHasAllOpenings(false);
     console.log('previousUsername',previousUsername);
-    fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController)
+    fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
 
@@ -81,6 +82,7 @@ function App() {
             loading={loading}
             setTimeframe={setTimeframe}
             timeframe={timeframe}
+            error={error}
           />
           <BlockIntro />
         </div>

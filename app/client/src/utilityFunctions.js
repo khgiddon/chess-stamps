@@ -72,3 +72,11 @@ export function percentageToOneInEveryX(percentage) {
     }
 
   }
+
+  export function timesPluralization(num) {
+    if (num === 1) {
+      return `1 time`;
+    } else {
+      return `${num} times`;
+    }
+  }
