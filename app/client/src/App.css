@@ -238,16 +238,10 @@ h1 {
   font-weight: bold;
 }
 
-.chess-piece-container {
-  line-height: 0; /* Remove additional height caused by line-height */
-  display: flex;
-  align-items: center; /* Center the image vertically */
-}
-
 .chess-piece {
   width: 20px; /* Adjust size as needed */
   height: auto;
-  margin-left: 15px; /* Adjust as needed for space between text and image */
+  margin-left: 0px; /* Adjust as needed for space between text and image */
   margin-bottom: 0px;
   animation: spin 2s linear infinite;
 }
