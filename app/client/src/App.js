@@ -5,7 +5,6 @@ import { fetchData } from './api/fetchData';
 
 
 // Components
-import TopNav from './components/TopNav';
 import BlockUsernameSubmit from './components/BlockUsernameSubmit';
 import BlockHeader from './components/BlockHeader';
 import ProgressBar from './components/ProgressBar';
@@ -14,6 +13,8 @@ import DisplayTable from './components/DisplayTable';
 import BlockIntro from './components/BlockIntro';
 import LowerButtons from './components/LowerButtons';
 import OpeningsGrid from './components/OpeningsGrid';
+import Footer from './components/Footer';
+
 
 function App() {
   const [allopenings, setAllOpenings] = useState([]);
@@ -97,6 +98,7 @@ function App() {
         handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
         />}
         {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
+        <Footer />
     </div>
   </div>
   );
