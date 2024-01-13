@@ -66,8 +66,10 @@ const DisplayTable = ({ data, username }) => {
           popularity_rank={data.most_popular_white.popularity_rank}
           unique_stamps_all={data.unique_stamps_all}
           id={3}
-          text={`You've played this ${timesPluralization(data.most_popular_white.player_white_with_children)}, or ${percentageToOneInEveryX(data.most_popular_white.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_white.all_pct)} Lichess stamps. You play it ${customRoundForRatio(data.most_popular_white.player_pct_with_children/data.most_popular_white.all_pct)}x as frequently as the population.`}
-        />
+          text={data.most_popular_white.name !== 'None' ?
+            `You've played this ${timesPluralization(data.most_popular_white.player_black_with_children)}, or ${percentageToOneInEveryX(data.most_popular_white.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_white.all_pct)} Lichess stamps. You play it ${customRoundForRatio(data.most_popular_white.player_pct_with_children/data.most_popular_white.all_pct)}x as frequently as the population.`
+          : `You haven't played any opening as white.`  
+          }        />
         <MemoizedRow
           label="Specialist: black"
           label_description="(most played relative to population)"
@@ -79,7 +81,10 @@ const DisplayTable = ({ data, username }) => {
           popularity_rank={data.most_popular_black.popularity_rank}
           unique_stamps_all={data.unique_stamps_all}
           id={4}
-          text={`You've played this ${timesPluralization(data.most_popular_black.player_black_with_children)}, or ${percentageToOneInEveryX(data.most_popular_black.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_black.all_pct)} Lichess stamps. You play it ${customRoundForRatio(data.most_popular_black.player_pct_with_children/data.most_popular_black.all_pct)}x as frequently as the population.`}
+          text={data.most_popular_black.name !== 'None' ?
+            `You've played this ${timesPluralization(data.most_popular_black.player_black_with_children)}, or ${percentageToOneInEveryX(data.most_popular_black.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_black.all_pct)} Lichess stamps. You play it ${customRoundForRatio(data.most_popular_black.player_pct_with_children/data.most_popular_black.all_pct)}x as frequently as the population.`
+          : `You haven't played any opening as black.`  
+          }
         />
         <MemoizedRow
           label="Favorite stamp: white"

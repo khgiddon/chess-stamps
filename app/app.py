@@ -41,22 +41,28 @@ def generate_base_statistics(df,username,stored_usernames):
                 df.loc[df['name'] == parent,'player_white_with_children'] += row['player_white']
                 df.loc[df['name'] == parent,'player_black_with_children'] += row['player_black']
 
+    # Replace nulls with 0
+    df = df.fillna(0)
+    print(df.head(100))
+
     # Clean and analyze
     df['player_total'] = df['player_white'] + df['player_black']
     df['player_total_with_children'] = df['player_white_with_children'] + df['player_black_with_children']
     df['all_pct'] = df['games'] / df['games'].sum()
     df['player_pct'] = df['player_total'] / df['player_total'].sum()
     df['player_pct_with_children'] = df['player_total_with_children'] / df['player_total_with_children'].sum()
-    df['white_pct'] = df['player_white'] / df['player_white'].sum()
-    df['white_pct_with_children'] = df['player_white_with_children'] / df['player_white_with_children'].sum()
-    df['black_pct'] = df['player_black'] / df['player_black'].sum()
-    df['black_pct_with_children'] = df['player_black_with_children'] / df['player_black_with_children'].sum()
+    df['white_pct'] = np.where(df['player_white'].sum() != 0, df['player_white'] / df['player_white'].sum(), 0)
+    df['white_pct_with_children'] = np.where(df['player_white_with_children'].sum() != 0, df['player_white_with_children'] / df['player_white_with_children'].sum(), 0)
+    df['black_pct'] = np.where(df['player_black'].sum() != 0, df['player_black'] / df['player_black'].sum(), 0)
+    df['black_pct_with_children'] = np.where(df['player_black_with_children'].sum() != 0, df['player_black_with_children'] / df['player_black_with_children'].sum(), 0)
 
     # Ratios and handle division by zero
     df['ratio_white'] = np.where(df['all_pct'] == 0, 0, df['white_pct_with_children'] / df['all_pct'])
     df['ratio_black'] = np.where(df['all_pct'] == 0, 0, df['black_pct_with_children'] / df['all_pct'])
 
     df['popularity_rank'] = df.sort_values(by='all_pct', ascending=False).reset_index().index + 1
+
+    print(df.head(100))
     
     # Uncomment to save the base file for selected usernames
     """
@@ -226,12 +232,14 @@ def send_data_to_frontend():
     unique_stamps = int(len(df.where(df['player_total'] > 0).dropna()))
     unique_stamps_all = int(len(df))    
 
-    # Most popular openings compared to average
-    most_popular_white = df.sort_values(by='ratio_white', ascending=False).head(1).to_dict('records')
-    most_popular_black = df.sort_values(by='ratio_black', ascending=False).head(1).to_dict('records')
-
     # Initialize defaults for the case where no openings meet the criteria
     default = {'name': 'None', 'pgn': '', 'ply': 0,'fen': '8/8/8/4k3/3K4/8/8/8 w - - 0 1', 'player_white_with_children': 0, 'player_black_with_children': 0, 'ratio_white': 0, 'ratio_black': 0, 'popularity_rank': 0, 'all_pct': 0}
+
+
+    # Most popular openings compared to average
+    most_popular_white = df.sort_values(by='ratio_white', ascending=False).head(1).to_dict('records') if df['player_white_with_children'].sum() > 0 else [default]
+    most_popular_black = df.sort_values(by='ratio_black', ascending=False).head(1).to_dict('records') if df['player_black_with_children'].sum() > 0 else [default]
+
 
     # Least popular openings compared to average, but have played at least 10 games
     df_most_popular_white_min10 = df.query('player_white_with_children >= 10').sort_values(by='ratio_white', ascending=False)
@@ -250,11 +258,14 @@ def send_data_to_frontend():
     least_favorite_played = df.query('player_total_with_children >= 1').sort_values(by='ratio', ascending=True).head(1).iloc[0].to_dict()
     deepest_ply = df.query('player_total_with_children >= 1').sort_values(by=['ply','player_total_with_children'], ascending=False).head(1).iloc[0].to_dict()
 
-    other_missing_stamps = df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(4)['name'].tolist()[1:4]
+    #other_missing_stamps = df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(4)['name'].tolist()[1:4]
         
     # Specify columns and only return the columns that are needed to speed things up
     all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
     df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
+
+    print(most_popular_black)
+    print(most_popular_white)
 
     # For now, we'll just return the dataframe data as JSON
     return jsonify({
@@ -264,13 +275,13 @@ def send_data_to_frontend():
         'unique_stamps': unique_stamps,
         'unique_stamps_all': unique_stamps_all,
         'loaded_username': username,
-        'most_popular_white': most_popular_white[0] if most_popular_white else default,
+        'most_popular_white': most_popular_white[0],
         'most_popular_white_min10': most_popular_white_min10[0],
-        'most_popular_black': most_popular_black[0] if most_popular_black else default,
+        'most_popular_black': most_popular_black[0],
         'most_popular_black_min10': most_popular_black_min10[0],
         'most_popular_missing_stamp': most_popular_missing_stamp,
         'most_obscure_stamp': most_obscure_stamp,
-        'other_missing_stamps': other_missing_stamps,
+        #'other_missing_stamps': other_missing_stamps,
         'random_collected': random_collected,
         'random_missing': random_missing,
         'least_favorite_played': least_favorite_played,

@@ -28,3 +28,4 @@ UI:
 - Tighten spacing
 
 
+Lichess account: api_tester

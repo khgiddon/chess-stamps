@@ -24,14 +24,15 @@ const ProgressWrapper = ({ progress, gamesexpected, username, abortController })
         <div className="progress-bar" style={{ width: `${progress}%` }}></div>
         <div className="progress-text">{progress > 100 ? 100 : progress}%</div>
       </div>
+
+      <div className="progress-cancel-button">
+        <Button variant="outlined" onClick={cancelRequest} color='error'>Cancel</Button>
+      </div>
       <div className="progress-additional-text">
         <span className='progress-bar-subtitle'>
           The Lichess API is rate-limited. Depending on the number of games, this may take a few minutes.
           <br /><br />Because the API response is streamed, game count is estimated until all data is received.
         </span>
-      </div>
-      <div className="progress-cancel-button">
-        <Button variant="outlined" onClick={cancelRequest} color='error'>Cancel</Button>
       </div>
     </div>
   );

@@ -33,8 +33,8 @@ const handleProgress = (progressData) => {
 
         // Successful API call
         const data = await response.json();
+
         setData(data);
-        console.log(data);
         console.log(data.most_obscure_stamp);
 
         // Set previous username (last correct username) if API call succeeds
