@@ -16,7 +16,16 @@ const ResultsSummary = ({ data, username, timeframe }) => {
     'nihalsarin2004': 'nihalsarin2004',
   };
 
+  const usernameMappingSecondMention = {
+    'drnykterstein': 'DrNykterstein',
+    'rebeccaharris': 'RebeccaHarris',
+    'alireza2003': 'alireza2003',
+    'nihalsarin2004': 'nihalsarin2004',
+  };  
+
   const displayUsername = usernameMapping[username.toLowerCase()] || username;
+  const displayUsernameSecondMention = usernameMappingSecondMention[username.toLowerCase()] || username;
+
 
   const displayTimeframeMapping = {
     'last 24 hours': 'over the last 24 hours',
@@ -100,7 +109,7 @@ const ResultsSummary = ({ data, username, timeframe }) => {
         <div className="summaryText">
           <ul>
             <li>Analyzed <b>{addThousandsSeparator(data.total_stamps)}</b> opening stamps from <b>{addThousandsSeparator(data.total_games)}</b> games played by <b>{displayUsername}</b> {displayTimeframe}.</li>
-            <li>You've collected <b>{addThousandsSeparator(data.unique_stamps)}</b> unique stamps out of <b>{addThousandsSeparator(data.unique_stamps_all)}</b> possible stamps, or <b>{formatPercentage(data.unique_stamps/data.unique_stamps_all)}%</b> of all stamps.</li>
+            <li><b>{displayUsernameSecondMention}</b> has collected <b>{addThousandsSeparator(data.unique_stamps)}</b> unique stamps out of <b>{addThousandsSeparator(data.unique_stamps_all)}</b> possible stamps, or <b>{formatPercentage(data.unique_stamps/data.unique_stamps_all)}%</b> of all stamps.</li>
           </ul>
         </div>
         <div className="summaryChart">

@@ -9,7 +9,6 @@ TODO:
 
 MVP release
 - Upgrade lichess API auth
-- Open Lichess links in new tab
 
 
 
