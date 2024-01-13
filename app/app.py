@@ -8,11 +8,18 @@ import os
 import json
 import time
 from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
 
-# Setup
-app = Flask(__name__)
-socketio = SocketIO(app,cors_allowed_origins="*")
-CORS(app) 
+import random
+import string
+
+from models import Record, db, init_db
+from main import app, socketio
+
+# Unique URL
+def generate_url_key(length=7):
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
+
 
 # Parse lichess games API response - data comes in newline-delimited JSON
 def response_parser(s):
@@ -27,6 +34,7 @@ def response_parser(s):
             data[key] = value
     return data
 
+# Generate base statistics (run as part of get_user_data())
 def generate_base_statistics(df,username,stored_usernames):
 
     # Begin generating stats
@@ -75,7 +83,7 @@ def generate_base_statistics(df,username,stored_usernames):
 
 
 # Get user data
-def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
+def get_user_data(username,timestamp_to_use,defaultusername='khg002',stored_usernames=[]):
 
     """
     This script uses the Lichess API to export the games of a user
@@ -86,11 +94,8 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
 
     """
 
-    # If no username, or the default username, is provided, load the default file (for dev purposes
-    # Note that the time range is ignored here
-    # Add all stores usernames here
+    # Load files for stored usernames
 
-    stored_usernames = ['drnykterstein','rebeccaharris','alireza2003','nihalsarin2004']
 
     print('username',username)
     if username.lower() in stored_usernames:
@@ -98,7 +103,6 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
         df = pd.read_csv("assets/" + username + ".tsv", sep="\t")
 
         #df = generate_base_statistics(df,username,stored_usernames)
-
         return df
 
     if username == None or username == defaultusername:
@@ -214,6 +218,8 @@ def hello_world():
 def send_data_to_frontend():
 
     print('running get_data()')
+    stored_usernames = ['drnykterstein','rebeccaharris','alireza2003','nihalsarin2004']
+
 
     # Core data pull
     username = request.args.get('username')
@@ -224,7 +230,7 @@ def send_data_to_frontend():
     print(timeframe,timestamp_to_use)
 
     # Load user data
-    df = get_user_data(username,timestamp_to_use)
+    df = get_user_data(username,timestamp_to_use,stored_usernames=stored_usernames)
 
     # Add additional info
     total_games = int(df['player_total'].sum())
@@ -262,6 +268,24 @@ def send_data_to_frontend():
         
     # Specify columns and only return the columns that are needed to speed things up
     all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
+
+    # Save data to db
+    if username.lower() not in stored_usernames:
+        with app.app_context():
+            db.session.add(Record(url_key=generate_url_key(), username=username, timeframe=timeframe, data=df.to_json()))
+            db.session.commit()
+
+    
+    # Fetch all records from the User table
+    print('fetching all records')
+    records = Record.query.all()
+
+    # Print out each record
+    print(records[-1].username)
+    print(records[-1].data)
+    
+
+
     df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
 
     print(most_popular_black)
