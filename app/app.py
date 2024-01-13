@@ -2,7 +2,6 @@
 from flask import Flask, request, jsonify, render_template
 from flask_socketio import SocketIO
 from flask_cors import CORS
-from flask_caching import Cache
 
 import pandas as pd
 import numpy as np
@@ -18,9 +17,6 @@ app = Flask(__name__)
 socketio = SocketIO(app,cors_allowed_origins="*")
 CORS(app)  # This will allow the frontend to make requests to this server
 
-# Configure cache
-app.config['CACHE_TYPE'] = 'simple' # You can choose other types as well, like 'redis', 'memcached'
-cache = Cache(app)
 
 # Parse lichess games API response - data comes in newline-delimited JSON
 def response_parser(s):
@@ -68,11 +64,9 @@ def generate_base_statistics(df,username,stored_usernames):
     df['popularity_rank'] = df.sort_values(by='all_pct', ascending=False).reset_index().index + 1
 
     
-    # Uncomment to save the base file for a particular username
-    
-    #if username.lower() in stored_usernames:
+    # Uncomment to save the base file for selected usernames
     """
-    if username.lower() == 'nihalsarin2004':
+    if username.lower() in stored_usernames:
         print('saving base file')
         df.to_csv("assets/" + username.lower() +".tsv", sep="\t", index=False)
     """  
@@ -81,7 +75,6 @@ def generate_base_statistics(df,username,stored_usernames):
 
 
 # Get user data
-@cache.memoize(timeout=10)
 def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
 
     """
