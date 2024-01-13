@@ -14,12 +14,12 @@ const Row = ({ label, label_description, opening, rarity, fen, id, text, pgn, pl
         )}
       </div>
         <div className="chess-image">
-          <a href={`https://lichess.org/analysis/pgn/${[pgn]}`} className="link">
+          <a href={`https://lichess.org/analysis/pgn/${[pgn]}`} target="_blank" rel="noopener noreferrer" className="link">
             <ChessImage fen={fen} id={id} />
           </a>
         </div>
         <div className="text">
-          <a href={`https://lichess.org/analysis/pgn/${[pgn]}`} className="link">
+          <a href={`https://lichess.org/analysis/pgn/${[pgn]}`} target="_blank" rel="noopener noreferrer" className="link">
             <span className="openingHighlight">{opening}</span>
           </a>
           <div className = "rarity">
