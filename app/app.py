@@ -8,11 +8,18 @@ import os
 import json
 import time
 from dotenv import load_dotenv
+from flask_sqlalchemy import SQLAlchemy
 
-# Setup
-app = Flask(__name__)
-socketio = SocketIO(app,cors_allowed_origins="*")
-CORS(app) 
+import random
+import string
+
+from models import Record, db, init_db
+from main import app, socketio
+
+# Unique URL
+def generate_url_key(length=9):
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
+
 
 # Parse lichess games API response - data comes in newline-delimited JSON
 def response_parser(s):
@@ -27,6 +34,7 @@ def response_parser(s):
             data[key] = value
     return data
 
+# Generate base statistics (run as part of get_user_data())
 def generate_base_statistics(df,username,stored_usernames):
 
     # Begin generating stats
@@ -62,8 +70,6 @@ def generate_base_statistics(df,username,stored_usernames):
 
     df['popularity_rank'] = df.sort_values(by='all_pct', ascending=False).reset_index().index + 1
 
-    print(df.head(100))
-    
     # Uncomment to save the base file for selected usernames
     """
     if username.lower() in stored_usernames:
@@ -75,7 +81,7 @@ def generate_base_statistics(df,username,stored_usernames):
 
 
 # Get user data
-def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
+def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='khg002',stored_usernames=[]):
 
     """
     This script uses the Lichess API to export the games of a user
@@ -86,112 +92,118 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002'):
 
     """
 
-    # If no username, or the default username, is provided, load the default file (for dev purposes
-    # Note that the time range is ignored here
-    # Add all stores usernames here
-
-    stored_usernames = ['drnykterstein','rebeccaharris','alireza2003','nihalsarin2004']
-
-    print('username',username)
+    # Check if url_key is in DB
+    if url_key != 'none':
+        print('loading from db')
+        with app.app_context():
+            record = Record.query.filter_by(url_key=url_key).first()
+            if record is None:
+                print('record not found')
+            else:
+                print('record found!')
+                loaded_username = record.username
+                loaded_timeframe = record.timeframe
+                df = pd.read_json(record.data)
+                return loaded_username, loaded_timeframe, df
+    
+    # Load stored file if username is in stored_usernames
+    # This was an early local file implementation before the DB was added
     if username.lower() in stored_usernames:
         print('loading stored file')
         df = pd.read_csv("assets/" + username + ".tsv", sep="\t")
-
         #df = generate_base_statistics(df,username,stored_usernames)
+        return username, timeframe, df
 
-        return df
-
-    if username == None or username == defaultusername:
+    # Load default file if no username is specified
+    # For dev purposes until added Magnus data
+    elif username == None or username == defaultusername:
         # Load default file
         base_file = "assets/base_file.tsv"
         df = pd.read_csv(base_file, sep="\t")
-        return df
+        return username, timeframe, df
+
+    # Main Lichess API call if other attempts have failed
+
+    # Get overall data
+    openings_db = "assets/openings_pgn/combined_with_stats_parents.tsv"
+    df = pd.read_csv(openings_db, sep="\t")
+    print(f'querying lichess api for {username}...')
+
+    # Get user data
+    max_games = 50000
     
-    else:
+    print(f'querying lichess api for {username}...')
 
-        print(f'\n\n\n\n username {username} \n\n\n\n')
+    # Read the lichessToken
+    load_dotenv()
+    lichessToken = os.getenv("lichessToken")
 
-        # Get overall data
-        openings_db = "assets/openings_pgn/combined_with_stats_parents.tsv"
-        df = pd.read_csv(openings_db, sep="\t")
-        print(f'querying lichess api for {username}...')
+    # First request is to get the number of games
+    # We need to determine the number of games played since the timestamp so we can estimate completion
+    # This isn't perfect, but we will assume that the user plays at the same rate since account inception        
+    headers = {
+        "Content-Type": "application/x-ndjson",
+        "Authorization": f"Bearer {lichessToken}"
+    }
+    url = f"https://lichess.org/api/user/{username}"   
 
-        # Get user data
-        max_games = 30000
-        
-
-        print(f'querying lichess api for {username}...')
-
-        # Read the lichessToken
-        load_dotenv()
-        lichessToken = os.getenv("lichessToken")
-
-        # First request is to get the number of games
-        # We need to determine the number of games played since the timestamp so we can estimate completion
-        # This isn't perfect, but we will assume that the user plays at the same rate since account inception        
-        headers = {
-            "Content-Type": "application/x-ndjson",
-            "Authorization": f"Bearer {lichessToken}"
-        }
-        url = f"https://lichess.org/api/user/{username}"   
-
-        try:
-            response = requests.get(url,headers=headers)
-            print('received response from lichess api')
-            response.raise_for_status()
-        except:
-            abort(400, description="Username not found")
-
-        d = json.loads(response.content.decode('utf-8'))
-        total_games = sum(d['perfs'][game_type]['games'] for game_type in ['bullet', 'blitz', 'rapid', 'classical'])
-
-        user_created_at = d['createdAt']
-
-        # Proportion of games played since timestamp
-        if timestamp_to_use > user_created_at:
-            estimated_games = int(total_games * ((int(time.time())*1000 - timestamp_to_use) / (int(time.time())*1000 - user_created_at)))
-            print(f'Estimated games: {estimated_games}', f'Total games: {total_games}', f'Ratio: {estimated_games / total_games}', timestamp_to_use, user_created_at, int(time.time())*1000)
-        else:
-            estimated_games = total_games
-
-
-        # Second request is to pull the actual games
-        chunks_expected = min(estimated_games,max_games)   
-        chunks = 0
-        response_test = []
-        url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
-        response = requests.get(url,headers=headers,stream=True)
+    try:
+        response = requests.get(url,headers=headers)
         print('received response from lichess api')
-        for chunk in response.iter_content(chunk_size=1024):
-            percentage_complete = f'{(chunks / chunks_expected) * 100:.1f}'
-            socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected})
-            chunks += 1
-            print(percentage_complete)
-            response_test.append(chunk)
+        response.raise_for_status()
+    except:
+        abort(400, description="Username not found")
 
-        # Parse and create data
-        full_response = b''.join(response_test).decode('utf-8')
-        l = full_response.split('\n\n\n')    
-        print(f'length of response: {len(l)}')
+    d = json.loads(response.content.decode('utf-8'))
+    total_games = sum(d['perfs'][game_type]['games'] for game_type in ['bullet', 'blitz', 'rapid', 'classical'])
 
-        if len(l) == 1:
-            print(response.content.decode('utf-8'))
-        del l[-1] # Last response is empty
+    user_created_at = d['createdAt']
 
-        # Create dataframe
-        df['player_white'] = 0
-        df['player_black'] = 0
-        for game in l:
-            game_parsed = response_parser(game)
-            if game_parsed['White'].lower() == username.lower():
-                df.loc[df['name'] == game_parsed['Opening'],'player_white'] += 1
-            else:
-                df.loc[df['name'] == game_parsed['Opening'],'player_black'] += 1
+    # Proportion of games played since timestamp
+    if timestamp_to_use > user_created_at:
+        estimated_games = int(total_games * ((int(time.time())*1000 - timestamp_to_use) / (int(time.time())*1000 - user_created_at)))
+        print(f'Estimated games: {estimated_games}', f'Total games: {total_games}', f'Ratio: {estimated_games / total_games}', timestamp_to_use, user_created_at, int(time.time())*1000)
+    else:
+        estimated_games = total_games
 
-        # Generate statistics
-        df = generate_base_statistics(df,username,stored_usernames)
-        return df
+    # Second request is to pull the actual games
+    chunks_expected = min(estimated_games,max_games)   
+    chunks = 0
+    response_test = []
+    url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
+    response = requests.get(url,headers=headers,stream=True)
+    print('received response from lichess api')
+    for chunk in response.iter_content(chunk_size=1024):
+        percentage_complete = f'{(chunks / chunks_expected) * 100:.1f}'
+        socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected})
+        chunks += 1
+        print(percentage_complete)
+        response_test.append(chunk)
+
+    # Parse and create data
+    full_response = b''.join(response_test).decode('utf-8')
+    l = full_response.split('\n\n\n')    
+    print(f'length of response: {len(l)}')
+
+    if len(l) == 1:
+        print(response.content.decode('utf-8'))
+    del l[-1] # Last response is empty
+
+    # Create dataframe
+    df['player_white'] = 0
+    df['player_black'] = 0
+    for game in l:
+        game_parsed = response_parser(game)
+        if game_parsed['White'].lower() == username.lower():
+            df.loc[df['name'] == game_parsed['Opening'],'player_white'] += 1
+        else:
+            df.loc[df['name'] == game_parsed['Opening'],'player_black'] += 1
+
+    # Generate statistics
+    df = generate_base_statistics(df,username,stored_usernames)
+    return username, timeframe, df
     
+# Convert timeframe to timestamp used for Lichess API call
 def timeframe_to_timestamp(timeframe):
     if timeframe == 'forever':
         return 31536000*10*1000
@@ -210,21 +222,36 @@ def timeframe_to_timestamp(timeframe):
 def hello_world():
     return 'Hello, Worlds2!'
 
+# Main route
 @app.route('/openings', methods=['GET'])
 def send_data_to_frontend():
 
-    print('running get_data()')
+    stored_usernames = ['drnykterstein','rebeccaharris','alireza2003','nihalsarin2004']
 
     # Core data pull
     username = request.args.get('username')
     timeframe = request.args.get('timeframe')
+    url_key = request.args.get('id', 'none') # Return none by default
 
     # Current unix timestamp (ms) minus delta
     timestamp_to_use = int(time.time())*1000 - timeframe_to_timestamp(timeframe)
-    print(timeframe,timestamp_to_use)
 
     # Load user data
-    df = get_user_data(username,timestamp_to_use)
+    # Returned data will be a dict of username, timeframe, and dataframe
+    # Username, timeframe may update from the original request if found in the database
+    username, timeframe, df = get_user_data(username,timeframe,timestamp_to_use,url_key,stored_usernames=stored_usernames)
+
+    # Save data to db
+    if username.lower() not in stored_usernames and url_key == 'none':
+        with app.app_context():
+            url_key = generate_url_key()
+            db.session.add(Record(url_key=url_key, username=username, timeframe=timeframe, data=df.to_json()))
+            db.session.commit()
+
+    #####
+    # Second batch of statistics to prepare for frontend
+    # These are not saved to the database
+    ####
 
     # Add additional info
     total_games = int(df['player_total'].sum())
@@ -235,11 +262,9 @@ def send_data_to_frontend():
     # Initialize defaults for the case where no openings meet the criteria
     default = {'name': 'None', 'pgn': '', 'ply': 0,'fen': '8/8/8/4k3/3K4/8/8/8 w - - 0 1', 'player_white_with_children': 0, 'player_black_with_children': 0, 'ratio_white': 0, 'ratio_black': 0, 'popularity_rank': 0, 'all_pct': 0}
 
-
     # Most popular openings compared to average
     most_popular_white = df.sort_values(by='ratio_white', ascending=False).head(1).to_dict('records') if df['player_white_with_children'].sum() > 0 else [default]
     most_popular_black = df.sort_values(by='ratio_black', ascending=False).head(1).to_dict('records') if df['player_black_with_children'].sum() > 0 else [default]
-
 
     # Least popular openings compared to average, but have played at least 10 games
     df_most_popular_white_min10 = df.query('player_white_with_children >= 10').sort_values(by='ratio_white', ascending=False)
@@ -254,7 +279,7 @@ def send_data_to_frontend():
     random_collected =  df[df['player_total_with_children'] > 0].sample(n=1).head(1).iloc[0].to_dict()
     random_missing =  df[df['player_total_with_children'] == 0].sample(n=1).head(1).iloc[0].to_dict()
 
-    df['ratio'] = df['player_total_with_children'] / df['all_pct'] # Move this to stats function later
+    df['ratio'] = df['player_total_with_children'] / df['all_pct']
     least_favorite_played = df.query('player_total_with_children >= 1').sort_values(by='ratio', ascending=True).head(1).iloc[0].to_dict()
     deepest_ply = df.query('player_total_with_children >= 1').sort_values(by=['ply','player_total_with_children'], ascending=False).head(1).iloc[0].to_dict()
 
@@ -264,47 +289,37 @@ def send_data_to_frontend():
     all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
     df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
 
-    print(most_popular_black)
-    print(most_popular_white)
+    # Fetch all records from the User table
+    #print('fetching all records')
+    #records = Record.query.all()
 
-    # For now, we'll just return the dataframe data as JSON
+    # Print out each record
+    #print(records[-1].username)
+    #print(records[-1].data)
+
+    # Return df as json
     return jsonify({
         'openings': all_openings.to_dict(orient='records'),
         'total_games': total_games,
         'total_stamps': total_stamps,
         'unique_stamps': unique_stamps,
         'unique_stamps_all': unique_stamps_all,
+        'url_key': url_key if username.lower() not in stored_usernames else '',
         'loaded_username': username,
+        'loaded_timeframe': timeframe,
         'most_popular_white': most_popular_white[0],
         'most_popular_white_min10': most_popular_white_min10[0],
         'most_popular_black': most_popular_black[0],
         'most_popular_black_min10': most_popular_black_min10[0],
         'most_popular_missing_stamp': most_popular_missing_stamp,
         'most_obscure_stamp': most_obscure_stamp,
-        #'other_missing_stamps': other_missing_stamps,
         'random_collected': random_collected,
         'random_missing': random_missing,
         'least_favorite_played': least_favorite_played,
         'deepest_ply': deepest_ply
     })
 
-@app.route('/all_openings', methods=['GET'])
-def send_all_openings_data_to_frontend():
 
-    print('fetching ALL openings')
-    print('running get_data()')
-
-    # Core data pull
-    username = request.args.get('username')
-    df = get_user_data(username)
-
-    df = df[['name','pgn','ply','fen','player_total_with_children']]
-    print('returning json')
-
-    # Return the dataframe data as JSON
-    return jsonify(
-        df.to_dict(orient='records')
-    )
 
 if __name__ == '__main__':
     app.run(debug=True)
