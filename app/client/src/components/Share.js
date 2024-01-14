@@ -64,7 +64,9 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
           <div className='dialog-explanatory-text'></div>
               <Stack direction="row" spacing={0} alignItems="stretch" justifyContent="center">
                 <Box display="flex" alignItems="center" className='dialog-copyable-text-url'>
-                  <LinkIcon color="primary" fontSize="small" onClick={handleCopyUrl}/>
+                  <IconButton color="primary" fontSize="small" onClick={handleCopyUrl} style={{ padding: 0, display: 'flex', alignItems: 'center' }}>
+                    <LinkIcon color="primary" fontSize="small"/>
+                  </IconButton>
                 </Box>
                 <Box display="flex" alignItems="center" className='dialog-copyable-text-url'>
                   <a href={uniqueurl} target="_blank" rel="noopener noreferrer">{uniqueurl}</a>
@@ -72,7 +74,7 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
             </Stack>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
 
-            <Button variant="outlined" onClick={handleCopyUrl} style={{ marginTop: '0px', marginBottom : '20px' }}>
+            <Button variant="outlined" onClick={handleCopyUrl} style={{ marginTop: '0px', marginBottom : '25px' }}>
                 <FileCopyIcon />&nbsp;&nbsp;Copy to Clipboard
                 </Button>
             </div>    
@@ -82,11 +84,11 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
             <div className='dialog-copyable-text'>
                 {dialogContent}<a href={url} target="_blank" rel="noopener noreferrer">{uniqueurl}</a>
             </div>
-            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
                 <Button variant="outlined" onClick={handleCopyFull} style={{ marginTop: '10px' }}>
                 <FileCopyIcon />&nbsp;&nbsp;Copy to Clipboard
                 </Button>
-                <Button variant="outlined" style={{ marginLeft: '10px' }}>
+                <Button variant="outlined" style={{ marginLeft: '10px', marginTop: '10px' }}>
                 <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(dialogContent + uniqueurl)}`} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none', color: 'inherit' }}>
                     Tweet
                 </a>
