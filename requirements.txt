@@ -15,6 +15,9 @@ Flask==2.3.3
 Flask-Cors==4.0.0
 Flask-SocketIO==5.3.6
 Flask-SQLAlchemy==3.1.1
+gevent==23.9.1
+gevent-websocket==0.10.1
+greenlet==3.0.3
 gunicorn==21.2.0
 h11==0.14.0
 idna==3.4
@@ -61,3 +64,5 @@ urllib3==2.0.4
 wcwidth==0.2.6
 Werkzeug==2.3.7
 wsproto==1.2.0
+zope.event==5.0
+zope.interface==6.1
