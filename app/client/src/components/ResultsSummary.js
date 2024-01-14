@@ -23,8 +23,17 @@ const ResultsSummary = ({ data, username, timeframe }) => {
     'nihalsarin2004': 'nihalsarin2004',
   };  
 
+  const urlOverrideMapping = {
+    'drnykterstein': 'drnykterstein',
+    'rebeccaharris': 'rebeccaharris',
+    'alireza2003': 'alireza2003',
+    'nihalsarin2004': 'nihalsarin2004',
+  }
+
   const displayUsername = usernameMapping[username.toLowerCase()] || username;
   const displayUsernameSecondMention = usernameMappingSecondMention[username.toLowerCase()] || username;
+
+  const urlOverride = urlOverrideMapping[username.toLowerCase()] || null;
 
 
   const displayTimeframeMapping = {
@@ -124,6 +133,7 @@ const ResultsSummary = ({ data, username, timeframe }) => {
           displayUsernameSecondMention={displayUsernameSecondMention}
           addThousandsSeparator={addThousandsSeparator}
           formatPercentage={formatPercentage}
+          urlOverride={urlOverride}
         />
         </div>
       </div>

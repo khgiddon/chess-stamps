@@ -17,7 +17,7 @@ from models import Record, db, init_db
 from main import app, socketio
 
 # Unique URL
-def generate_url_key(length=7):
+def generate_url_key(length=9):
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
 
 
@@ -272,17 +272,18 @@ def send_data_to_frontend():
     # Save data to db
     if username.lower() not in stored_usernames:
         with app.app_context():
-            db.session.add(Record(url_key=generate_url_key(), username=username, timeframe=timeframe, data=df.to_json()))
+            url_key = generate_url_key()
+            db.session.add(Record(url_key=url_key, username=username, timeframe=timeframe, data=df.to_json()))
             db.session.commit()
 
     
     # Fetch all records from the User table
-    print('fetching all records')
-    records = Record.query.all()
+    #print('fetching all records')
+    #records = Record.query.all()
 
     # Print out each record
-    print(records[-1].username)
-    print(records[-1].data)
+    #print(records[-1].username)
+    #print(records[-1].data)
     
 
 
@@ -298,6 +299,7 @@ def send_data_to_frontend():
         'total_stamps': total_stamps,
         'unique_stamps': unique_stamps,
         'unique_stamps_all': unique_stamps_all,
+        'url_key': url_key if username.lower() not in stored_usernames else '',
         'loaded_username': username,
         'most_popular_white': most_popular_white[0],
         'most_popular_white_min10': most_popular_white_min10[0],

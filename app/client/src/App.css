@@ -23,6 +23,7 @@ html, body {
   text-align: center;
   font-family: 'Lato', Arial, sans-serif;
   font-size: 130%;
+  color: #2074d4;
 }
 
 h1 {
@@ -537,11 +538,12 @@ h1 {
 .dialog-title h2 {
   text-align: center;
   font-family: 'Lato', Arial, sans-serif;
-  font-size: 100%;
+  font-size: 120%;
   color: #2074d4;
   font-weight: bold;
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  padding-bottom: 0px;
   
 }
 
@@ -557,6 +559,32 @@ h1 {
   padding: 10px;
   border-radius: 5px;
   background-color: #f0f0f0;
+  color: #444;
+}
+
+.dialog-copyable-text a {
+  color: #444; /* Change to your preferred color */
+  text-decoration: underline;
+}
+
+
+.dialog-copyable-text-url {
+  text-align: center;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #f0f0f0;
+}
+
+.dialog-copyable-text-url a {
+  color: #444; /* Change to your preferred color */
+  text-decoration: none;
+}
+
+
+.dialog-explanatory-text {
+  text-align: center;
+  margin-bottom: 6px;
 }
 
 .dialog-content button {

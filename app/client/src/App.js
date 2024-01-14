@@ -23,6 +23,8 @@ function App() {
   const previousTimeframe = useRef(null);
   const [timeframe, setTimeframe] = useState('last 3 months');
   const [data, setData] = useState([]);
+  const [idFromLoad, setIdFromLoad] = useState([]);
+  const [id, setId] = useState(null);
   const [progress, setProgress] = useState(0);
   const [gamesexpected, setGamesExpected] = useState(0);
   const [loading, setLoading] = useState(false); // Added loading state
@@ -30,7 +32,15 @@ function App() {
   const abortController = useRef(null);  // Use useRef to hold the AbortController
   const [error, setError] = useState(null);
 
-
+  // Look for id in the URL
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id_from_url = urlParams.get('id');
+    if (id_from_url) {
+      setIdFromLoad(id_from_url);
+      console.log('id from url',idFromLoad)
+    }
+  }, []);
 
 
   const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months') => {
@@ -42,7 +52,7 @@ function App() {
     setLoading(true); // Set loading to true when the fetch starts
     setHasAllOpenings(false);
     console.log('previousUsername',previousUsername);
-    fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError)
+    fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, setId, idFromLoad, setIdFromLoad)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
   }, []);
 
