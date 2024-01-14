@@ -49,6 +49,11 @@ const handleProgress = (progressData) => {
         setData(data);
         console.log(data.most_obscure_stamp);
 
+        // Overwrite username and timeframe with values from API call 
+        // This will occur if the database was pulled
+        setUsername(data.loaded_username);
+        setTimeframe(data.loaded_timeframe);
+
         // Set previous username (last correct username) if API call succeeds
         console.log('setting previous username to',username)
         previousUsername.current = username;

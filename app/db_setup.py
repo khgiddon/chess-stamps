@@ -2,9 +2,6 @@
 from models import db, Record, init_db
 from main import app
 
-# Initialize the database
-init_db(app)
-
 # Drop all tables and recreate them
 with app.app_context():
     db.drop_all()
