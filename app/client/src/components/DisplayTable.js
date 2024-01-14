@@ -30,6 +30,18 @@ const DisplayTable = ({ data, username }) => {
           
 
       <div className="grid-container">
+      <MemoizedRow
+          label="Rarest collected stamp"
+          opening={data.most_obscure_stamp.name}
+          fen={data.most_obscure_stamp.fen}
+          pgn={data.most_obscure_stamp.pgn}
+          ply={data.most_obscure_stamp.ply}
+          rarity={percentageToRarity(data.most_obscure_stamp.all_pct)}
+          popularity_rank={data.most_obscure_stamp.popularity_rank}
+          unique_stamps_all={data.unique_stamps_all}
+          id={2}
+          text={`You've played this ${timesPluralization(data.most_obscure_stamp.player_total_with_children)}. This is only ${percentageToOneInEveryX(data.most_obscure_stamp.all_pct)} Lichess stamps! What a find!`}
+        />
         <MemoizedRow
           label="Most popular missing stamp"
           opening={data.most_popular_missing_stamp.name}
@@ -46,18 +58,6 @@ const DisplayTable = ({ data, username }) => {
               Happy hunting!
             </>
           }
-        />
-        <MemoizedRow
-          label="Rarest collected stamp"
-          opening={data.most_obscure_stamp.name}
-          fen={data.most_obscure_stamp.fen}
-          pgn={data.most_obscure_stamp.pgn}
-          ply={data.most_obscure_stamp.ply}
-          rarity={percentageToRarity(data.most_obscure_stamp.all_pct)}
-          popularity_rank={data.most_obscure_stamp.popularity_rank}
-          unique_stamps_all={data.unique_stamps_all}
-          id={2}
-          text={`You've played this ${timesPluralization(data.most_obscure_stamp.player_total_with_children)}. This is only ${percentageToOneInEveryX(data.most_obscure_stamp.all_pct)} Lichess stamps! What a find!`}
         />
         <MemoizedRow
           label="Specialist: white"
