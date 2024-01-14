@@ -69,7 +69,7 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
                   </IconButton>
                 </Box>
                 <Box display="flex" alignItems="center" className='dialog-copyable-text-url'>
-                  <a href={uniqueurl} target="_blank" rel="noopener noreferrer">{uniqueurl}</a>
+                  {uniqueurl}
                 </Box>
             </Stack>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
