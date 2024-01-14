@@ -104,7 +104,7 @@ function App() {
         handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
         />}
         {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
-        <Footer />
+        {!loading && <Footer />}
     </div>
   </div>
   );
