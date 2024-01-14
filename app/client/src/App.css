@@ -501,7 +501,7 @@ h1 {
   background-color: lightgreen; /* Light green background for items with player_total > 0 */
 }
 
-.chessImageContainer {
+#chessImageContainer {
   position: fixed;
   width: 200px; /* Adjust as needed */
   height: 200px; /* Adjust as needed */

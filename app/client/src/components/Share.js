@@ -27,7 +27,7 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
 
   const url = "https://chessopeningstampcollector.com";
   const urlKey = urlOverride !== null ? urlOverride : data.url_key;
-  const uniqueurl = url + '/?' + urlKey;
+  const uniqueurl = url + '/?id=' + urlKey;
 
   const handleCopyUrl = () => {
     navigator.clipboard.writeText(uniqueurl);
@@ -40,10 +40,10 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
 
   return (
     <>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px', marginBottom: '10px' }}>
         
-        <Button variant="outlined" onClick={handleClickOpen}>
-          <ShareIcon />&nbsp;&nbsp;Share your stats
+        <Button variant="contained" onClick={handleClickOpen} color='success'>
+          <ShareIcon/>&nbsp;&nbsp;Share your stats
         </Button>
       </div>
 
