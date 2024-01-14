@@ -26,14 +26,17 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
   const dialogContent = `I've played ${addThousandsSeparator(data.unique_stamps)} unique chess openings, and my rarest opening is the ${data.most_obscure_stamp ? data.most_obscure_stamp.name : 'loading...'}. What's yours? See my stats at: `;
 
   const url = "https://chessopeningstampcollector.com";
-  
-  const handleCopy = () => {
-    navigator.clipboard.writeText(dialogContent + url);
-  };
-
   const urlKey = urlOverride !== null ? urlOverride : data.url_key;
-  const uniqueurl = "https://chessopeningstampcollector.com/" + urlKey;
+  const uniqueurl = url + '/?' + urlKey;
+
+  const handleCopyUrl = () => {
+    navigator.clipboard.writeText(uniqueurl);
+  };
   
+
+  const handleCopyFull = () => {
+    navigator.clipboard.writeText(dialogContent + uniqueurl);
+  };
 
   return (
     <>
@@ -53,7 +56,7 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
             <h2>Share your stats with a unique link:</h2>
         </div>
             <IconButton style={{ position: 'absolute', right: '10px', top: '10px' }} onClick={handleClose}>
-            <CloseIcon />
+              <CloseIcon />
             </IconButton>
         
 
@@ -61,7 +64,7 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
           <div className='dialog-explanatory-text'></div>
               <Stack direction="row" spacing={0} alignItems="stretch" justifyContent="center">
                 <Box display="flex" alignItems="center" className='dialog-copyable-text-url'>
-                  <LinkIcon color="primary" fontSize="small"/>
+                  <LinkIcon color="primary" fontSize="small" onClick={handleCopyUrl}/>
                 </Box>
                 <Box display="flex" alignItems="center" className='dialog-copyable-text-url'>
                   <a href={uniqueurl} target="_blank" rel="noopener noreferrer">{uniqueurl}</a>
@@ -69,7 +72,7 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
             </Stack>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
 
-            <Button variant="outlined" onClick={handleCopy} style={{ marginTop: '0px', marginBottom : '20px' }}>
+            <Button variant="outlined" onClick={handleCopyUrl} style={{ marginTop: '0px', marginBottom : '20px' }}>
                 <FileCopyIcon />&nbsp;&nbsp;Copy to Clipboard
                 </Button>
             </div>    
@@ -80,7 +83,7 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
                 {dialogContent}<a href={url} target="_blank" rel="noopener noreferrer">{uniqueurl}</a>
             </div>
             <div style={{ display: 'flex', justifyContent: 'center', marginTop: '10px' }}>
-                <Button variant="outlined" onClick={handleCopy} style={{ marginTop: '10px' }}>
+                <Button variant="outlined" onClick={handleCopyFull} style={{ marginTop: '10px' }}>
                 <FileCopyIcon />&nbsp;&nbsp;Copy to Clipboard
                 </Button>
                 <Button variant="outlined" style={{ marginLeft: '10px' }}>
