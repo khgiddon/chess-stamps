@@ -14,9 +14,11 @@ CORS(app)
 load_dotenv()
 
 # Use SQLite for local development and PostgreSQL for production
+
 if os.getenv('FLASK_ENV') == 'development':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 else:
-    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL').replace("postgres://", "postgresql://", 1)
+
 
 init_db(app)  # Initialize the SQLAlchemy instance with the Flask app
