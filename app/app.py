@@ -224,6 +224,7 @@ def send_data_to_frontend():
     # Core data pull
     username = request.args.get('username')
     timeframe = request.args.get('timeframe')
+    url_key = request.args.get('id')
 
     # Current unix timestamp (ms) minus delta
     timestamp_to_use = int(time.time())*1000 - timeframe_to_timestamp(timeframe)

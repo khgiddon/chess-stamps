@@ -23,7 +23,7 @@ function App() {
   const previousTimeframe = useRef(null);
   const [timeframe, setTimeframe] = useState('last 3 months');
   const [data, setData] = useState([]);
-  const [idFromLoad, setIdFromLoad] = useState([]);
+  const [idFromLoad, setIdFromLoad] = useState(null);
   const [id, setId] = useState(null);
   const [progress, setProgress] = useState(0);
   const [gamesexpected, setGamesExpected] = useState(0);
@@ -32,18 +32,8 @@ function App() {
   const abortController = useRef(null);  // Use useRef to hold the AbortController
   const [error, setError] = useState(null);
 
-  // Look for id in the URL
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id_from_url = urlParams.get('id');
-    if (id_from_url) {
-      setIdFromLoad(id_from_url);
-      console.log('id from url',idFromLoad)
-    }
-  }, []);
 
-
-  const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months') => {
+  const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months', idFromLoad) => {
     if (abortController.current) {  // If there's an existing AbortController
       abortController.current.abort();  // Abort any ongoing fetch request
     }
@@ -54,17 +44,21 @@ function App() {
     console.log('previousUsername',previousUsername);
     fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, setId, idFromLoad, setIdFromLoad)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
-  }, []);
+    }, []);  // Add idFromLoad to the dependency array
+
 
   // Fetch data when the component is first mounted using the default username
-    useEffect(() => {
-      handleFetchData();
-    }, [handleFetchData]);
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idFromUrl = urlParams.get('id') || 'none';
+    setIdFromLoad(idFromUrl);
+    handleFetchData('drnykterstein', 'last 3 months', idFromUrl);
+  }, [handleFetchData]);
 
-  // Flip state of hasAllOpenings when the button is clicked
-  const handleAllOpeningsButtonClick = () => {
-    setHasAllOpenings(!hasallopenings);
-  };
+    // Flip state of hasAllOpenings when the button is clicked
+    const handleAllOpeningsButtonClick = () => {
+      setHasAllOpenings(!hasallopenings);
+    };
 
   // Scroll to the openings grid when the openings are loaded
   useEffect(() => {
