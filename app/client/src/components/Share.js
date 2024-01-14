@@ -25,7 +25,7 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
 
   const dialogContent = `I've played ${addThousandsSeparator(data.unique_stamps)} unique chess openings, and my rarest opening is the ${data.most_obscure_stamp ? data.most_obscure_stamp.name : 'loading...'}. What's yours? See my stats at: `;
 
-  const url = "https://chessopeningstampcollector.com";
+  const url = "https://chessstamps.app";
   const urlKey = urlOverride !== null ? urlOverride : data.url_key;
   const uniqueurl = url + '/?id=' + urlKey;
 
