@@ -70,8 +70,6 @@ def generate_base_statistics(df,username,stored_usernames):
 
     df['popularity_rank'] = df.sort_values(by='all_pct', ascending=False).reset_index().index + 1
 
-    print(df.head(100))
-    
     # Uncomment to save the base file for selected usernames
     """
     if username.lower() in stored_usernames:
@@ -83,7 +81,7 @@ def generate_base_statistics(df,username,stored_usernames):
 
 
 # Get user data
-def get_user_data(username,timestamp_to_use,defaultusername='khg002',stored_usernames=[]):
+def get_user_data(username,timestamp_to_use,url_key,defaultusername='khg002',stored_usernames=[]):
 
     """
     This script uses the Lichess API to export the games of a user
@@ -101,16 +99,29 @@ def get_user_data(username,timestamp_to_use,defaultusername='khg002',stored_user
     if username.lower() in stored_usernames:
         print('loading stored file')
         df = pd.read_csv("assets/" + username + ".tsv", sep="\t")
-
         #df = generate_base_statistics(df,username,stored_usernames)
         return df
 
-    if username == None or username == defaultusername:
+    # Load default file if no username is specified
+    # For dev purposes until added Magnus data
+    elif username == None or username == defaultusername:
         # Load default file
         base_file = "assets/base_file.tsv"
         df = pd.read_csv(base_file, sep="\t")
         return df
     
+    # Load data from db
+    # Check if url_key is in DB
+    elif url_key != 'none':
+        print('loading from db')
+        with app.app_context():
+            record = Record.query.filter_by(url_key=url_key).first()
+            if record is None:
+                abort(400, description="URL key not found")
+            df = pd.read_json(record.data)
+            return df
+    
+    # Main lookup
     else:
 
         print(f'\n\n\n\n username {username} \n\n\n\n')
@@ -217,9 +228,7 @@ def hello_world():
 @app.route('/openings', methods=['GET'])
 def send_data_to_frontend():
 
-    print('running get_data()')
     stored_usernames = ['drnykterstein','rebeccaharris','alireza2003','nihalsarin2004']
-
 
     # Core data pull
     username = request.args.get('username')
@@ -228,10 +237,21 @@ def send_data_to_frontend():
 
     # Current unix timestamp (ms) minus delta
     timestamp_to_use = int(time.time())*1000 - timeframe_to_timestamp(timeframe)
-    print(timeframe,timestamp_to_use)
 
     # Load user data
-    df = get_user_data(username,timestamp_to_use,stored_usernames=stored_usernames)
+    df = get_user_data(username,timestamp_to_use,url_key,stored_usernames=stored_usernames)
+
+    # Save data to db
+    if username.lower() not in stored_usernames:
+        with app.app_context():
+            url_key = generate_url_key()
+            db.session.add(Record(url_key=url_key, username=username, timeframe=timeframe, data=df.to_json()))
+            db.session.commit()
+
+    #####
+    # Second batch of statistics to prepare for frontend
+    # These are not saved to the database
+    ####
 
     # Add additional info
     total_games = int(df['player_total'].sum())
@@ -242,11 +262,9 @@ def send_data_to_frontend():
     # Initialize defaults for the case where no openings meet the criteria
     default = {'name': 'None', 'pgn': '', 'ply': 0,'fen': '8/8/8/4k3/3K4/8/8/8 w - - 0 1', 'player_white_with_children': 0, 'player_black_with_children': 0, 'ratio_white': 0, 'ratio_black': 0, 'popularity_rank': 0, 'all_pct': 0}
 
-
     # Most popular openings compared to average
     most_popular_white = df.sort_values(by='ratio_white', ascending=False).head(1).to_dict('records') if df['player_white_with_children'].sum() > 0 else [default]
     most_popular_black = df.sort_values(by='ratio_black', ascending=False).head(1).to_dict('records') if df['player_black_with_children'].sum() > 0 else [default]
-
 
     # Least popular openings compared to average, but have played at least 10 games
     df_most_popular_white_min10 = df.query('player_white_with_children >= 10').sort_values(by='ratio_white', ascending=False)
@@ -261,7 +279,7 @@ def send_data_to_frontend():
     random_collected =  df[df['player_total_with_children'] > 0].sample(n=1).head(1).iloc[0].to_dict()
     random_missing =  df[df['player_total_with_children'] == 0].sample(n=1).head(1).iloc[0].to_dict()
 
-    df['ratio'] = df['player_total_with_children'] / df['all_pct'] # Move this to stats function later
+    df['ratio'] = df['player_total_with_children'] / df['all_pct']
     least_favorite_played = df.query('player_total_with_children >= 1').sort_values(by='ratio', ascending=True).head(1).iloc[0].to_dict()
     deepest_ply = df.query('player_total_with_children >= 1').sort_values(by=['ply','player_total_with_children'], ascending=False).head(1).iloc[0].to_dict()
 
@@ -269,13 +287,7 @@ def send_data_to_frontend():
         
     # Specify columns and only return the columns that are needed to speed things up
     all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
-
-    # Save data to db
-    if username.lower() not in stored_usernames:
-        with app.app_context():
-            url_key = generate_url_key()
-            db.session.add(Record(url_key=url_key, username=username, timeframe=timeframe, data=df.to_json()))
-            db.session.commit()
+    df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
 
     
     # Fetch all records from the User table
@@ -285,15 +297,9 @@ def send_data_to_frontend():
     # Print out each record
     #print(records[-1].username)
     #print(records[-1].data)
-    
 
 
-    df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
-
-    print(most_popular_black)
-    print(most_popular_white)
-
-    # For now, we'll just return the dataframe data as JSON
+    # Return df as json
     return jsonify({
         'openings': all_openings.to_dict(orient='records'),
         'total_games': total_games,

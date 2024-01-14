@@ -23,7 +23,7 @@ function App() {
   const previousTimeframe = useRef(null);
   const [timeframe, setTimeframe] = useState('last 3 months');
   const [data, setData] = useState([]);
-  const [idFromLoad, setIdFromLoad] = useState(null);
+  const idFromLoad = useRef(null);
   const [id, setId] = useState(null);
   const [progress, setProgress] = useState(0);
   const [gamesexpected, setGamesExpected] = useState(0);
@@ -33,7 +33,7 @@ function App() {
   const [error, setError] = useState(null);
 
 
-  const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months', idFromLoad) => {
+  const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months') => {
     if (abortController.current) {  // If there's an existing AbortController
       abortController.current.abort();  // Abort any ongoing fetch request
     }
@@ -42,18 +42,20 @@ function App() {
     setLoading(true); // Set loading to true when the fetch starts
     setHasAllOpenings(false);
     console.log('previousUsername',previousUsername);
-    fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, setId, idFromLoad, setIdFromLoad)
+    console.log('idFromLoad',idFromLoad.current);
+    fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, setId, idFromLoad)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
-    }, []);  // Add idFromLoad to the dependency array
+    }, []); 
 
 
   // Fetch data when the component is first mounted using the default username
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const idFromUrl = urlParams.get('id') || 'none';
-    setIdFromLoad(idFromUrl);
+    idFromLoad.current = idFromUrl;  // Update the ref
     handleFetchData('drnykterstein', 'last 3 months', idFromUrl);
   }, [handleFetchData]);
+  
 
     // Flip state of hasAllOpenings when the button is clicked
     const handleAllOpeningsButtonClick = () => {

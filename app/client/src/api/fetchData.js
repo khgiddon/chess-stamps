@@ -1,6 +1,6 @@
 import { socket } from './io';
 
-export const fetchData = async (username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, Setid, idFromLoad, setIdFromLoad) => {
+export const fetchData = async (username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, Setid, idFromLoad) => {
 
 const handleProgress = (progressData) => {
       const { percentage_complete, chunks_expected } = progressData;
@@ -18,12 +18,13 @@ const handleProgress = (progressData) => {
       let url = `http://127.0.0.1:5000/openings?username=${username}&timeframe=${timeframe}`;
 
       // Add id to URL if it exists
-      if (idFromLoad !== 'none') {
-        url += `&id=${idFromLoad}`;
-        console.log('url',url)
+      console.log('idFromLoad.current',idFromLoad.current)
+      if (idFromLoad.current !== 'none') {
+        url += `&id=${idFromLoad.current}`;
+        console.log('url',url, idFromLoad.current)
 
         // Reset loaded id to null after adding it to the URL, so it doesn't get added again
-        setIdFromLoad('none');
+        idFromLoad.current = 'none';
       }
       
       const response = await fetch(url, { signal: abortController.current.signal });
