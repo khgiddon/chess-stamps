@@ -9,7 +9,7 @@ TODO:
 
 MVP release
 - Upgrade lichess API auth - see https://github.com/lakinwecker/lichess-oauth-flask
-
+- Change logo
 
 
 COSMETIC
@@ -19,11 +19,6 @@ COSMETIC
 - Format tooltip text
 
 
-
-UI:
-- Explanatory text can expand out? - pop-up modal
-- Rarity score/ply less prominent
-- Stamp name center and more prominent
 
 
 Lichess account: api_tester
