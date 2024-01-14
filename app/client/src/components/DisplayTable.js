@@ -71,7 +71,7 @@ const DisplayTable = ({ data, username }) => {
           unique_stamps_all={data.unique_stamps_all}
           id={3}
           text={data.most_popular_white.name !== 'None' ?
-            `You've played this ${timesPluralization(data.most_popular_white.player_black_with_children)}, or ${percentageToOneInEveryX(data.most_popular_white.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_white.all_pct)} Lichess stamps. You play it ${customRoundForRatio(data.most_popular_white.player_pct_with_children/data.most_popular_white.all_pct)}x as frequently as the population.`
+            `You've played this ${timesPluralization(data.most_popular_white.player_white_with_children)}, or ${percentageToOneInEveryX(data.most_popular_white.player_pct_with_children)} stamps. This is only ${percentageToOneInEveryX(data.most_popular_white.all_pct)} Lichess stamps. You play it ${customRoundForRatio(data.most_popular_white.player_pct_with_children/data.most_popular_white.all_pct)}x as frequently as the population.`
           : `You haven't played any opening as white.`  
           }        />
         <MemoizedRow
