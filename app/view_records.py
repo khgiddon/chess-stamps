@@ -8,4 +8,4 @@ with app.app_context():
 
 # Print out each record
 for record in records:
-    print(record.username, record.timeframe, record.url_key)
+    print(record.username, record.record_created_at, record.timeframe, record.url_key)

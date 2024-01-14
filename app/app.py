@@ -92,8 +92,7 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
 
     """
 
-    # Load files for stored usernames
-
+    # Check if url_key is in DB
     if url_key != 'none':
         print('loading from db')
         with app.app_context():
@@ -107,6 +106,8 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
                 df = pd.read_json(record.data)
                 return loaded_username, loaded_timeframe, df
     
+    # Load stored file if username is in stored_usernames
+    # This was an early local file implementation before the DB was added
     if username.lower() in stored_usernames:
         print('loading stored file')
         df = pd.read_csv("assets/" + username + ".tsv", sep="\t")
@@ -120,11 +121,8 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
         base_file = "assets/base_file.tsv"
         df = pd.read_csv(base_file, sep="\t")
         return username, timeframe, df
-    
-    # Load data from db
-    # Check if url_key is in DB
 
-    # Main lookup if other attempts have failed
+    # Main Lichess API call if other attempts have failed
 
     # Get overall data
     openings_db = "assets/openings_pgn/combined_with_stats_parents.tsv"
@@ -132,9 +130,8 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
     print(f'querying lichess api for {username}...')
 
     # Get user data
-    max_games = 30000
+    max_games = 50000
     
-
     print(f'querying lichess api for {username}...')
 
     # Read the lichessToken
@@ -206,6 +203,7 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
     df = generate_base_statistics(df,username,stored_usernames)
     return username, timeframe, df
     
+# Convert timeframe to timestamp used for Lichess API call
 def timeframe_to_timestamp(timeframe):
     if timeframe == 'forever':
         return 31536000*10*1000
@@ -224,6 +222,7 @@ def timeframe_to_timestamp(timeframe):
 def hello_world():
     return 'Hello, Worlds2!'
 
+# Main route
 @app.route('/openings', methods=['GET'])
 def send_data_to_frontend():
 
@@ -243,7 +242,7 @@ def send_data_to_frontend():
     username, timeframe, df = get_user_data(username,timeframe,timestamp_to_use,url_key,stored_usernames=stored_usernames)
 
     # Save data to db
-    if username.lower() not in stored_usernames:
+    if username.lower() not in stored_usernames and url_key == 'none':
         with app.app_context():
             url_key = generate_url_key()
             db.session.add(Record(url_key=url_key, username=username, timeframe=timeframe, data=df.to_json()))
@@ -290,7 +289,6 @@ def send_data_to_frontend():
     all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
     df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
 
-    
     # Fetch all records from the User table
     #print('fetching all records')
     #records = Record.query.all()
@@ -298,7 +296,6 @@ def send_data_to_frontend():
     # Print out each record
     #print(records[-1].username)
     #print(records[-1].data)
-
 
     # Return df as json
     return jsonify({
@@ -316,7 +313,6 @@ def send_data_to_frontend():
         'most_popular_black_min10': most_popular_black_min10[0],
         'most_popular_missing_stamp': most_popular_missing_stamp,
         'most_obscure_stamp': most_obscure_stamp,
-        #'other_missing_stamps': other_missing_stamps,
         'random_collected': random_collected,
         'random_missing': random_missing,
         'least_favorite_played': least_favorite_played,
