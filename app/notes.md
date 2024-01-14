@@ -8,7 +8,7 @@ TODO:
 
 
 MVP release
-- Upgrade lichess API auth
+- Upgrade lichess API auth - see https://github.com/lakinwecker/lichess-oauth-flask
 
 
 
@@ -24,7 +24,6 @@ UI:
 - Explanatory text can expand out? - pop-up modal
 - Rarity score/ply less prominent
 - Stamp name center and more prominent
-- Tighten spacing
 
 
 Lichess account: api_tester
