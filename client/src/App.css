@@ -273,8 +273,9 @@ h1 {
   border-width: 1px 0px 1px 0px;
   padding: 10px;
   padding-top: 10px;
-
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .results-summary-container {
