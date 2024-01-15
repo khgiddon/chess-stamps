@@ -5,6 +5,7 @@ from flask_cors import CORS
 import pandas as pd
 import numpy as np
 import requests
+from requests.exceptions import HTTPError
 import os
 import json
 import time
@@ -165,17 +166,19 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
     url = f"https://lichess.org/api/user/{username}"   
     print('url',url, headers)
 
-    print('first character of lichess token: ' + lichessToken[0])
-
     try:
         print('attempting request to lichess api', url)
         response = requests.get(url,headers=headers)
         print('received response from lichess api')
         response.raise_for_status()
-    except Exception as e:
-        print(f"An error occurred: {e}")
-        traceback.print_exc()  # This will print the stack trace
+    except HTTPError as http_err:
+        print(f"HTTP error occurred: {http_err}")
+        traceback.print_exc() 
         abort(400, description="Username not found")
+    except Exception as err:
+        print(f"An error occurred: {err}")
+        traceback.print_exc()  
+        abort(500, description="An unexpected error occurred")
 
     d = json.loads(response.content.decode('utf-8'))
     total_games = sum(d['perfs'][game_type]['games'] for game_type in ['bullet', 'blitz', 'rapid', 'classical'])
