@@ -124,7 +124,7 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
     # This was an early local file implementation before the DB was added
     if username.lower() in stored_usernames:
         print('loading stored file')
-        df = pd.read_csv("assets/" + username + ".tsv", sep="\t")
+        df = pd.read_csv("assets/" + username.lower() + ".tsv", sep="\t")
         #df = generate_base_statistics(df,username,stored_usernames)
         return username, timeframe, df
 
