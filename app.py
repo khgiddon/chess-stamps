@@ -162,6 +162,7 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
         "Authorization": f"Bearer {lichessToken}"
     }
     url = f"https://lichess.org/api/user/{username}"   
+    print('url',url, headers)
 
     print('first character of lichess token: ' + lichessToken[0])
     try:
