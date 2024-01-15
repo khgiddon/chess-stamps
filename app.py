@@ -148,7 +148,7 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
     # Get user data
     max_games = 50000
     
-    print(f'querying lichess api for {username}...')
+    print(f'querying lichess api for {username}...', flush=True)
 
     # Read the lichessToken
     load_dotenv()
