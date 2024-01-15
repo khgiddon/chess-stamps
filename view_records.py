@@ -1,6 +1,6 @@
 # view_records.py
 from models import Record
-from main import app
+from app import app
 
 # Fetch all records from the Record table
 with app.app_context():
