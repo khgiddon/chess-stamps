@@ -71,10 +71,6 @@ def generate_base_statistics(df,username,stored_usernames):
                 df.loc[df['name'] == parent,'player_white_with_children'] += row['player_white']
                 df.loc[df['name'] == parent,'player_black_with_children'] += row['player_black']
 
-    # Replace nulls with 0
-    df = df.fillna(0)
-    print(df.head(100))
-
     # Clean and analyze
     df['player_total'] = df['player_white'] + df['player_black']
     df['player_total_with_children'] = df['player_white_with_children'] + df['player_black_with_children']
@@ -202,7 +198,7 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
     response_test = []
     url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
     response = requests.get(url,headers=headers,stream=True)
-    print('received response from lichess api')
+    print('received response from lichess api for main load')
     for chunk in response.iter_content(chunk_size=1024):
         percentage_complete = f'{(chunks / chunks_expected) * 100:.1f}'
         socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected})
