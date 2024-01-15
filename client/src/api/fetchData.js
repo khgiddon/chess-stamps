@@ -16,6 +16,7 @@ const handleProgress = (progressData) => {
 
   try {
       let baseUrl = process.env.BASE_BACKEND_URL || 'http://127.0.0.1:5000';
+      console.log('baseUrl',baseUrl)
       let url = `${baseUrl}/openings?username=${username}&timeframe=${timeframe}`;
 
       // Add id to URL if it exists
