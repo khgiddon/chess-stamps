@@ -1,6 +1,6 @@
 # db_setup.py
 from models import db, Record, init_db
-from main import app
+from app import app
 
 # Drop all tables and recreate them
 with app.app_context():
