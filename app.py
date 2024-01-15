@@ -212,7 +212,7 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
     print(f'length of response: {len(l)}')
 
     if len(l) == 1:
-        print(response.content.decode('utf-8'))
+        print('uh oh',l)
     del l[-1] # Last response is empty
 
     # Create dataframe
