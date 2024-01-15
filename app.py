@@ -1,3 +1,4 @@
+# app.py
 from flask import Flask, request, jsonify, abort
 from flask_socketio import SocketIO
 from flask_cors import CORS
@@ -14,7 +15,20 @@ import random
 import string
 
 from models import Record, db, init_db
-from main import app, socketio
+
+app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
+CORS(app)
+load_dotenv()
+
+# Use SQLite for local development and PostgreSQL for production
+
+if os.getenv('FLASK_ENV') == 'development':
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+else:
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL').replace("postgres://", "postgresql://", 1)
+
+init_db(app)  # Initialize the SQLAlchemy instance with the Flask app
 
 # Unique URL
 def generate_url_key(length=9):
