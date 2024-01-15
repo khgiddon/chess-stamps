@@ -163,6 +163,7 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
     }
     url = f"https://lichess.org/api/user/{username}"   
 
+    print('first character of lichess token: ' + lichessToken[0])
     try:
         response = requests.get(url,headers=headers)
         print('received response from lichess api')
