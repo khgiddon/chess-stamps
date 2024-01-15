@@ -10,6 +10,7 @@ import json
 import time
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
+import traceback
 
 import random
 import string
@@ -165,12 +166,15 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
     print('url',url, headers)
 
     print('first character of lichess token: ' + lichessToken[0])
+
     try:
         print('attempting request to lichess api', url)
         response = requests.get(url,headers=headers)
         print('received response from lichess api')
         response.raise_for_status()
-    except:
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        traceback.print_exc()  # This will print the stack trace
         abort(400, description="Username not found")
 
     d = json.loads(response.content.decode('utf-8'))
