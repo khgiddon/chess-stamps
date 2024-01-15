@@ -16,24 +16,26 @@ import string
 
 from models import Record, db, init_db
 
+# Launch
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
 load_dotenv()
 
 # Use SQLite for local development and PostgreSQL for production
-
 if os.getenv('FLASK_ENV') == 'development':
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL').replace("postgres://", "postgresql://", 1)
-
 init_db(app)  # Initialize the SQLAlchemy instance with the Flask app
+
+###
+# Functions and routes
+###
 
 # Unique URL
 def generate_url_key(length=9):
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
-
 
 # Parse lichess games API response - data comes in newline-delimited JSON
 def response_parser(s):
