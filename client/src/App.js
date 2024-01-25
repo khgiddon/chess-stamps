@@ -1,8 +1,10 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, createContext } from 'react';
+
+
 import './App.css';
+
+// API
 import { fetchData } from './api/fetchData';
-
-
 
 // Components
 import BlockUsernameSubmit from './components/BlockUsernameSubmit';
@@ -14,9 +16,17 @@ import BlockIntro from './components/BlockIntro';
 import LowerButtons from './components/LowerButtons';
 import OpeningsGrid from './components/OpeningsGrid';
 import Footer from './components/Footer';
+import AuthDialog from './components/AuthDialog';
 
+// Auth
+export const AuthContext = createContext();
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const askedForAuth = useRef(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
+
+
   const [allopenings, setAllOpenings] = useState([]);
   const [username, setUsername] = useState('drnykterstein');
   const previousUsername = useRef(null);
@@ -32,8 +42,15 @@ function App() {
   const abortController = useRef(null);  // Use useRef to hold the AbortController
   const [error, setError] = useState(null);
 
-
   const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months') => {
+
+    if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && username !== 'drnykterstein') {
+      // If the user is not authenticated, show the AuthDialog
+      console.log('askedForAuth:', askedForAuth);
+      setShowAuthDialog(true);
+      return;
+    }
+    
     if (abortController.current) {  // If there's an existing AbortController
       abortController.current.abort();  // Abort any ongoing fetch request
     }
@@ -69,18 +86,28 @@ function App() {
     }
   }, [hasallopenings]);
 
-  const handleSubmit = (newUsername,newTimeframe) => {
-    handleFetchData(newUsername,newTimeframe);
-    console.log('newTimeframe',newTimeframe)
-  }
+  const handleSubmit = (newUsername, newTimeframe) => {
+    handleFetchData(newUsername, newTimeframe);
+    console.log('newTimeframe', newTimeframe);
+    }
+
+  const handleAuthDialogClose = () => {
+      setShowAuthDialog(false);
+      askedForAuth.current = true;
+      handleFetchData(username, timeframe);
+    };
+
 
   const storedUsernames = ['khg002', 'drnykterstein', 'alireza2003', 'rebeccaharris','nihalsarin2004'];         
 
   return (
+    <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
     <div>
 
       <div className='upper-container'>
         <BlockHeader />
+        <AuthDialog open={showAuthDialog} handleClose={handleAuthDialogClose} username={username} timeframe={timeframe} />
+
         <div className="intro-container">
           <BlockUsernameSubmit 
             username={username}
@@ -107,6 +134,7 @@ function App() {
         {!loading && <Footer />}
     </div>
   </div>
+  </AuthContext.Provider>
   );
 }
 export default App;
