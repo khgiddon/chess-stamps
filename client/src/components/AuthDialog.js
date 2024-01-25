@@ -29,7 +29,12 @@ const AuthDialog = ({ open, handleClose, username, timeframe}) => {
             <p>Authentication is optional, but authenticating will load your games 3x faster.</p>
         </div>
         <Stack direction="column" spacing={2} style={{ marginTop: '20px', marginBottom: '20px'  }} alignItems="center">
-  <Button variant="contained" color="primary" style={{ maxWidth: 'fit-content' }} onClick={login}>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          style={{ maxWidth: 'fit-content' }} 
+          onClick={() => login(username, timeframe)}
+        >
     Authenticate
   </Button>
   <Button variant="outlined" color="secondary" onClick={handleClose} style={{ maxWidth: 'fit-content' }}>

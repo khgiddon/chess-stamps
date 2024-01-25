@@ -24,6 +24,8 @@ import time
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 import traceback
+import base64
+
 
 import random
 import string
@@ -277,21 +279,19 @@ def hello_world():
 @app.route('/login')
 def login():
     redirect_uri = url_for("authorize", _external=True)
-    return oauth.lichess.authorize_redirect(redirect_uri)
+    state = request.args.get('state')
 
-from flask import request
+    return oauth.lichess.authorize_redirect(redirect_uri, state=state)
+
 
 @app.route('/authorize')
 def authorize():
-    username = request.args.get('username')
-    timeframe = request.args.get('timeframe')
-
-    print('username',username)
+    state = request.args.get('state')
 
     token = oauth.lichess.authorize_access_token()
     session['token'] = token['access_token']
 
-    redirect_url = f"http://localhost:3000/authorized?username={username}&timeframe={timeframe}"
+    redirect_url = f"http://localhost:3000/authorized?state={state}"
     return redirect(redirect_url)
 
 # Main route
