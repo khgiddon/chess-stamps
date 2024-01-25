@@ -46,6 +46,7 @@ function App() {
 
     if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && username !== 'drnykterstein') {
       // If the user is not authenticated, show the AuthDialog
+      setLoading(true)
       console.log('askedForAuth:', askedForAuth);
       console.log('username', username);
       setShowAuthDialog(true);
