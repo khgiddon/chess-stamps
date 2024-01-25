@@ -10,9 +10,11 @@ import { login, authorize } from '../api/auth.js';
 
 const AuthDialog = ({ open, handleClose, username, timeframe}) => {
 
+  console.log('username in AuthDialog.js',username)
+
   useEffect(() => {
     if (window.location.pathname === '/authorize') {
-      authorize(username={username}, timeframe={timeframe});
+      authorize(username, timeframe);
       handleClose();
     }
   }, []);

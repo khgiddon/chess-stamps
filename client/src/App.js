@@ -47,6 +47,7 @@ function App() {
     if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && username !== 'drnykterstein') {
       // If the user is not authenticated, show the AuthDialog
       console.log('askedForAuth:', askedForAuth);
+      console.log('username', username);
       setShowAuthDialog(true);
       return;
     }
@@ -62,7 +63,7 @@ function App() {
     console.log('idFromLoad',idFromLoad.current);
     fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, setId, idFromLoad)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
-    }, []); 
+    },[]); 
 
 
   // Fetch data when the component is first mounted using the default username

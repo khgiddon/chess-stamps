@@ -286,6 +286,8 @@ def authorize():
     username = request.args.get('username')
     timeframe = request.args.get('timeframe')
 
+    print('username',username)
+
     token = oauth.lichess.authorize_access_token()
     session['token'] = token['access_token']
 
