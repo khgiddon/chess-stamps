@@ -26,19 +26,19 @@ const AuthDialog = ({ open, handleClose, username, timeframe}) => {
             <h2>Authenticate with Lichess?</h2>
         </div>
         <div className='dialog-explanatory-text'>
-            <p>Authentication is optional, but authenticating will load your games 3x faster.</p>
+            <p>Authentication is optional, but it will load your games 3x faster.</p>
         </div>
-        <Stack direction="column" spacing={2} style={{ marginTop: '20px', marginBottom: '20px'  }} alignItems="center">
-        <Button 
-          variant="contained" 
-          color="primary" 
-          style={{ maxWidth: 'fit-content' }} 
-          onClick={() => login(username, timeframe)}
-        >
-    Authenticate
-  </Button>
+        <Stack direction="row" spacing={2} style={{ marginTop: '20px', marginBottom: '20px'  }} alignItems="center" justifyContent="center">
   <Button variant="outlined" color="secondary" onClick={handleClose} style={{ maxWidth: 'fit-content' }}>
     Skip
+  </Button>
+  <Button 
+    variant="contained" 
+    color="primary" 
+    style={{ maxWidth: 'fit-content' }} 
+    onClick={() => login(username, timeframe)}
+  >
+    Authenticate
   </Button>
 </Stack>
 <div style={{ textAlign: 'center', fontSize: 'small' }}>
