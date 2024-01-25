@@ -44,7 +44,7 @@ function App() {
 
   const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months') => {
 
-    if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && username !== 'drnykterstein') {
+    if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && username !== 'drnykterstein'  && idFromLoad.current === 'none' && id === null) {
       // If the user is not authenticated, show the AuthDialog
       setLoading(true)
       console.log('askedForAuth:', askedForAuth);
