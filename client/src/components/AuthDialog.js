@@ -12,13 +12,6 @@ const AuthDialog = ({ open, handleClose, username, timeframe}) => {
 
   console.log('username in AuthDialog.js',username)
 
-  useEffect(() => {
-    if (window.location.pathname === '/authorize') {
-      authorize(username, timeframe);
-      handleClose();
-    }
-  }, []);
-
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogContent className="dialog-content">
