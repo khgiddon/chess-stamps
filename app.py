@@ -37,6 +37,9 @@ app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app)
 load_dotenv()
+app.secret_key = os.getenv("SECRET_KEY")
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True
 
 # Auth
 LICHESS_HOST = os.getenv("LICHESS_HOST", "https://lichess.org")
@@ -185,8 +188,10 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,token,defaultusern
     # We need to determine the number of games played since the timestamp so we can estimate completion
     # This isn't perfect, but we will assume that the user plays at the same rate since account inception        
     headers = {"Content-Type": "application/x-ndjson"}
-    if lichessToken != 'none' and lichessToken != 'null':
+    if lichessToken != 'none' and lichessToken != 'null' and lichessToken:
         headers["Authorization"] = f"Bearer {lichessToken}"
+
+    print('headers',headers)
 
     url = f"https://lichess.org/api/user/{username}"   
     print('url',url)
@@ -273,7 +278,9 @@ def timeframe_to_timestamp(timeframe):
 def hello_world():
     return 'Hello, Worlds2!'
 
-
+@app.route('/session')
+def session_test():
+    return jsonify(session)
 
 
 @app.route('/login')
@@ -286,10 +293,19 @@ def login():
 
 @app.route('/authorize')
 def authorize():
+    error = request.args.get('error')
     state = request.args.get('state')
 
+    if error:
+        # Authorization was cancelled, handle it here
+        # For example, redirect to a cancelled authorization page
+        return redirect(f"http://localhost:3000/authorization-cancelled?state={state}")
+
     token = oauth.lichess.authorize_access_token()
-    session['token'] = token['access_token']
+    session['bearer_token'] = token['access_token']
+    session.modified = True
+    print('setting bearer token')
+    print(session)
 
     redirect_url = f"http://localhost:3000/authorized?state={state}"
     return redirect(redirect_url)
@@ -304,7 +320,9 @@ def send_data_to_frontend():
     username = request.args.get('username')
     timeframe = request.args.get('timeframe')
     
+    print(session)
     token = session.get('bearer_token')  # Retrieve the token from the session
+    print('token',token)
 
     url_key = request.args.get('id', 'none') # Return none by default
 
@@ -314,7 +332,7 @@ def send_data_to_frontend():
     # Load user data
     # Returned data will be a dict of username, timeframe, and dataframe
     # Username, timeframe may update from the original request if found in the database
-    username, timeframe, df = get_user_data(username,timeframe,timestamp_to_use,url_key,token,stored_usernames=stored_usernames)
+    username, timeframe, df = get_user_data(username,timeframe,timestamp_to_use,url_key,token=token,stored_usernames=stored_usernames)
 
     # Save data to db
     if username.lower() not in stored_usernames and url_key == 'none':
@@ -393,8 +411,6 @@ def send_data_to_frontend():
         'least_favorite_played': least_favorite_played,
         'deepest_ply': deepest_ply
     })
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
