@@ -29,7 +29,10 @@ const handleProgress = (progressData) => {
         idFromLoad.current = 'none';
       }
       
-      const response = await fetch(url, { signal: abortController.current.signal });
+      const response = await fetch(url, { 
+        signal: abortController.current.signal,
+        credentials: 'include'
+      });
       if (!response.ok) {
           
         if (response.status === 429) {

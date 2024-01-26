@@ -35,7 +35,7 @@ from models import Record, db, init_db
 # Launch
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
-CORS(app)
+CORS(app,supports_credentials=True)
 load_dotenv()
 app.secret_key = os.getenv("SECRET_KEY")
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
