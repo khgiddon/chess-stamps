@@ -67,14 +67,43 @@ function App() {
     },[]); 
 
 
-  // Fetch data when the component is first mounted using the default username
+  // Fetch data when the component is first mounted
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const idFromUrl = urlParams.get('id') || 'none';
+    const state = urlParams.get('state');
     idFromLoad.current = idFromUrl;  // Update the ref
+
+
+
+    if (idFromUrl !== 'none') {
+      // If there's an id in the URL, fetch data using the id
+      console.log('fetching data from URL ID')
+      handleFetchData('drnykterstein', 'last 3 months', idFromUrl);
+      return;
+    }
+
+    if (state) {
+      // If there's a state in the URL, fetch data using the username and timeframe from the state
+      setIsAuthenticated(true);
+      askedForAuth.current = true;
+      console.log('fetching data from state')
+      const { username, timeframe } = JSON.parse(atob(state));
+      console.log('decoding state', atob(state))
+      console.log('state',username)
+      console.log('timeframe',timeframe)
+      console.log('isAuthenticated',isAuthenticated)
+      setUsername(username);
+      setTimeframe(timeframe);
+      handleFetchData(username, timeframe, idFromUrl);
+      return;
+    }
+
+    // If there's no id or state in the URL, fetch data using the default username
+    console.log('fetching data from default username')
     handleFetchData('drnykterstein', 'last 3 months', idFromUrl);
   }, [handleFetchData]);
-  
+
 
     // Flip state of hasAllOpenings when the button is clicked
     const handleAllOpeningsButtonClick = () => {
