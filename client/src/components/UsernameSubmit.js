@@ -71,6 +71,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
             style={{ marginRight: '20px', fontSize: isMobile ? '12px' : '16px' }}
             InputProps={{
               disableUnderline: true,
+              inputProps: { 'data-lpignore': true },
             }}
           />
           <Button variant="contained" color="primary" onClick={handleButtonClick} disabled={loading}>

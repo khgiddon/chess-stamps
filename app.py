@@ -60,9 +60,9 @@ init_db(app)  # Initialize the SQLAlchemy instance with the Flask app
 
 # Use localhost for local development and production URL for production
 if os.getenv('FLASK_ENV') == 'development':
-    app.config['FRONTEND_URL'] = 'https://chessstamps.app'   
+    app.config['FRONTEND_URL'] = 'http://localhost:3000' 
 else:
-    app.config['FRONTEND_URL'] = 'http://localhost:3000'
+    app.config['FRONTEND_URL'] = 'https://chessstamps.app'      
 
 ###
 # Functions and routes
@@ -315,7 +315,7 @@ def authorize():
     print('setting bearer token')
     print(session)
 
-    redirect_url = f"{url}/authorized?state={state}"
+    redirect_url = f"{url}?state={state}"
     return redirect(redirect_url)
 
 # Main route
