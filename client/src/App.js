@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef, createContext } from 'react';
-
-
 import './App.css';
 
 // API
