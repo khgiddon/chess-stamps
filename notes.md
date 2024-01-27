@@ -6,6 +6,9 @@ Transpositions are included in the player games, because it uses the assigned op
 
 TODO:
 
+- FAQ
+- Convert CSS Grid to MUI Grid
+- Load Magnus data locally
 - Enter Lichess username spacing fix on mobile
 - Change logo
 - Continual re-render issue - in OAuth branch only?
@@ -13,6 +16,7 @@ TODO:
 MAYBE:
 - Show error for failed auth on front-end
 - Show error for failed id lookup
+- Error handling cannot find username and timeframe from state decoding - redirect to home page
 
 
 COSMETIC
