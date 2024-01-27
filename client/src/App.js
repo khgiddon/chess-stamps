@@ -7,12 +7,12 @@ import './App.css';
 import { fetchData } from './api/fetchData';
 
 // Components
-import BlockUsernameSubmit from './components/BlockUsernameSubmit';
-import BlockHeader from './components/BlockHeader';
+import UsernameSubmit from './components/UsernameSubmit';
+import Header from './components/Header';
 import ProgressBar from './components/ProgressBar';
 import ResultsSummary from './components/ResultsSummary';
 import DisplayTable from './components/DisplayTable';
-import BlockIntro from './components/BlockIntro';
+import Intro from './components/Intro';
 import LowerButtons from './components/LowerButtons';
 import OpeningsGrid from './components/OpeningsGrid';
 import Footer from './components/Footer';
@@ -136,11 +136,11 @@ function App() {
     <div>
 
       <div className='upper-container'>
-        <BlockHeader />
+        <Header />
         <AuthDialog open={showAuthDialog} handleClose={handleAuthDialogClose} username={username} timeframe={timeframe} />
 
         <div className="intro-container">
-          <BlockUsernameSubmit 
+          <UsernameSubmit 
             username={username}
             setUsername={setUsername}
             handleSubmit={handleSubmit}
@@ -149,7 +149,7 @@ function App() {
             timeframe={timeframe}
             error={error}
           />
-          <BlockIntro />
+          <Intro />
         </div>
         {loading && !storedUsernames.some(storedUsername => storedUsername.toLowerCase() === username.toLowerCase()) && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
         {!loading && (

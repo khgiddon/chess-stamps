@@ -9,6 +9,7 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 
@@ -28,6 +29,9 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
   const handleChange = ({ target: { value } }) => {
     setInputValue(value);
   };
+
+  const isMobile = useMediaQuery('(max-width:480px)');
+
 
   const [isHovered, setIsHovered] = useState(false);
 
@@ -64,7 +68,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
             required
             fullWidth
             variant="standard"
-            style={{ marginRight: '20px' }}
+            style={{ marginRight: '20px', fontSize: isMobile ? '12px' : '16px' }}
             InputProps={{
               disableUnderline: true,
             }}

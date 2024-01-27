@@ -6,7 +6,6 @@ Transpositions are included in the player games, because it uses the assigned op
 
 TODO:
 
-- BUG: changing timeframe after load changes text
 - Enter Lichess username spacing fix on mobile
 - Change logo
 - Continual re-render issue - in OAuth branch only?
