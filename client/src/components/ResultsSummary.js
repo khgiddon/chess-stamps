@@ -92,7 +92,7 @@ const ResultsSummary = ({ data, username, timeframe }) => {
         series={[{ dataKey: 'val', label: 'Played unique stamps'}]}
         layout="horizontal"
         slotProps={{ legend: { hidden: 'True' } }}
-        margin={{ left: 100 , top: 0}}
+        margin={{ left: 140 , top: 0}}
         colors={[
           '#2074d4']}
         {...chartSetting}
