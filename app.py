@@ -2,9 +2,17 @@
 import gevent.monkey
 gevent.monkey.patch_all()
 
-from flask import Flask, request, jsonify, abort
+from flask import Flask, request, jsonify, abort, url_for, session, redirect
 from flask_socketio import SocketIO
 from flask_cors import CORS
+
+from authlib.integrations.flask_client import OAuth
+
+from dotenv import load_dotenv
+load_dotenv()
+
+import requests
+
 
 import pandas as pd
 import numpy as np
@@ -16,6 +24,8 @@ import time
 from dotenv import load_dotenv
 from flask_sqlalchemy import SQLAlchemy
 import traceback
+import base64
+
 
 import random
 import string
@@ -25,8 +35,21 @@ from models import Record, db, init_db
 # Launch
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
-CORS(app)
+CORS(app,supports_credentials=True)
 load_dotenv()
+app.secret_key = os.getenv("SECRET_KEY")
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+app.config['SESSION_COOKIE_SECURE'] = True
+
+# Auth
+LICHESS_HOST = os.getenv("LICHESS_HOST", "https://lichess.org")
+app.secret_key = os.getenv("SECRET_KEY")
+app.config['LICHESS_CLIENT_ID'] =  os.getenv("LICHESS_CLIENT_ID")
+app.config['LICHESS_AUTHORIZE_URL'] = f"{LICHESS_HOST}/oauth"
+app.config['LICHESS_ACCESS_TOKEN_URL'] = f"{LICHESS_HOST}/api/token"
+
+oauth = OAuth(app)
+oauth.register('lichess', client_kwargs={"code_challenge_method": "S256"})
 
 # Use SQLite for local development and PostgreSQL for production
 if os.getenv('FLASK_ENV') == 'development':
@@ -99,7 +122,7 @@ def generate_base_statistics(df,username,stored_usernames):
 
 
 # Get user data
-def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='khg002',stored_usernames=[]):
+def get_user_data(username,timeframe,timestamp_to_use,url_key,token,defaultusername='khg002',stored_usernames=[]):
 
     """
     This script uses the Lichess API to export the games of a user
@@ -154,15 +177,22 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
 
     # Read the lichessToken
     load_dotenv()
-    lichessToken = os.getenv("lichessToken")
+    if os.getenv("AUTH_METHOD") == 'oauth':
+        lichessToken = token
+
+    # Fallback to single user auth instead of OAuth for local testing
+    else: 
+        lichessToken = os.getenv("lichessToken")
 
     # First request is to get the number of games
     # We need to determine the number of games played since the timestamp so we can estimate completion
     # This isn't perfect, but we will assume that the user plays at the same rate since account inception        
-    headers = {
-        "Content-Type": "application/x-ndjson",
-        "Authorization": f"Bearer {lichessToken}"
-    }
+    headers = {"Content-Type": "application/x-ndjson"}
+    if lichessToken != 'none' and lichessToken != 'null' and lichessToken:
+        headers["Authorization"] = f"Bearer {lichessToken}"
+
+    print('headers',headers)
+
     url = f"https://lichess.org/api/user/{username}"   
     print('url',url)
 
@@ -213,7 +243,7 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,defaultusername='k
 
     if len(l) == 1:
         print('uh oh',l)
-    del l[-1] # Last response is empty
+    del l[-1] # Last response is  empty
 
     # Create dataframe
     df['player_white'] = 0
@@ -248,6 +278,38 @@ def timeframe_to_timestamp(timeframe):
 def hello_world():
     return 'Hello, Worlds2!'
 
+@app.route('/session')
+def session_test():
+    return jsonify(session)
+
+
+@app.route('/login')
+def login():
+    redirect_uri = url_for("authorize", _external=True)
+    state = request.args.get('state')
+
+    return oauth.lichess.authorize_redirect(redirect_uri, state=state)
+
+
+@app.route('/authorize')
+def authorize():
+    error = request.args.get('error')
+    state = request.args.get('state')
+
+    if error:
+        # Authorization was cancelled, handle it here
+        # For example, redirect to a cancelled authorization page
+        return redirect(f"http://localhost:3000/authorization-cancelled?state={state}")
+
+    token = oauth.lichess.authorize_access_token()
+    session['bearer_token'] = token['access_token']
+    session.modified = True
+    print('setting bearer token')
+    print(session)
+
+    redirect_url = f"http://localhost:3000/authorized?state={state}"
+    return redirect(redirect_url)
+
 # Main route
 @app.route('/openings', methods=['GET'])
 def send_data_to_frontend():
@@ -257,6 +319,11 @@ def send_data_to_frontend():
     # Core data pull
     username = request.args.get('username')
     timeframe = request.args.get('timeframe')
+    
+    print(session)
+    token = session.get('bearer_token')  # Retrieve the token from the session
+    print('token',token)
+
     url_key = request.args.get('id', 'none') # Return none by default
 
     # Current unix timestamp (ms) minus delta
@@ -265,7 +332,7 @@ def send_data_to_frontend():
     # Load user data
     # Returned data will be a dict of username, timeframe, and dataframe
     # Username, timeframe may update from the original request if found in the database
-    username, timeframe, df = get_user_data(username,timeframe,timestamp_to_use,url_key,stored_usernames=stored_usernames)
+    username, timeframe, df = get_user_data(username,timeframe,timestamp_to_use,url_key,token=token,stored_usernames=stored_usernames)
 
     # Save data to db
     if username.lower() not in stored_usernames and url_key == 'none':
@@ -344,8 +411,6 @@ def send_data_to_frontend():
         'least_favorite_played': least_favorite_played,
         'deepest_ply': deepest_ply
     })
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)
