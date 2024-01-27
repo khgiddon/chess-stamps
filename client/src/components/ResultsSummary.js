@@ -7,7 +7,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import Share from './Share';
 
 
-const ResultsSummary = ({ data, username, previousTimeframe }) => {
+const ResultsSummary = ({ data, username, timeframe }) => {
 
   const usernameMapping = {
     'drnykterstein': 'DrNykterstein (aka Magnus Carlsen)',
