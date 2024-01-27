@@ -7,7 +7,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import Share from './Share';
 
 
-const ResultsSummary = ({ data, username, timeframe }) => {
+const ResultsSummary = ({ data, username, previousTimeframe }) => {
 
   const usernameMapping = {
     'drnykterstein': 'DrNykterstein (aka Magnus Carlsen)',
@@ -92,7 +92,7 @@ const ResultsSummary = ({ data, username, timeframe }) => {
         series={[{ dataKey: 'val', label: 'Played unique stamps'}]}
         layout="horizontal"
         slotProps={{ legend: { hidden: 'True' } }}
-        margin={{ left: 100 , top: 0}}
+        margin={{ left: 140 , top: 0}}
         colors={[
           '#2074d4']}
         {...chartSetting}

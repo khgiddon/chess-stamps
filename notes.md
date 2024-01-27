@@ -6,10 +6,14 @@ Transpositions are included in the player games, because it uses the assigned op
 
 TODO:
 
-
-MVP release
-- Upgrade lichess API auth - see https://github.com/lakinwecker/lichess-oauth-flask
+- BUG: changing timeframe after load changes text
+- Enter Lichess username spacing fix on mobile
 - Change logo
+- Continual re-render issue - in OAuth branch only?
+
+MAYBE:
+- Show error for failed auth on front-end
+- Show error for failed id lookup
 
 
 COSMETIC

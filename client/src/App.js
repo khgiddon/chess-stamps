@@ -30,7 +30,7 @@ function App() {
   const [allopenings, setAllOpenings] = useState([]);
   const [username, setUsername] = useState('drnykterstein');
   const previousUsername = useRef(null);
-  const previousTimeframe = useRef(null);
+  const previousTimeframe = useRef('last 3 months');
   const [timeframe, setTimeframe] = useState('last 3 months');
   const [data, setData] = useState([]);
   const idFromLoad = useRef(null);
@@ -153,7 +153,7 @@ function App() {
         </div>
         {loading && !storedUsernames.some(storedUsername => storedUsername.toLowerCase() === username.toLowerCase()) && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
         {!loading && (
-            <ResultsSummary data={data} username={username} timeframe={timeframe} />
+            <ResultsSummary data={data} username={username} timeframe={previousTimeframe.current} />
         )}
       </div>
       <div className = 'lower-container'>

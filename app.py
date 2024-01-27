@@ -180,7 +180,7 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,token,defaultusern
     if os.getenv("AUTH_METHOD") == 'oauth':
         lichessToken = token
 
-    # Fallback to single user auth
+    # Fallback to single user auth instead of OAuth for local testing
     else: 
         lichessToken = os.getenv("lichessToken")
 
