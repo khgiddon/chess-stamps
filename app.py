@@ -62,7 +62,7 @@ init_db(app)  # Initialize the SQLAlchemy instance with the Flask app
 if os.getenv('FLASK_ENV') == 'development':
     app.config['SERVER_URL'] = 'http://localhost:3000'
 else:
-    app.config['SERVER_URL'] = 'https://chessstamps.app/'
+    app.config['SERVER_URL'] = 'https://chessstamps.app'
 
 ###
 # Functions and routes
