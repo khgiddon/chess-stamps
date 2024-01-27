@@ -58,6 +58,12 @@ else:
     app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL').replace("postgres://", "postgresql://", 1)
 init_db(app)  # Initialize the SQLAlchemy instance with the Flask app
 
+# Use localhost for local development and production URL for production
+if os.getenv('FLASK_ENV') == 'development':
+    app.config['SERVER_URL'] = 'http://localhost:3000'
+else:
+    app.config['SERVER_URL'] = 'https://https://chessstamps.app/'
+
 ###
 # Functions and routes
 ###
@@ -296,10 +302,12 @@ def authorize():
     error = request.args.get('error')
     state = request.args.get('state')
 
+    url = app.config['SERVER_URL']
+
     if error:
         # Authorization was cancelled, handle it here
         # For example, redirect to a cancelled authorization page
-        return redirect(f"http://localhost:3000/authorization-cancelled?state={state}")
+        return redirect(f"{url}/authorization-cancelled?state={state}")
 
     token = oauth.lichess.authorize_access_token()
     session['bearer_token'] = token['access_token']
@@ -307,7 +315,7 @@ def authorize():
     print('setting bearer token')
     print(session)
 
-    redirect_url = f"http://localhost:3000/authorized?state={state}"
+    redirect_url = f"{url}/authorized?state={state}"
     return redirect(redirect_url)
 
 # Main route
