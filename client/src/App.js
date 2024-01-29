@@ -10,7 +10,6 @@ import Header from './components/Header';
 import ProgressBar from './components/ProgressBar';
 import ResultsSummary from './components/ResultsSummary';
 import DisplayTable from './components/DisplayTable';
-import Intro from './components/Intro';
 import LowerButtons from './components/LowerButtons';
 import OpeningsGrid from './components/OpeningsGrid';
 import Footer from './components/Footer';
@@ -147,7 +146,6 @@ function App() {
             timeframe={timeframe}
             error={error}
           />
-          <Intro />
         </div>
         {loading && !storedUsernames.some(storedUsername => storedUsername.toLowerCase() === username.toLowerCase()) && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
         {!loading && (
