@@ -90,7 +90,7 @@ def response_parser(s):
     return data
 
 # Generate base statistics (run as part of get_user_data())
-def generate_base_statistics(df,username,stored_usernames):
+def generate_base_statistics(df):
 
     # Begin generating stats
 
@@ -130,9 +130,42 @@ def generate_base_statistics(df,username,stored_usernames):
 
     return(df)
 
+def check_if_key_exists(url_key):
+    if url_key != 'none':
+        print('loading from db')
+        with app.app_context():
+            record = Record.query.filter_by(url_key=url_key).first()
+            if record is None:
+                print('record not found')
+                return None, None, None
+            else:
+                print('record found!')
+                loaded_username = record.username
+                loaded_timeframe = record.timeframe
+                df = pd.read_json(record.data)
+                return loaded_username, loaded_timeframe, df
+
+def check_if_username_is_stored(username,timeframe,defaultusername='khg002',stored_usernames=[]):
+  # Load stored file if username is in stored_usernames
+    # This was an early local file implementation before the DB was added
+    if username.lower() in stored_usernames:
+        print('loading stored file')
+        df = pd.read_csv("assets/" + username.lower() + ".tsv", sep="\t")
+        #df = generate_base_statistics(df,username,stored_usernames)
+        return df
+
+    # Load default file if no username is specified
+    # For dev purposes until added Magnus data
+    elif username == None or username == defaultusername:
+        # Load default file
+        base_file = "assets/base_file.tsv"
+        df = pd.read_csv(base_file, sep="\t")
+        return df
+
+
 
 # Get user data
-def get_user_data(username,timeframe,timestamp_to_use,url_key,token,defaultusername='khg002',stored_usernames=[]):
+def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
 
     """
     This script uses the Lichess API to export the games of a user
@@ -142,42 +175,10 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,token,defaultusern
     And joins it to the overall database of openings with their counts
 
     """
-
-    # Check if url_key is in DB
-    if url_key != 'none':
-        print('loading from db')
-        with app.app_context():
-            record = Record.query.filter_by(url_key=url_key).first()
-            if record is None:
-                print('record not found')
-            else:
-                print('record found!')
-                loaded_username = record.username
-                loaded_timeframe = record.timeframe
-                df = pd.read_json(record.data)
-                return loaded_username, loaded_timeframe, df
-    
-    # Load stored file if username is in stored_usernames
-    # This was an early local file implementation before the DB was added
-    if username.lower() in stored_usernames:
-        print('loading stored file')
-        df = pd.read_csv("assets/" + username.lower() + ".tsv", sep="\t")
-        #df = generate_base_statistics(df,username,stored_usernames)
-        return username, timeframe, df
-
-    # Load default file if no username is specified
-    # For dev purposes until added Magnus data
-    elif username == None or username == defaultusername:
-        # Load default file
-        base_file = "assets/base_file.tsv"
-        df = pd.read_csv(base_file, sep="\t")
-        return username, timeframe, df
-
+  
     # Main Lichess API call if other attempts have failed
 
-    # Get overall data
-    openings_db = "assets/openings_pgn/combined_with_stats_parents.tsv"
-    df = pd.read_csv(openings_db, sep="\t")
+
     print(f'querying lichess api for {username}...')
 
     # Get user data
@@ -235,7 +236,6 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,token,defaultusern
     # Second request is to pull the actual games
     chunks_expected = min(estimated_games,max_games)   
     chunks = 0
-    response_test = []
     url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
     response = requests.get(url,headers=headers,stream=True)
     print('received response from lichess api for main load')
@@ -244,15 +244,23 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,token,defaultusern
         socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected})
         chunks += 1
         print(percentage_complete)
-        response_test.append(chunk)
+        streamed_response.append(chunk)
+
+def parse_streamed_reponse(streamed_response,username):
+
+    # Get overall data
+    openings_db = "assets/openings_pgn/combined_with_stats_parents.tsv"
+    df = pd.read_csv(openings_db, sep="\t")    
 
     # Parse and create data
-    full_response = b''.join(response_test).decode('utf-8')
+    full_response = b''.join(streamed_response).decode('utf-8')
     l = full_response.split('\n\n\n')    
     print(f'length of response: {len(l)}')
 
     if len(l) == 1:
-        print('uh oh',l)
+        print('error in response', full_response)
+
+
     del l[-1] # Last response is  empty
 
     # Create dataframe
@@ -266,8 +274,8 @@ def get_user_data(username,timeframe,timestamp_to_use,url_key,token,defaultusern
             df.loc[df['name'] == game_parsed['Opening'],'player_black'] += 1
 
     # Generate statistics
-    df = generate_base_statistics(df,username,stored_usernames)
-    return username, timeframe, df
+    df = generate_base_statistics(df)
+    return df
     
 # Convert timeframe to timestamp used for Lichess API call
 def timeframe_to_timestamp(timeframe):
@@ -346,7 +354,25 @@ def send_data_to_frontend():
     # Load user data
     # Returned data will be a dict of username, timeframe, and dataframe
     # Username, timeframe may update from the original request if found in the database
-    username, timeframe, df = get_user_data(username,timeframe,timestamp_to_use,url_key,token=token,stored_usernames=stored_usernames)
+
+    # Initialize df
+    df = None
+
+    # CASE 1: User in DB
+    if url_key != 'none' and url_key != None:
+        username, timeframe, df = check_if_key_exists(url_key)
+
+    # CASE 2: User is stored
+    if df is None:
+        df = check_if_username_is_stored(username,timeframe,stored_usernames=stored_usernames)
+
+    # CASE 3: User is not stored
+    if df is None:
+        streamed_response = []
+        get_user_data(username,timestamp_to_use,token,streamed_response=streamed_response)
+        print('streamed response received', streamed_response)
+        df = parse_streamed_reponse(streamed_response,username)
+
 
     # Save data to db
     if username.lower() not in stored_usernames and url_key == 'none':
@@ -395,14 +421,6 @@ def send_data_to_frontend():
     # Specify columns and only return the columns that are needed to speed things up
     all_openings = df[['name','pgn','ply','fen','player_total_with_children']]
     df = df[['name','pgn','ply','fen','player_white_with_children','player_black_with_children','all_pct','white_pct_with_children','black_pct_with_children','popularity_rank']]
-
-    # Fetch all records from the User table
-    #print('fetching all records')
-    #records = Record.query.all()
-
-    # Print out each record
-    #print(records[-1].username)
-    #print(records[-1].data)
 
     # Return df as json
     return jsonify({
