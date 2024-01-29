@@ -59,9 +59,10 @@ h1 {
 
 .grandmaster-names-block {
   font-size: 0.9rem;  /* Adjust this value as you see fit */
-  margin-top: 0px;
+  margin-top: 15px;
   margin-bottom: 20px;
   max-width: 80%;
+
 }
 
 .grandmaster-names-block a {
