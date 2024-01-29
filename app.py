@@ -63,8 +63,10 @@ init_db(app)  # Initialize the SQLAlchemy instance with the Flask app
 # Use localhost for local development and production URL for production
 if os.getenv('FLASK_ENV') == 'development':
     app.config['FRONTEND_URL'] = 'http://localhost:3000' 
+    app.config['URI_SCHEME'] = 'http'
 else:
-    app.config['FRONTEND_URL'] = 'https://chessstamps.app'      
+    app.config['FRONTEND_URL'] = 'https://chessstamps.app'     
+    app.config['URI_SCHEME'] = 'https' 
 
 ###
 # Functions and routes
@@ -293,7 +295,8 @@ def session_test():
 
 @app.route('/login')
 def login():
-    redirect_uri = url_for("authorize", _external=True)
+    scheme = app.config['URI_SCHEME']
+    redirect_uri = url_for("authorize", _external=True, scheme=scheme)
     state = request.args.get('state')
 
     return oauth.lichess.authorize_redirect(redirect_uri, state=state)
