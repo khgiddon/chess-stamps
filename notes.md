@@ -8,12 +8,11 @@ TODO:
 
 - FAQ
 - Convert CSS Grid to MUI Grid
-- Load Magnus data locally
 - Enter Lichess username spacing fix on mobile
 - Change logo
-- Continual re-render issue - in OAuth branch only?
 
 MAYBE:
+- Load Magnus data locally
 - Show error for failed auth on front-end
 - Show error for failed id lookup
 - Error handling cannot find username and timeframe from state decoding - redirect to home page
