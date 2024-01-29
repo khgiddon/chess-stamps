@@ -90,7 +90,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
             width="100%">
 
       </Box>
-      <p className="select-timeframe-text">
+      <div className="select-timeframe-text">
           Check games from: 
           <Select
               value={timeframe}
@@ -106,7 +106,7 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
               <MenuItem value="last 12 months">last 12 months</MenuItem>
               <MenuItem value="forever">forever</MenuItem>
             </Select>
-        </p>
+        </div>
         {error && (
             <Box
             display="flex"
@@ -128,30 +128,26 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
         paddingTop='0em'
         width="100%"
       >   
-    <p className="grandmaster-names-block">
-    <div className='centered'>
-     Or click to see all-time results from:
-     </div>
-      <Stack direction="row" spacing={1} sx={{ mt: 1, p:0}}>
-      <Stack spacing={1}>
-         <ul>
-          <li><a onClick={() => handleStoredUsernameClick('drnykterstein')}>GM Magnus Carlsen</a></li>
-          <li><a onClick={() => handleStoredUsernameClick('alireza2003')}>GM Alireza Firouzja</a></li>
-         </ul>
-        </Stack>
-        <Stack spacing={1} sx={{ p: 0 }}>
-        <ul>
-          <li><a onClick={() => handleStoredUsernameClick('nihalsarin2004')}>GM Nihal Sarin</a></li>
-          <li><a onClick={() => handleStoredUsernameClick('rebeccaharris')}>GM Daniel Naroditsky</a></li>
-        </ul>  
-        </Stack>
-      </Stack>
-    </p>
-
-
+        <div className="grandmaster-names-block">
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            Or click to see all-time results from:
+          </Box>
+          <Stack direction="row" spacing={1} sx={{ mt: 1, p:0}}>
+          <Stack spacing={1}>
+            <ul>
+              <li><a onClick={() => handleStoredUsernameClick('drnykterstein')}>GM Magnus Carlsen</a></li>
+              <li><a onClick={() => handleStoredUsernameClick('alireza2003')}>GM Alireza Firouzja</a></li>
+            </ul>
+            </Stack>
+            <Stack spacing={1} sx={{ p: 0 }}>
+            <ul>
+              <li><a onClick={() => handleStoredUsernameClick('nihalsarin2004')}>GM Nihal Sarin</a></li>
+              <li><a onClick={() => handleStoredUsernameClick('rebeccaharris')}>GM Daniel Naroditsky</a></li>
+            </ul>  
+            </Stack>
+          </Stack>
+          </div>
       </Box>
-
-
     </Box>
   );
 };

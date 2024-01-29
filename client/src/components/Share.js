@@ -79,8 +79,8 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
                   </Button>
               </div>    
               <div className="dialog-title">
-              <h2>Or send to your friends:</h2>
-          </div>
+                <h2>Or send to your friends:</h2>
+              </div>
               <div className='dialog-copyable-text'>
                   {dialogContent}<a href={url} target="_blank" rel="noopener noreferrer">{uniqueurl}</a>
               </div>

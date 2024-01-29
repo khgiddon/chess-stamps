@@ -10,7 +10,6 @@ import Header from './components/Header';
 import ProgressBar from './components/ProgressBar';
 import ResultsSummary from './components/ResultsSummary';
 import DisplayTable from './components/DisplayTable';
-import Intro from './components/Intro';
 import LowerButtons from './components/LowerButtons';
 import OpeningsGrid from './components/OpeningsGrid';
 import Footer from './components/Footer';
@@ -40,9 +39,12 @@ function App() {
   const abortController = useRef(null);  // Use useRef to hold the AbortController
   const [error, setError] = useState(null);
 
+
   const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months') => {
 
-    if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && username !== 'drnykterstein'  && idFromLoad.current === 'none' && id === null) {
+    const gmUsernames = ['drnykterstein', 'alireza2003', 'nihalsarin2004', 'rebeccaharris'];
+
+    if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && !gmUsernames.includes(username) && idFromLoad.current === 'none' && id === null) {
       // If the user is not authenticated, show the AuthDialog
       setLoading(true)
       console.log('askedForAuth:', askedForAuth);
@@ -147,7 +149,6 @@ function App() {
             timeframe={timeframe}
             error={error}
           />
-          <Intro />
         </div>
         {loading && !storedUsernames.some(storedUsername => storedUsername.toLowerCase() === username.toLowerCase()) && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
         {!loading && (
