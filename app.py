@@ -296,7 +296,7 @@ def session_test():
 @app.route('/login')
 def login():
     scheme = app.config['URI_SCHEME']
-    redirect_uri = url_for("authorize", _external=True, scheme=scheme)
+    redirect_uri = url_for("authorize", _external=True, _scheme=scheme)
     state = request.args.get('state')
 
     return oauth.lichess.authorize_redirect(redirect_uri, state=state)
