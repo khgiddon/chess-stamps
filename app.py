@@ -40,6 +40,8 @@ load_dotenv()
 app.secret_key = os.getenv("SECRET_KEY")
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
 app.config['SESSION_COOKIE_SECURE'] = True
+app.config['PREFERRED_URL_SCHEME'] = 'https'
+
 
 # Auth
 LICHESS_HOST = os.getenv("LICHESS_HOST", "https://lichess.org")
@@ -295,6 +297,7 @@ def login():
     state = request.args.get('state')
 
     return oauth.lichess.authorize_redirect(redirect_uri, state=state)
+
 
 
 @app.route('/authorize')
