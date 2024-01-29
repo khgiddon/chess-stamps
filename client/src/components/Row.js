@@ -2,7 +2,7 @@ import React from 'react';
 import ChessImage from './ChessImage';
 import { addThousandsSeparator } from '../utilityFunctions';
 
-const Row = ({ label, label_description, opening, rarity, fen, id, text, pgn, ply, popularity_rank, unique_stamps_all }) => {
+const GridElement = ({ label, label_description, opening, rarity, fen, id, text, pgn, ply, popularity_rank, unique_stamps_all }) => {
   return (
     <div className="row">
       <div className="label-row">
@@ -31,5 +31,5 @@ const Row = ({ label, label_description, opening, rarity, fen, id, text, pgn, pl
   );
 };
 
-const MemoizedRow = React.memo(Row);
-export default MemoizedRow;
+const GridElement_Memoized = React.memo(GridElement);
+export default GridElement_Memoized;
