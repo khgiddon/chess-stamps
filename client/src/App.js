@@ -39,9 +39,12 @@ function App() {
   const abortController = useRef(null);  // Use useRef to hold the AbortController
   const [error, setError] = useState(null);
 
+
   const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months') => {
 
-    if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && username !== 'drnykterstein'  && idFromLoad.current === 'none' && id === null) {
+    const gmUsernames = ['drnykterstein', 'alireza2003', 'nihalsarin2004', 'rebeccaharris'];
+
+    if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && !gmUsernames.includes(username) && idFromLoad.current === 'none' && id === null) {
       // If the user is not authenticated, show the AuthDialog
       setLoading(true)
       console.log('askedForAuth:', askedForAuth);
