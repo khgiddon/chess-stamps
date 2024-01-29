@@ -7,7 +7,6 @@ Transpositions are included in the player games, because it uses the assigned op
 TODO:
 
 - FAQ
-- Convert CSS Grid to MUI Grid
 - Enter Lichess username spacing fix on mobile
 - Change logo
 

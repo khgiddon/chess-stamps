@@ -1,5 +1,5 @@
 import React from 'react';
-import GridElement_Memoized from './Row';
+import GridElement_Memoized from './GridElement';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
