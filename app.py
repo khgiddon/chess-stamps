@@ -370,7 +370,6 @@ def send_data_to_frontend():
     if df is None:
         streamed_response = []
         get_user_data(username,timestamp_to_use,token,streamed_response=streamed_response)
-        print('streamed response received', streamed_response)
         df = parse_streamed_reponse(streamed_response,username)
 
 

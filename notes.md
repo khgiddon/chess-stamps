@@ -7,6 +7,8 @@ Transpositions are included in the player games, because it uses the assigned op
 TODO:
 
 - Rip out Websocket? - https://blog.miguelgrinberg.com/post/easy-websockets-with-flask-and-gevent
+- Seed database with GM records
+- Message when you load from database
 - Enter Lichess username spacing fix on mobile
 - Change logo
 

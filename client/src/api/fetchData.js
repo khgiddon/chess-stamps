@@ -1,6 +1,6 @@
 import { socket } from './io';
 
-export const fetchData = async (username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, Setid, idFromLoad) => {
+export const fetchData = async (username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, Setid, idFromLoad, loadedFromDatabase, setLoadedFromDatabase) => {
 
 const handleProgress = (progressData) => {
       const { percentage_complete, chunks_expected } = progressData;
@@ -10,6 +10,7 @@ const handleProgress = (progressData) => {
 
   setError(null);
 
+  setLoadedFromDatabase(false);
   setProgress(0);  // Start progress at 0%
   socket.on('progress', handleProgress);
 
@@ -24,6 +25,8 @@ const handleProgress = (progressData) => {
       if (idFromLoad.current !== 'none') {
         url += `&id=${idFromLoad.current}`;
         console.log('url',url, idFromLoad.current)
+        setLoadedFromDatabase(true);
+        console.log('loadedFromDatabase',loadedFromDatabase)
 
         // Reset loaded id to null after adding it to the URL, so it doesn't get added again
         idFromLoad.current = 'none';
@@ -70,8 +73,10 @@ const handleProgress = (progressData) => {
             console.log('call failed: setting username to',previousUsername)
 
             setError(error);
+            setLoadedFromDatabase(false);
             setUsername(previousUsername.current);
             setTimeframe(previousTimeframe.current);
+
 
             if (error.name === 'AbortError') {
               console.log('Fetch request was cancelled');

@@ -13,7 +13,7 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 
 
-const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading, timeframe, setTimeframe, error}) => {
+const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading, timeframe, setTimeframe, error, loadedFromDatabase}) => {
   const [inputValue, setInputValue] = useState(username);
 
   const handleButtonClick = () => {
@@ -117,6 +117,16 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
             width="100%">
               <Alert variant='filled' severity="error" sx={{ width: '100%', marginBottom: '1em' }}>ERROR: {error.message}</Alert>
             </Box>)}
+            {loadedFromDatabase && (
+            <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            marginBottom="0em"
+            width="100%">
+              <Alert variant='filled' severity="success" sx={{ width: '100%', marginBottom: '1em' }}>Successfully loaded saved data for user '{username}'</Alert>
+            </Box>)}            
 
       <Box
         display="flex"
