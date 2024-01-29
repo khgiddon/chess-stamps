@@ -136,8 +136,9 @@ def check_if_key_exists(url_key):
         with app.app_context():
             record = Record.query.filter_by(url_key=url_key).first()
             if record is None:
-                print('record not found')
-                return None, None, None
+                # Raise error
+                print('record not found!')
+                abort(400, description="Record not found")
             else:
                 print('record found!')
                 loaded_username = record.username

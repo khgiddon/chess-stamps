@@ -43,8 +43,8 @@ const handleProgress = (progressData) => {
           throw new Error("Rate limit exceeded");
         }
         if (response.status === 400) {
-          console.log('Could not find username on Lichess');
-          throw new Error("Could not find username on Lichess");
+          console.log('Could not find data for username');
+          throw new Error("Could not find data for username");
         }
 
           throw new Error("Network response was not ok");
@@ -70,7 +70,7 @@ const handleProgress = (progressData) => {
       } catch (error) {
 
             // Return to previous username (last correct username) if API call fails
-            console.log('call failed: setting username to',previousUsername)
+            console.log('call failed: setting username to',previousUsername.current)
 
             setError(error);
             setLoadedFromDatabase(false);

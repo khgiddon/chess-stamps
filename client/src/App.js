@@ -26,7 +26,7 @@ function App() {
 
   const [allopenings, setAllOpenings] = useState([]);
   const [username, setUsername] = useState('drnykterstein');
-  const previousUsername = useRef(null);
+  const previousUsername = useRef('drnykterstein');
   const previousTimeframe = useRef('last 3 months');
   const [timeframe, setTimeframe] = useState('last 3 months');
   const [data, setData] = useState([]);
@@ -159,7 +159,7 @@ function App() {
       </div>
       <div className = 'lower-container'>
         {!loading && <DisplayTable data={data} username={username} />}
-        {!loading && <LowerButtons 
+        {!loading && !error && <LowerButtons 
         handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
         />}
         {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
