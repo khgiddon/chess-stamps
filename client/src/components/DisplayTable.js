@@ -2,6 +2,7 @@ import React from 'react';
 import GridElement_Memoized from './GridElement';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
 import { percentageToOneInEveryX, customRoundForRatio, listToCleanList, percentageToRarity, timesPluralization } from '../utilityFunctions';
 
@@ -19,6 +20,13 @@ const DisplayTable = ({ data, username }) => {
   if (!data.most_popular_missing_stamp) return null;
 
   return (
+    <div className="grid-outer-container">
+         
+    <Stack direction="row" alignItems="center" gap={1} justifyContent="space-between">
+<Box flexGrow={1}>
+<h2>{displayUsername}'s stamp collection</h2>
+</Box>
+</Stack>
     <Container maxWidth="lg" sx={{ width: '100%', '@media (max-width:600px)': { width: '90%' } }}>
       <Grid container spacing={0.7}>
         <Grid item xs={12} sm={6}>
@@ -205,6 +213,7 @@ const DisplayTable = ({ data, username }) => {
         </Grid>
       </Grid>
     </Container>
+    </div>
   );
 };
 
