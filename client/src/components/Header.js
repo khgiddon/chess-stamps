@@ -30,8 +30,12 @@ const BlockHeader = () => {
       answer: 'A: Right now the tool only supports Lichess games. I\'m considering adding Chess.com support in the future.',
     },
     {
+      question: 'Q: What are popularity rank and rarity score?',
+      answer: 'A: Popularity rank is the rank of how popular a particular opening is in the overall Lichess database, with Rank 1 being the most popular. Rarity score is based on the overall proportion instead of a ranking. A rarity score of 10,000 means that opening is 1 in every 10,000 stamps, and a higher rarity score means the opening is played less frequently.',
+    },
+    {
       question: 'Q: How do you handle transpositions?',
-      answer: 'A: When loading player data, a player will get "credit" for any opening they reach, even if they reached it via a transposition. However, the transposition looks for the canonical PGN (series of moves) for the opening, so if a player transposes through an opening but reaches that opening from a non-ordinary series of moves, the player will not receive credit. For statistics on overall popularity of openings, transpositions are ignored.',
+      answer: 'A: Each game is assigned a single opening, which is the most granular opening played, and this can be reached via transposition and assigned successfully. However, you will only get credit for a "parent" of a particular opening if you played the canonical move order for that parent opening. For example, the sequence 1. Nf3 e5 2. e4 will receive credit as the King\'s Knight Opening even though it started with Nf3, but would not receive credit for the King\'s Pawn Game because it did not play the accepted move order for that opening.',
     },
     {
       question: 'Q: When is the overall popularity data from?',
@@ -76,7 +80,19 @@ const BlockHeader = () => {
         </Tooltip>
         &nbsp;have you collected?&nbsp;&nbsp;
 
-        <HelpIcon className="header-tooltip-icon" color="primary" onClick={handleClickOpen} />
+        <Tooltip 
+          className="opaque-tooltip"
+          title="Click to load FAQ"
+          enterTouchDelay={0}
+          arrow
+          sx={{
+            '.MuiTooltip-tooltip': {
+              border: '1px solid',
+            },  
+          }}
+        >
+          <HelpIcon className="header-tooltip-icon" color="primary" onClick={handleClickOpen} />
+        </Tooltip>
 
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>

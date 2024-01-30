@@ -6,12 +6,13 @@ Transpositions are included in the player games, because it uses the assigned op
 
 TODO:
 
-- FAQ
+- Rip out Websocket? - https://blog.miguelgrinberg.com/post/easy-websockets-with-flask-and-gevent
+- Seed database with GM records
 - Enter Lichess username spacing fix on mobile
 - Change logo
 
 MAYBE:
-- Load Magnus data locally
+- Load Magnus data from client side only
 - Show error for failed auth on front-end
 - Show error for failed id lookup
 - Error handling cannot find username and timeframe from state decoding - redirect to home page

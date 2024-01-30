@@ -26,11 +26,12 @@ function App() {
 
   const [allopenings, setAllOpenings] = useState([]);
   const [username, setUsername] = useState('drnykterstein');
-  const previousUsername = useRef(null);
+  const previousUsername = useRef('drnykterstein');
   const previousTimeframe = useRef('last 3 months');
   const [timeframe, setTimeframe] = useState('last 3 months');
   const [data, setData] = useState([]);
   const idFromLoad = useRef(null);
+  const [loadedFromDatabase, setLoadedFromDatabase] = useState(false);
   const [id, setId] = useState(null);
   const [progress, setProgress] = useState(0);
   const [gamesexpected, setGamesExpected] = useState(0);
@@ -62,7 +63,7 @@ function App() {
     setHasAllOpenings(false);
     console.log('previousUsername',previousUsername);
     console.log('idFromLoad',idFromLoad.current);
-    fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, setId, idFromLoad)
+    fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, setId, idFromLoad, loadedFromDatabase, setLoadedFromDatabase)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
     },[]); 
 
@@ -148,6 +149,7 @@ function App() {
             setTimeframe={setTimeframe}
             timeframe={timeframe}
             error={error}
+            loadedFromDatabase={loadedFromDatabase}
           />
         </div>
         {loading && !storedUsernames.some(storedUsername => storedUsername.toLowerCase() === username.toLowerCase()) && <ProgressBar progress={progress} gamesexpected={gamesexpected} username={username} abortController={abortController} />}
@@ -157,7 +159,7 @@ function App() {
       </div>
       <div className = 'lower-container'>
         {!loading && <DisplayTable data={data} username={username} />}
-        {!loading && <LowerButtons 
+        {!loading && !error && <LowerButtons 
         handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
         />}
         {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
