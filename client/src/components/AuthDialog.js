@@ -10,8 +10,6 @@ import { login, authorize } from '../api/auth.js';
 
 const AuthDialog = ({ open, handleClose, username, timeframe}) => {
 
-  console.log('username in AuthDialog.js',username)
-
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogContent className="dialog-content">

@@ -104,9 +104,6 @@ const ResultsSummary = ({ data, username, timeframe }) => {
 
   if (!data.total_stamps) return null;
 
-  console.log(timeframe);
-  console.log(displayTimeframe);
-
   return (
     <div className='results-summary-parent-container'>
       <div className='results-summary-container'>

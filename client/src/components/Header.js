@@ -63,7 +63,6 @@ const BlockHeader = () => {
       <div className="stamp-image-container">
         <img src="assets/stamp_images/logo4.png" alt="Chess Opening Stamp Collector" className='stamp-image'/>
       </div>
-      {console.log('Header rendered')}
       <h1>How many&nbsp;
       <Tooltip 
           className="opaque-tooltip"

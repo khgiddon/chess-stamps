@@ -49,8 +49,6 @@ function App() {
     if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && !gmUsernames.includes(username) && idFromLoad.current === 'none' && id === null) {
       // If the user is not authenticated, show the AuthDialog
       setLoading(true)
-      console.log('askedForAuth:', askedForAuth);
-      console.log('username', username);
       setShowAuthDialog(true);
       return;
     }
@@ -59,11 +57,8 @@ function App() {
       abortController.current.abort();  // Abort any ongoing fetch request
     }
     abortController.current = new AbortController();  // Create a new AbortController for the new fetch request
-    // console.log(timeframe)
     setLoading(true); // Set loading to true when the fetch starts
     setHasAllOpenings(false);
-    console.log('previousUsername',previousUsername);
-    console.log('idFromLoad',idFromLoad.current);
     fetchData(username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, setId, idFromLoad, loadedFromDatabase, setLoadedFromDatabase)
       .finally(() => setLoading(false)); // Set loading to false when the fetch is complete
     },[]); 
@@ -95,12 +90,7 @@ function App() {
       // If there's a state in the URL, fetch data using the username and timeframe from the state
       setIsAuthenticated(true);
       askedForAuth.current = true;
-      console.log('fetching data from state')
       const { username, timeframe } = JSON.parse(atob(state));
-      console.log('decoding state', atob(state))
-      console.log('state',username)
-      console.log('timeframe',timeframe)
-      console.log('isAuthenticated',isAuthenticated)
       setUsername(username);
       setTimeframe(timeframe);
       handleFetchData(username, timeframe, idFromUrl);
@@ -108,7 +98,6 @@ function App() {
     }
 
     // If there's no id or state in the URL, fetch data using the default username
-    console.log('fetching data from default username')
     handleFetchData('drnykterstein', 'last 3 months', idFromUrl);
   }, [handleFetchData]);
 
@@ -127,7 +116,6 @@ function App() {
 
   const handleSubmit = (newUsername, newTimeframe) => {
     handleFetchData(newUsername, newTimeframe);
-    console.log('newTimeframe', newTimeframe);
     }
 
   const handleAuthDialogClose = () => {
