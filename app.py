@@ -118,8 +118,11 @@ def generate_base_statistics(df):
     def credit_parents(df):
         white_sums = {}
         black_sums = {}
+        
+        # Filter out rows where both player_white and player_black are 0
+        df_filtered = df[(df['player_white'] > 0) | (df['player_black'] > 0)]
 
-        for index, row in df.iterrows():
+        for index, row in df_filtered.iterrows():
             parents = eval(row['parents'])
             for parent in parents:
                 white_sums[parent] = white_sums.get(parent, 0) + row['player_white']
@@ -363,7 +366,7 @@ def authorize():
 
 # Main route
 @app.route('/openings', methods=['GET'])
-@profile_route
+#@profile_route
 def send_data_to_frontend():
 
     stored_usernames = ['drnykterstein','rebeccaharris','alireza2003','nihalsarin2004']
