@@ -17,16 +17,12 @@ const handleProgress = (progressData) => {
 
   try {
       let baseUrl = process.env.REACT_APP_BASE_BACKEND_URL || 'http://127.0.0.1:5000';
-      console.log('baseUrl',baseUrl)
       let url = `${baseUrl}/openings?username=${username}&timeframe=${timeframe}`;
 
       // Add id to URL if it exists
-      console.log('idFromLoad.current',idFromLoad.current)
       if (idFromLoad.current !== 'none') {
         url += `&id=${idFromLoad.current}`;
-        console.log('url',url, idFromLoad.current)
         setLoadedFromDatabase(true);
-        console.log('loadedFromDatabase',loadedFromDatabase)
 
         // Reset loaded id to null after adding it to the URL, so it doesn't get added again
         idFromLoad.current = 'none';
@@ -55,7 +51,6 @@ const handleProgress = (progressData) => {
         const data = await response.json();
 
         setData(data);
-        console.log(data.most_obscure_stamp);
 
         // Overwrite username and timeframe with values from API call 
         // This will occur if the database was pulled
@@ -63,14 +58,12 @@ const handleProgress = (progressData) => {
         setTimeframe(data.loaded_timeframe);
 
         // Set previous username (last correct username) if API call succeeds
-        console.log('setting previous username to',username)
         previousUsername.current = username;
         previousTimeframe.current = timeframe;
 
       } catch (error) {
 
             // Return to previous username (last correct username) if API call fails
-            console.log('call failed: setting username to',previousUsername.current)
 
             setError(error);
             setLoadedFromDatabase(false);

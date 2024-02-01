@@ -50,7 +50,7 @@ const Share = ({data, displayUsername, displayTimeframe, displayUsernameSecondMe
     <Dialog open={open} onClose={handleClose} >
       <DialogContent className="dialog-content">
       <div className="stamp-image-container-dialog">
-        <img src="assets/stamp_images/logo3.png" alt="Chess Opening Stamp Collector" className='stamp-image-dialog'/>
+        <img src="assets/stamp_images/logo4.png" alt="Chess Opening Stamp Collector" className='stamp-image-dialog'/>
       </div>
       <div className="dialog-title">
               <h2>Share your stats with a unique link:</h2>

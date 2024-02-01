@@ -118,8 +118,11 @@ def generate_base_statistics(df):
     def credit_parents(df):
         white_sums = {}
         black_sums = {}
+        
+        # Filter out rows where both player_white and player_black are 0
+        df_filtered = df[(df['player_white'] > 0) | (df['player_black'] > 0)]
 
-        for index, row in df.iterrows():
+        for index, row in df_filtered.iterrows():
             parents = eval(row['parents'])
             for parent in parents:
                 white_sums[parent] = white_sums.get(parent, 0) + row['player_white']
@@ -213,8 +216,6 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     # Get user data
     max_games = 50000
     
-    print(f'querying lichess api for {username}...', flush=True)
-
     # Read the lichessToken
     load_dotenv()
     if os.getenv("AUTH_METHOD") == 'oauth':
@@ -231,15 +232,10 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     if lichessToken != 'none' and lichessToken != 'null' and lichessToken:
         headers["Authorization"] = f"Bearer {lichessToken}"
 
-    print('headers',headers)
-
     url = f"https://lichess.org/api/user/{username}"   
-    print('url',url)
 
     try:
-        print('attempting request to lichess api', url)
         response = requests.get(url,headers=headers)
-        print('received response from lichess api')
         response.raise_for_status()
     except HTTPError as http_err:
         print(f"HTTP error occurred: {http_err}")
@@ -258,7 +254,7 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     # Proportion of games played since timestamp
     if timestamp_to_use > user_created_at:
         estimated_games = int(total_games * ((int(time.time())*1000 - timestamp_to_use) / (int(time.time())*1000 - user_created_at)))
-        print(f'Estimated games: {estimated_games}', f'Total games: {total_games}', f'Ratio: {estimated_games / total_games}', timestamp_to_use, user_created_at, int(time.time())*1000)
+        # print(f'Estimated games: {estimated_games}', f'Total games: {total_games}', f'Ratio: {estimated_games / total_games}', timestamp_to_use, user_created_at, int(time.time())*1000)
     else:
         estimated_games = total_games
 
@@ -267,12 +263,12 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     chunks = 0
     url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
     response = requests.get(url,headers=headers,stream=True)
-    print('received response from lichess api for main load')
+    #print('received response from lichess api for main load')
     for chunk in response.iter_content(chunk_size=1024):
         percentage_complete = f'{(chunks / chunks_expected) * 100:.1f}'
         socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected})
         chunks += 1
-        print(percentage_complete)
+        #print(percentage_complete)
         streamed_response.append(chunk)
 
 def parse_streamed_reponse(streamed_response,username):
@@ -284,7 +280,6 @@ def parse_streamed_reponse(streamed_response,username):
     # Parse and create data
     full_response = b''.join(streamed_response).decode('utf-8')
     l = full_response.split('\n\n\n')    
-    print(f'length of response: {len(l)}')
 
     if len(l) == 1:
         print('error in response', full_response)
@@ -356,14 +351,13 @@ def authorize():
     session['bearer_token'] = token['access_token']
     session.modified = True
     print('setting bearer token')
-    print(session)
 
     redirect_url = f"{url}?state={state}"
     return redirect(redirect_url)
 
 # Main route
 @app.route('/openings', methods=['GET'])
-@profile_route
+#@profile_route
 def send_data_to_frontend():
 
     stored_usernames = ['drnykterstein','rebeccaharris','alireza2003','nihalsarin2004']
@@ -372,9 +366,7 @@ def send_data_to_frontend():
     username = request.args.get('username')
     timeframe = request.args.get('timeframe')
     
-    print(session)
     token = session.get('bearer_token')  # Retrieve the token from the session
-    print('token',token)
 
     url_key = request.args.get('id', 'none') # Return none by default
 

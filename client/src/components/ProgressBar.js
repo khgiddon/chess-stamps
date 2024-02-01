@@ -6,10 +6,7 @@ import Box from '@mui/material/Box';
 
 const ProgressWrapper = ({ progress, gamesexpected, username, abortController }) => {
   const cancelRequest = () => {
-    console.log('abortController.current:', abortController.current);
-    console.log('abortController.current.signal:', abortController.current.signal);
     abortController.current.abort();
-    console.log('abortController.current.signal:', abortController.current.signal);
   };
 
   return (
