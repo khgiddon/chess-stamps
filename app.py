@@ -8,6 +8,9 @@ from flask_cors import CORS
 
 from authlib.integrations.flask_client import OAuth
 
+import cProfile
+import pstats
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -72,6 +75,20 @@ else:
 # Functions and routes
 ###
 
+# Profile 
+def profile_route(f):
+    def profiled(*args, **kwargs):
+        profiler = cProfile.Profile()
+        try:
+            profiler.enable()
+            result = f(*args, **kwargs)
+            profiler.disable()
+            return result
+        finally:
+            stats = pstats.Stats(profiler).sort_stats('cumulative')
+            stats.print_stats()
+    return profiled
+
 # Unique URL
 def generate_url_key(length=9):
     return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(length))
@@ -97,12 +114,23 @@ def generate_base_statistics(df):
     # Credit openings with children
     df['player_white_with_children'] = df['player_white']
     df['player_black_with_children'] = df['player_black']
-    for index, row in df.iterrows():
-        parents = eval(row['parents'])
-        if len(parents) > 0:
+
+    def credit_parents(df):
+        white_sums = {}
+        black_sums = {}
+
+        for index, row in df.iterrows():
+            parents = eval(row['parents'])
             for parent in parents:
-                df.loc[df['name'] == parent,'player_white_with_children'] += row['player_white']
-                df.loc[df['name'] == parent,'player_black_with_children'] += row['player_black']
+                white_sums[parent] = white_sums.get(parent, 0) + row['player_white']
+                black_sums[parent] = black_sums.get(parent, 0) + row['player_black']
+
+        df['player_white_with_children'] += df['name'].map(white_sums).fillna(0)
+        df['player_black_with_children'] += df['name'].map(black_sums).fillna(0)
+
+        return df
+
+    df = credit_parents(df)
 
     # Clean and analyze
     df['player_total'] = df['player_white'] + df['player_black']
@@ -335,6 +363,7 @@ def authorize():
 
 # Main route
 @app.route('/openings', methods=['GET'])
+@profile_route
 def send_data_to_frontend():
 
     stored_usernames = ['drnykterstein','rebeccaharris','alireza2003','nihalsarin2004']
