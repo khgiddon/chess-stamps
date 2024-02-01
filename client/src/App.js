@@ -40,10 +40,11 @@ function App() {
   const abortController = useRef(null);  // Use useRef to hold the AbortController
   const [error, setError] = useState(null);
 
+  const gmUsernames = ['drnykterstein', 'alireza2003', 'nihalsarin2004', 'rebeccaharris'];
+
 
   const handleFetchData = useCallback((username = 'drnykterstein', timeframe = 'last 3 months') => {
 
-    const gmUsernames = ['drnykterstein', 'alireza2003', 'nihalsarin2004', 'rebeccaharris'];
 
     if (!isAuthenticated && !askedForAuth.current && !showAuthDialog && !gmUsernames.includes(username) && idFromLoad.current === 'none' && id === null) {
       // If the user is not authenticated, show the AuthDialog
@@ -75,12 +76,18 @@ function App() {
     const state = urlParams.get('state');
     idFromLoad.current = idFromUrl;  // Update the ref
 
+    
+    if (gmUsernames.includes(idFromUrl)) {
+      idFromLoad.current = 'none';
+      setUsername(idFromUrl);
+      handleFetchData(idFromUrl, 'last 3 months', 'none');
+      return;
+    }
 
-
-    if (idFromUrl !== 'none') {
+    if (idFromLoad.current !== 'none') {
       // If there's an id in the URL, fetch data using the id
       console.log('fetching data from URL ID')
-      handleFetchData('drnykterstein', 'last 3 months', idFromUrl);
+      handleFetchData('drnykterstein', 'last 3 months', idFromLoad.current);
       return;
     }
 
@@ -163,7 +170,7 @@ function App() {
         handleAllOpeningsButtonClick={handleAllOpeningsButtonClick} hasAllOpenings={hasallopenings}
         />}
         {hasallopenings && <OpeningsGrid allopenings={data.openings}/>}
-        {!loading && <Footer />}
+        {!loading && !error && <Footer />}
     </div>
   </div>
   </AuthContext.Provider>

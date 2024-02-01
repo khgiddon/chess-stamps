@@ -7,7 +7,7 @@ Transpositions are included in the player games, because it uses the assigned op
 TODO:
 
 - Seed database with GM records
-- Change logo
+
 
 MAYBE:
 - 
