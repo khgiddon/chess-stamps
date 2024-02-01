@@ -46,6 +46,8 @@ const OpeningsGrid = ({ allopenings }) => {
           >
             <a 
               href={`https://lichess.org/analysis/pgn/${[opening.pgn]}`}
+              target="_blank"
+              rel="noopener noreferrer"
               onMouseEnter={() => {
                 setIsHovered(true);
                 setCurrentFen(opening.fen);

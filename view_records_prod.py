@@ -4,6 +4,13 @@ from models import Record
 import os
 from dotenv import load_dotenv
 
+def truncate():
+    # Start a new session
+    session = Session()
+    session.query(Record).delete()
+    session.commit()
+    session.close()
+
 # Get the DATABASE_URL from environment variables
 load_dotenv()
 print(os.getenv('DATABASE_URL'))
@@ -27,3 +34,6 @@ for record in records:
 
 # Close the session
 session.close()
+
+# Truncate the table
+# truncate()

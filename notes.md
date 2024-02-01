@@ -5,9 +5,8 @@ export FLASK_DEBUG=1
 Transpositions are included in the player games, because it uses the assigned opening for that particular game, but not for overall games.
 
 TODO:
-
-- Seed database with GM records
-
+- Render shimmy?
+- Make db more efficient - store less data, or only store data when user tries to share and get unique link
 
 MAYBE:
 - 
