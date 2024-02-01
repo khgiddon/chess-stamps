@@ -16,6 +16,9 @@ import Link from '@mui/material/Link';
 const BlockHeader = () => {
   const [open, setOpen] = useState(false);
 
+  const [isMobile, setIsMobile] = useState(!window.matchMedia("(hover: hover)").matches);
+
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -64,7 +67,10 @@ const BlockHeader = () => {
         <img src="assets/stamp_images/logo4.png" alt="Chess Opening Stamp Collector" className='stamp-image'/>
       </div>
       <h1>How many&nbsp;
-      <Tooltip 
+      {isMobile ? (
+        <span className='dotted-underline' onClick={handleClickOpen}>chess opening stamps</span>
+      ) : (
+        <Tooltip 
           className="opaque-tooltip"
           title="Click to load FAQ"
           enterTouchDelay={0}
@@ -77,21 +83,26 @@ const BlockHeader = () => {
         >
           <span className='dotted-underline' onClick={handleClickOpen}>chess opening stamps</span>
         </Tooltip>
+      )}
         &nbsp;have you collected?&nbsp;&nbsp;
 
-        <Tooltip 
-          className="opaque-tooltip"
-          title="Click to load FAQ"
-          enterTouchDelay={0}
-          arrow
-          sx={{
-            '.MuiTooltip-tooltip': {
-              border: '1px solid',
-            },  
-          }}
-        >
+        {isMobile ? (
           <HelpIcon className="header-tooltip-icon" color="primary" onClick={handleClickOpen} />
-        </Tooltip>
+        ) : (
+          <Tooltip 
+            className="opaque-tooltip"
+            title="Click to load FAQ"
+            enterTouchDelay={0}
+            arrow
+            sx={{
+              '.MuiTooltip-tooltip': {
+                border: '1px solid',
+              },  
+            }}
+          >
+            <HelpIcon className="header-tooltip-icon" color="primary" onClick={handleClickOpen} />
+          </Tooltip>
+        )}
 
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>
