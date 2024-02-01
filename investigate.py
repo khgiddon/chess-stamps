@@ -4,19 +4,6 @@ from models import Record
 import os
 from dotenv import load_dotenv
 
-def truncate():
-    # Start a new session
-    session = Session()
-
-    # Truncate the Record table
-    session.execute(text("TRUNCATE TABLE Record"))
-
-    # Commit the changes
-    session.commit()
-
-    # Close the session
-    session.close()
-
 # Get the DATABASE_URL from environment variables
 load_dotenv()
 print(os.getenv('DATABASE_URL'))
@@ -31,17 +18,18 @@ Session = sessionmaker(bind=engine)
 # Create a session
 session = Session()
 
+username = 'RebelJohnny'
+
+
 # Fetch all records from the Record table
-records = session.query(Record).all()
+records = session.query(Record).filter(Record.username == username).all()
+
 
 # Print out each record
 for record in records:
-    print(record.username, record.record_created_at, record.timeframe, record.url_key)
+    print(record.username, record.record_created_at, record.timeframe, record.url_key, record.data)
 
 print("Record count:", len(records))
 
 # Close the session
 session.close()
-
-# Truncate the table
-#truncate()

@@ -333,8 +333,6 @@ def login():
 
     return oauth.lichess.authorize_redirect(redirect_uri, state=state)
 
-
-
 @app.route('/authorize')
 def authorize():
     error = request.args.get('error')
@@ -428,6 +426,14 @@ def send_data_to_frontend():
     most_popular_black_min10 = df_most_popular_black_min10.head(1).to_dict('records') if not df_most_popular_black_min10.empty else [default]
 
     most_popular_missing_stamp =  df.query('player_total_with_children == 0').sort_values(by='all_pct', ascending=False).head(1).iloc[0].to_dict()
+    
+    df_filtered = df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True)
+    if df_filtered.empty:
+        print('df empty')
+        print('username:', username)
+        print('timeframe:', timeframe)
+        print('streamed response: ', streamed_response)
+
     most_obscure_stamp = df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0].to_dict()
 
     random_collected =  df[df['player_total_with_children'] > 0].sample(n=1).head(1).iloc[0].to_dict()
