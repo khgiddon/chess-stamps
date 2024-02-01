@@ -61,14 +61,14 @@ const BlockUsernameSubmit = ({ username = '', setUsername, handleSubmit, loading
         >
           <TextField
             type="text"
-            placeholder="Enter your Lichess username"
+            placeholder={isMobile ? "Enter Lichess username" : "Enter your Lichess username"}
             value={inputValue === 'drnykterstein' ? '' : inputValue}
             onChange={handleChange}
             id="outlined-basic"
             required
             fullWidth
             variant="standard"
-            style={{ marginRight: '20px', fontSize: isMobile ? '12px' : '16px' }}
+            style={{ marginRight: '20px', fontSize: isMobile ? '10px' : '16px' }}
             InputProps={{
               disableUnderline: true,
               inputProps: { 'data-lpignore': true },
