@@ -106,7 +106,7 @@ def response_parser(s):
             data[key] = value
     return data
 
-# Generate base statistics (run as part of get_user_data())
+# Generate base statistics 
 def generate_base_statistics(df):
 
     # Begin generating stats
@@ -262,6 +262,7 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     chunks_expected = min(estimated_games,max_games)   
     chunks = 0
     url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
+    print(url)
     response = requests.get(url,headers=headers,stream=True)
     #print('received response from lichess api for main load')
     for chunk in response.iter_content(chunk_size=1024):
@@ -378,19 +379,27 @@ def send_data_to_frontend():
     # Initialize df
     df = None
 
+    print('pulling data for ', username, timeframe, url_key)
+
     # CASE 1: User in DB
     if url_key != 'none' and url_key != None:
         username, timeframe, df = check_if_key_exists(url_key)
+        print('case 1')
+
 
     # CASE 2: User is stored
     if df is None:
         df = check_if_username_is_stored(username,timeframe,stored_usernames=stored_usernames)
+        print('case 2')
+
 
     # CASE 3: User is not stored
     if df is None:
         streamed_response = []
         get_user_data(username,timestamp_to_use,token,streamed_response=streamed_response)
         df = parse_streamed_reponse(streamed_response,username)
+        print('case 3')
+
 
 
     # Save data to db
@@ -432,7 +441,6 @@ def send_data_to_frontend():
         print('df empty')
         print('username:', username)
         print('timeframe:', timeframe)
-        print('streamed response: ', streamed_response)
 
     most_obscure_stamp = df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0].to_dict()
 
