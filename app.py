@@ -163,15 +163,15 @@ def generate_base_statistics(df):
 
 def check_if_key_exists(url_key):
     if url_key != 'none':
-        print('loading from db')
+        print('loading from db', flush=True)
         with app.app_context():
             record = Record.query.filter_by(url_key=url_key).first()
             if record is None:
                 # Raise error
-                print('record not found!')
+                print('record not found!', flush=True)
                 abort(400, description="Record not found")
             else:
-                print('record found!')
+                print('record found!', flush=True)
                 loaded_username = record.username
                 loaded_timeframe = record.timeframe
                 df = pd.read_json(record.data)
@@ -181,7 +181,7 @@ def check_if_username_is_stored(username,timeframe,defaultusername='khg002',stor
   # Load stored file if username is in stored_usernames
     # This was an early local file implementation before the DB was added
     if username.lower() in stored_usernames:
-        print('loading stored file')
+        print('loading stored file', flush=True)
         df = pd.read_csv("assets/" + username.lower() + ".tsv", sep="\t")
         #df = generate_base_statistics(df,username,stored_usernames)
         return df
@@ -238,11 +238,11 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
         response = requests.get(url,headers=headers)
         response.raise_for_status()
     except HTTPError as http_err:
-        print(f"HTTP error occurred: {http_err}")
+        print(f"HTTP error occurred: {http_err}", flush=True)
         traceback.print_exc() 
         abort(400, description="Username not found")
     except Exception as err:
-        print(f"An error occurred: {err}")
+        print(f"An error occurred: {err}", flush=True)
         traceback.print_exc()  
         abort(500, description="An unexpected error occurred")
 
@@ -262,7 +262,7 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     chunks_expected = min(estimated_games,max_games)   
     chunks = 0
     url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
-    print(url)
+    print(url, flush=True)
     response = requests.get(url,headers=headers,stream=True)
     #print('received response from lichess api for main load')
     for chunk in response.iter_content(chunk_size=1024):
@@ -283,7 +283,7 @@ def parse_streamed_reponse(streamed_response,username):
     l = full_response.split('\n\n\n')    
 
     if len(l) == 1:
-        print('error in response', full_response)
+        print('error in response', full_response, flush=True)
 
 
     del l[-1] # Last response is  empty
@@ -349,7 +349,7 @@ def authorize():
     token = oauth.lichess.authorize_access_token()
     session['bearer_token'] = token['access_token']
     session.modified = True
-    print('setting bearer token')
+    print('setting bearer token', flush=True)
 
     redirect_url = f"{url}?state={state}"
     return redirect(redirect_url)
@@ -379,18 +379,18 @@ def send_data_to_frontend():
     # Initialize df
     df = None
 
-    print('pulling data for ', username, timeframe, url_key)
+    print('pulling data for ', username, timeframe, url_key, flush=True)
 
     # CASE 1: User in DB
     if url_key != 'none' and url_key != None:
         username, timeframe, df = check_if_key_exists(url_key)
-        print('case 1')
+        print('case 1', flush=True)
 
 
     # CASE 2: User is stored
     if df is None:
         df = check_if_username_is_stored(username,timeframe,stored_usernames=stored_usernames)
-        print('case 2')
+        print('case 2', flush=True)
 
 
     # CASE 3: User is not stored
@@ -398,7 +398,7 @@ def send_data_to_frontend():
         streamed_response = []
         get_user_data(username,timestamp_to_use,token,streamed_response=streamed_response)
         df = parse_streamed_reponse(streamed_response,username)
-        print('case 3')
+        print('case 3', flush=True)
 
 
 
@@ -438,9 +438,9 @@ def send_data_to_frontend():
     
     df_filtered = df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True)
     if df_filtered.empty:
-        print('df empty')
-        print('username:', username)
-        print('timeframe:', timeframe)
+        print('df empty', flush=True)
+        print('username:', username, flush=True)
+        print('timeframe:', timeframe, flush=True)
 
     most_obscure_stamp = df.query('player_total_with_children >= 1').sort_values(by='all_pct', ascending=True).head(1).iloc[0].to_dict()
 
