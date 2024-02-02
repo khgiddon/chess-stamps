@@ -365,6 +365,9 @@ def send_data_to_frontend():
     username = request.args.get('username')
     timeframe = request.args.get('timeframe')
     
+    # Remove leading and trailing whitespace
+    username = username.strip()
+    
     token = session.get('bearer_token')  # Retrieve the token from the session
 
     url_key = request.args.get('id', 'none') # Return none by default
