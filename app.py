@@ -265,11 +265,14 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     chunks = 0
     url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max_games}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
     print(url, flush=True)
+    print('user_sids', user_sids, flush=True)
+
     response = requests.get(url,headers=headers,stream=True)
     #print('received response from lichess api for main load')
     for chunk in response.iter_content(chunk_size=1024):
         percentage_complete = f'{(chunks / chunks_expected) * 100:.1f}'
-        socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected}, room=user_sids[username])
+        socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected})
+        #socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected}, room=user_sids[username])
         chunks += 1
         #print(percentage_complete)
         streamed_response.append(chunk)
