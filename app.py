@@ -39,8 +39,6 @@ from models import Record, db, init_db
 app = Flask(__name__)
 socketio = SocketIO(app, cors_allowed_origins="*")
 CORS(app,supports_credentials=True)
-user_sids = {}
-
 load_dotenv()
 app.secret_key = os.getenv("SECRET_KEY")
 app.config['SESSION_COOKIE_SAMESITE'] = 'None'
@@ -359,13 +357,6 @@ def authorize():
     redirect_url = f"{url}?state={state}"
     return redirect(redirect_url)
 
-@socketio.on('connect')
-def handle_connect():
-    # Get the username from the query parameters
-    username = request.args.get('username')
-    # Store the session ID for this username
-    user_sids[username] = request.sid
-
 # Main route
 @app.route('/openings', methods=['GET'])
 #@profile_route
@@ -494,4 +485,4 @@ def send_data_to_frontend():
     })
 
 if __name__ == '__main__':
-    socketio.run(app)
+    app.run(debug=True)
