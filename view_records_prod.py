@@ -40,6 +40,10 @@ for record in records:
 
 print("Record count:", len(records))
 
+# Unique username count
+unique_usernames = session.query(Record.username).distinct().count()
+print("Unique usernames:", unique_usernames)
+
 # Close the session
 session.close()
 

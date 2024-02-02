@@ -266,7 +266,6 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     chunks = 0
     url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max_games}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
     print(url, flush=True)
-    print('user_sids', user_sids, flush=True)
 
     response = requests.get(url,headers=headers,stream=True)
     #print('received response from lichess api for main load')
@@ -364,7 +363,12 @@ def authorize():
 def handle_connect():
     # Get the username from the query parameters
     print(f"Connect event received with args: {request.args}")
-    socket_username = request.args.get('username').strip()
+    socket_username = request.args.get('username')
+
+    if socket_username is not None:
+        socket_username = socket_username.strip()
+    else:
+        print('socket username not found', flush=True)
     # Store the session ID for this username
     user_sids[socket_username] = request.sid
 
@@ -381,6 +385,8 @@ def send_data_to_frontend():
     
     # Remove leading and trailing whitespace
     username = username.strip()
+
+    print('username:', username, flush=True)
     
     token = session.get('bearer_token')  # Retrieve the token from the session
 
