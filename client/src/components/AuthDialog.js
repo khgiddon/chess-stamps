@@ -14,10 +14,12 @@ const AuthDialog = ({ open, handleClose, username, timeframe}) => {
     <Dialog open={open} onClose={handleClose}>
       <DialogContent className="dialog-content">
         <div className="dialog-title">
-            <h2>Authenticate with Lichess?</h2>
+            <h2>Authenticate with Lichess (highly recommended)</h2>
         </div>
         <div className='dialog-explanatory-text'>
-            <p>Authentication is optional, but it will load your games 3x faster.</p>
+            <p>Only one non-authenticated user can use the tool at a time because of Lichess's API rate limiting. <b>If you do not authenticate, you may receive a network error if someone else is trying to use the tool at the same time.</b> 
+              <br /><br />
+            Authenticating with Lichess will also make your call 3x faster. </p>
         </div>
         <Stack direction="row" spacing={2} style={{ marginTop: '20px', marginBottom: '20px'  }} alignItems="center" justifyContent="center">
   <Button variant="outlined" color="secondary" onClick={handleClose} style={{ maxWidth: 'fit-content' }}>
