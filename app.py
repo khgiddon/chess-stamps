@@ -364,7 +364,7 @@ def authorize():
 def handle_connect():
     # Get the username from the query parameters
     print(f"Connect event received with args: {request.args}")
-    socket_username = request.args.get('username')
+    socket_username = request.args.get('username').strip()
     # Store the session ID for this username
     user_sids[socket_username] = request.sid
 
