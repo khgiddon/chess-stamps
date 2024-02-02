@@ -362,9 +362,10 @@ def authorize():
 @socketio.on('connect')
 def handle_connect():
     # Get the username from the query parameters
-    username = request.args.get('username')
+    print(f"Connect event received with args: {request.args}")
+    socket_username = request.args.get('username')
     # Store the session ID for this username
-    user_sids[username] = request.sid
+    user_sids[socket_username] = request.sid
 
 # Main route
 @app.route('/openings', methods=['GET'])

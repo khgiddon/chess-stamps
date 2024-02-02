@@ -3,6 +3,7 @@ import { createSocket } from './io';
 
 export const fetchData = async (username, timeframe, previousUsername, previousTimeframe, setData, setTimeframe, setUsername, setProgress, setGamesExpected, abortController, error, setError, id, Setid, idFromLoad, loadedFromDatabase, setLoadedFromDatabase) => {
 
+console.log('socket username: ', username);
 const socket = createSocket(username);
 
 const handleProgress = (progressData) => {
