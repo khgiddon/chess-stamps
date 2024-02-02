@@ -234,6 +234,7 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     if lichessToken != 'none' and lichessToken != 'null' and lichessToken:
         headers["Authorization"] = f"Bearer {lichessToken}"
 
+    print('headers: ', headers, flush=True)
     url = f"https://lichess.org/api/user/{username}"   
 
     try:
@@ -271,8 +272,8 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     #print('received response from lichess api for main load')
     for chunk in response.iter_content(chunk_size=1024):
         percentage_complete = f'{(chunks / chunks_expected) * 100:.1f}'
-        socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected})
-        #socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected}, room=user_sids[username])
+        #socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected})
+        socketio.emit('progress', {'percentage_complete': percentage_complete, 'chunks_expected': chunks_expected}, room=user_sids[username])
         chunks += 1
         #print(percentage_complete)
         streamed_response.append(chunk)
