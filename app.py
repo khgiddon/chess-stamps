@@ -387,13 +387,12 @@ def send_data_to_frontend():
     # CASE 1: User in DB
     if url_key != 'none' and url_key != None:
         username, timeframe, df = check_if_key_exists(url_key)
-        print('case 1', flush=True)
+        print('case 1: user in db', flush=True)
 
 
     # CASE 2: User is stored
     if df is None:
         df = check_if_username_is_stored(username,timeframe,stored_usernames=stored_usernames)
-        print('case 2', flush=True)
 
 
     # CASE 3: User is not stored
@@ -401,7 +400,7 @@ def send_data_to_frontend():
         streamed_response = []
         get_user_data(username,timestamp_to_use,token,streamed_response=streamed_response)
         df = parse_streamed_reponse(streamed_response,username)
-        print('case 3', flush=True)
+        print('case 3: api call', flush=True)
 
 
 
