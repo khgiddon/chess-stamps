@@ -31,5 +31,5 @@ const GridElement = ({ label, label_description, opening, rarity, fen, id, text,
   );
 };
 
-const GridElement_Memoized = React.memo(GridElement);
-export default GridElement_Memoized;
+const GridElementMemoized = React.memo(GridElement);
+export default GridElementMemoized;

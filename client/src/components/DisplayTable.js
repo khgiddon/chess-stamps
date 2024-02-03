@@ -1,10 +1,10 @@
 import React from 'react';
-import GridElement_Memoized from './GridElement';
+import GridElementMemoized from './GridElement';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Container from '@mui/material/Container';
-import { percentageToOneInEveryX, customRoundForRatio, listToCleanList, percentageToRarity, timesPluralization } from '../utilityFunctions';
+import { percentageToOneInEveryX, customRoundForRatio, percentageToRarity, timesPluralization } from '../utilityFunctions';
 
 const DisplayTable = ({ data, username }) => {
 
@@ -30,7 +30,7 @@ const DisplayTable = ({ data, username }) => {
     <Container maxWidth="lg" sx={{ width: '100%', '@media (max-width:600px)': { width: '90%' } }}>
       <Grid container spacing={0.7}>
         <Grid item xs={12} sm={6}>
-          <GridElement_Memoized
+          <GridElementMemoized
             label="Rarest collected stamp"
             opening={data.most_obscure_stamp.name}
             fen={data.most_obscure_stamp.fen}
@@ -44,7 +44,7 @@ const DisplayTable = ({ data, username }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <GridElement_Memoized
+          <GridElementMemoized
             label="Most popular missing stamp"
             opening={data.most_popular_missing_stamp.name}
             fen={data.most_popular_missing_stamp.fen}
@@ -63,7 +63,7 @@ const DisplayTable = ({ data, username }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <GridElement_Memoized
+          <GridElementMemoized
             label="Specialist: white"
             label_description="(most played relative to population)"
             opening={data.most_popular_white.name}
@@ -81,7 +81,7 @@ const DisplayTable = ({ data, username }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <GridElement_Memoized
+          <GridElementMemoized
             label="Specialist: black"
             label_description="(most played relative to population)"
             opening={data.most_popular_black.name}
@@ -99,7 +99,7 @@ const DisplayTable = ({ data, username }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <GridElement_Memoized
+          <GridElementMemoized
             label="Favorite stamp: white"
             label_description="(most played relative to population, min. 10 games)"
             opening={data.most_popular_white_min10.name}
@@ -118,7 +118,7 @@ const DisplayTable = ({ data, username }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <GridElement_Memoized
+          <GridElementMemoized
             label="Favorite stamp: black"
             label_description="(most played relative to population, min. 10 games)"
             opening={data.most_popular_black_min10.name}
@@ -137,7 +137,7 @@ const DisplayTable = ({ data, username }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <GridElement_Memoized
+          <GridElementMemoized
             label="Least favorite stamp"
             label_description="(played at least once, least played relative to population)"
             opening={data.least_favorite_played.name}
@@ -157,7 +157,7 @@ const DisplayTable = ({ data, username }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <GridElement_Memoized
+          <GridElementMemoized
             label="Deepest line"
             label_description="(most moves in a played stamp)"
             opening={data.deepest_ply.name}
@@ -177,7 +177,7 @@ const DisplayTable = ({ data, username }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-        <GridElement_Memoized
+        <GridElementMemoized
             label="Random collected stamp"
             opening={data.random_collected.name}
             fen={data.random_collected.fen}
@@ -196,7 +196,7 @@ const DisplayTable = ({ data, username }) => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-        <GridElement_Memoized
+        <GridElementMemoized
             label="Random missing stamp"
             opening={data.random_missing.name}
             fen={data.random_missing.fen}
