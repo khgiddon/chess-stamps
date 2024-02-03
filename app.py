@@ -29,7 +29,6 @@ from flask_sqlalchemy import SQLAlchemy
 import traceback
 import base64
 
-
 import random
 import string
 
@@ -294,14 +293,32 @@ def parse_streamed_reponse(streamed_response,username):
     del l[-1] # Last response is  empty
 
     # Create dataframe
-    df['player_white'] = 0
-    df['player_black'] = 0
+    # Create a defaultdict of defaultdicts
+    counts = {opening: {'player_white': 0, 'player_black': 0} for opening in df['name'].unique()}
+
     for game in l:
         game_parsed = response_parser(game)
+        opening_name = game_parsed['Opening']
+        
+        # Skip if the opening is not in the df
+        # This is for openings that get added after the initial db creation
+        # Example: 'Sicilian Defense: Delayed Alapin Variation, with e6'
+        if opening_name not in counts:
+            continue
+
         if game_parsed['White'].lower() == username.lower():
-            df.loc[df['name'] == game_parsed['Opening'],'player_white'] += 1
+            counts[opening_name]['player_white'] += 1
         else:
-            df.loc[df['name'] == game_parsed['Opening'],'player_black'] += 1
+            counts[opening_name]['player_black'] += 1
+
+    # Convert the dictionary to a DataFrame
+    df_counts = pd.DataFrame.from_dict(counts, orient='index')
+
+    # Merge the counts DataFrame into the original DataFrame
+    df = df.merge(df_counts, left_on='name', right_index=True, how='left')
+
+    # Get df columns
+    print(df.head(), flush=True)
 
     # Generate statistics
     df = generate_base_statistics(df)
