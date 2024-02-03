@@ -109,7 +109,10 @@ The backend will start and be available at `http://localhost:5000`, and the fron
 ## Built With
 
 - [React](https://reactjs.org/)
-- [Flask](https://flask.palletsprojects.com/)
+- [Flask](https://flask.palletsprojects.com/en/3.0.x/)
+- Chessboard component from [react-chessboard](https://www.npmjs.com/package/react-chessboard)
+- Some styles and components from [Material-UI](https://material-ui.com/). Styling is a mix of CSS and MUI.
+- [Lichess API](https://lichess.org/api) for game data
 
 
 ## Authors
@@ -119,4 +122,8 @@ The backend will start and be available at `http://localhost:5000`, and the fron
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+## Contributing
+
+To contribute to this project, please open an issue or a pull request.
 
