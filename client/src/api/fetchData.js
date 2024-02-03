@@ -62,8 +62,9 @@ const handleProgress = (progressData) => {
         setTimeframe(data.loaded_timeframe);
 
         // Set previous username (last correct username) if API call succeeds
-        previousUsername.current = username;
-        previousTimeframe.current = timeframe;
+        previousUsername.current = data.loaded_username;
+        previousTimeframe.current = data.loaded_timeframe;
+
 
       } catch (error) {
 
