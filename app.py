@@ -317,9 +317,6 @@ def parse_streamed_reponse(streamed_response,username):
     # Merge the counts DataFrame into the original DataFrame
     df = df.merge(df_counts, left_on='name', right_index=True, how='left')
 
-    # Get df columns
-    print(df.head(), flush=True)
-
     # Generate statistics
     df = generate_base_statistics(df)
     return df

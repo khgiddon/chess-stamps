@@ -47,7 +47,7 @@ const handleProgress = (progressData) => {
           throw new Error("Could not find data for username");
         }
 
-          throw new Error("Network response was not ok");
+          throw new Error("Sorry, too many requests right now. Please try again later.");
 
         }
 
