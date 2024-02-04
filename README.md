@@ -112,7 +112,7 @@ The backend will start and be available at `http://localhost:5000`, and the fron
 - [Flask](https://flask.palletsprojects.com/en/3.0.x/)
 - Chessboard component from [react-chessboard](https://www.npmjs.com/package/react-chessboard)
 - Some styles and components from [Material-UI](https://material-ui.com/). Styling is a mix of CSS and MUI.
-- [Lichess API](https://lichess.org/api) for game data
+- [Lichess API](https://lichess.org/api) for game data and Lichess tables for [opening names](https://github.com/lichess-org/chess-openings)
 
 
 ## Authors
