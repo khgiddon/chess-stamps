@@ -127,3 +127,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 To contribute to this project, please open an issue or a pull request.
 
+There are some obvious rooms for improvement, such as:
+
+- The database is very storage-inefficient right now.
+- The UI for the "All Stamps" section can have improvements such as filtering by popularity, ply, etc.
+
