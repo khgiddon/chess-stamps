@@ -1,5 +1,7 @@
 # Chess Stamps
 
+Chess stamps is a tool for pulling statistics on your chess games played on Lichess and comparing your opening your repertoire to the population. It uses a "stamp collecting" theme.
+
 Live URL: 
 https://www.chessstamps.app
 
