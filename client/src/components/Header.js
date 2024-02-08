@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Link from '@mui/material/Link';
-
+import Alert from '@mui/material/Alert';
 
 const BlockHeader = () => {
   const [open, setOpen] = useState(false);
@@ -83,6 +83,7 @@ const BlockHeader = () => {
       )}
         &nbsp;have you collected?&nbsp;&nbsp;
 
+
         {isMobile ? (
           <HelpIcon className="header-tooltip-icon" color="primary" onClick={handleClickOpen} />
         ) : (
@@ -100,6 +101,17 @@ const BlockHeader = () => {
             <HelpIcon className="header-tooltip-icon" color="primary" onClick={handleClickOpen} />
           </Tooltip>
         )}
+              </h1>
+
+      <div className="header-alert-box">
+        <Alert
+          variant='filled'
+          severity="info"
+          sx={{ marginBottom: '1em' }}
+        >
+          Traffic is high right now, and the Lichess API is rate limited. If you get an error, please try again later. Thank you!
+        </Alert>
+        </div>
 
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>
@@ -142,7 +154,7 @@ const BlockHeader = () => {
 
           </DialogContent>
         </Dialog>
-      </h1>
+
     </div>
   );
 };
