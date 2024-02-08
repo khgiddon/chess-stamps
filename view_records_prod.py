@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine, text, func, distinct
 from sqlalchemy.orm import sessionmaker
 from models import Record
 import os
@@ -31,18 +31,22 @@ Session = sessionmaker(bind=engine)
 # Create a session
 session = Session()
 
-# Fetch all records from the Record table
-records = session.query(Record).all()
+# Fetch the last 50 records from the Record table
+records = session.query(Record).order_by(Record.record_created_at.desc()).limit(50).all()
+
 
 # Print out each record
 for record in records:
     print(record.username, record.record_created_at, record.timeframe, record.url_key)
 
-print("Record count:", len(records))
+# Get the count of all records
+count = session.query(func.count(Record.id)).scalar()
 
-# Unique username count
-unique_usernames = session.query(Record.username).distinct().count()
-print("Unique usernames:", unique_usernames)
+# Get the count of distinct usernames
+distinct_usernames_count = session.query(func.count(distinct(Record.username))).scalar()
+
+print(f"Total records: {count}")
+print(f"Distinct usernames: {distinct_usernames_count}")
 
 # Close the session
 session.close()
