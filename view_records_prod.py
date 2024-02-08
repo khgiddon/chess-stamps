@@ -32,7 +32,7 @@ Session = sessionmaker(bind=engine)
 session = Session()
 
 # Fetch the last 50 records from the Record table
-records = session.query(Record).order_by(Record.record_created_at.desc()).limit(50).all()
+records = session.query(Record.username, Record.record_created_at, Record.timeframe, Record.url_key).order_by(Record.record_created_at.desc()).limit(50).all()
 
 
 # Print out each record
