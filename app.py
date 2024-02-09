@@ -291,6 +291,7 @@ def parse_streamed_reponse(streamed_response,username):
     l = full_response.split('\n\n\n')    
 
     if full_response == '{"error":"Please only run 1 request(s) at a time"}':
+        print(f"{username}: Rate limit exceeded. Aborting.")
         abort(429, description="Too many requests. Please try again later.")
 
     # Get overall data
