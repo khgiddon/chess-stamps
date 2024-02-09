@@ -182,7 +182,6 @@ def check_if_username_is_stored(username,timeframe,defaultusername='khg002',stor
   # Load stored file if username is in stored_usernames
     # This was an early local file implementation before the DB was added
     if username.lower() in stored_usernames:
-        print('loading stored file', flush=True)
         df = pd.read_csv("assets/" + username.lower() + ".tsv", sep="\t")
         #df = generate_base_statistics(df,username,stored_usernames)
         return df
@@ -233,7 +232,6 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     if lichessToken != 'none' and lichessToken != 'null' and lichessToken:
         headers["Authorization"] = f"Bearer {lichessToken}"
 
-    print('headers: ', headers, flush=True)
     url = f"https://lichess.org/api/user/{username}"   
 
     try:
@@ -266,7 +264,16 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max_games}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
     print(url, flush=True)
 
-    response = requests.get(url,headers=headers,stream=True)
+    try:
+        response = requests.get(url,headers=headers,stream=True)
+    except:
+        if response.status_code == 429:
+            print(f"{username}: Rate limit exceeded.")
+            abort(429, description="Rate limit exceeded. Please try again later.")
+        else:
+            print(f"An HTTP error occurred: {err}")    
+            abort(500, description="An unexpected error occurred")
+
     #print('received response from lichess api for main load')
     for chunk in response.iter_content(chunk_size=1024):
         percentage_complete = f'{(chunks / chunks_expected) * 100:.1f}'
@@ -278,17 +285,17 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
 
 def parse_streamed_reponse(streamed_response,username):
 
-    # Get overall data
-    openings_db = "assets/openings_pgn/combined_with_stats_parents.tsv"
-    df = pd.read_csv(openings_db, sep="\t")    
 
     # Parse and create data
     full_response = b''.join(streamed_response).decode('utf-8')
     l = full_response.split('\n\n\n')    
 
-    if len(l) == 1:
-        print('error in response', full_response, flush=True)
+    if full_response == '{"error":"Please only run 1 request(s) at a time"}':
+        abort(429, description="Too many requests. Please try again later.")
 
+    # Get overall data
+    openings_db = "assets/openings_pgn/combined_with_stats_parents.tsv"
+    df = pd.read_csv(openings_db, sep="\t")    
 
     del l[-1] # Last response is  empty
 
@@ -319,6 +326,7 @@ def parse_streamed_reponse(streamed_response,username):
 
     # Generate statistics
     df = generate_base_statistics(df)
+    print(f'finished parsing response from api for {username}', flush=True)
     return df
     
 # Convert timeframe to timestamp used for Lichess API call
@@ -368,7 +376,6 @@ def authorize():
     token = oauth.lichess.authorize_access_token()
     session['bearer_token'] = token['access_token']
     session.modified = True
-    print('setting bearer token', flush=True)
 
     redirect_url = f"{url}?state={state}"
     return redirect(redirect_url)
@@ -376,7 +383,6 @@ def authorize():
 @socketio.on('connect')
 def handle_connect():
     # Get the username from the query parameters
-    print(f"Connect event received with args: {request.args}")
     socket_username = request.args.get('username')
 
     if socket_username is not None:
@@ -400,7 +406,7 @@ def send_data_to_frontend():
     # Remove leading and trailing whitespace
     username = username.strip()
 
-    print('username:', username, flush=True)
+    print('attempting to pull data for username:', username, flush=True)
     
     token = session.get('bearer_token')  # Retrieve the token from the session
 
@@ -421,7 +427,6 @@ def send_data_to_frontend():
     # CASE 1: User in DB
     if url_key != 'none' and url_key != None:
         username, timeframe, df = check_if_key_exists(url_key)
-        print('case 1: user in db', flush=True)
 
 
     # CASE 2: User is stored
@@ -434,9 +439,6 @@ def send_data_to_frontend():
         streamed_response = []
         get_user_data(username,timestamp_to_use,token,streamed_response=streamed_response)
         df = parse_streamed_reponse(streamed_response,username)
-        print('case 3: api call', flush=True)
-
-
 
     # Save data to db
     if username.lower() not in stored_usernames and url_key == 'none':

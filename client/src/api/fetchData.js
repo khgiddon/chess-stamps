@@ -40,14 +40,14 @@ const handleProgress = (progressData) => {
           
         if (response.status === 429) {
           console.log('Rate limit exceeded');
-          throw new Error("Rate limit exceeded");
+          throw new Error("Sorry, too many requests right now. Please try again later.");
         }
         if (response.status === 400) {
           console.log('Could not find data for username');
           throw new Error("Could not find data for username");
         }
 
-          throw new Error("Sorry, too many requests right now. Please try again later.");
+          throw new Error("Failed to load data for user.");
 
         }
 
