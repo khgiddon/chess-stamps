@@ -34,10 +34,9 @@ session = Session()
 # Fetch the last 50 records from the Record table
 records = session.query(Record.username, Record.record_created_at, Record.timeframe, Record.url_key).order_by(Record.record_created_at.desc()).limit(50).all()
 
-
 # Print out each record
-for record in records:
-    print(record.username, record.record_created_at, record.timeframe, record.url_key)
+for record in records[::-1]:
+    print(record.username, record.record_created_at, record.timeframe, f"https://chessstamps.app/?id={record.url_key}")
 
 # Get the count of all records
 count = session.query(func.count(Record.id)).scalar()
