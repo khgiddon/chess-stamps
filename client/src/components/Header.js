@@ -103,16 +103,6 @@ const BlockHeader = () => {
         )}
               </h1>
 
-      <div className="header-alert-box">
-        <Alert
-          variant='filled'
-          severity="info"
-          sx={{ marginBottom: '1em' }}
-        >
-          Traffic is high right now, and the Lichess API is rate limited. If you get an error, please try again later. Thank you!
-        </Alert>
-        </div>
-
         <Dialog open={open} onClose={handleClose}>
           <DialogTitle>
             <Typography variant="h5" sx={{ textAlign: 'center', fontWeight: 'bold'  }}>FAQ</Typography>
