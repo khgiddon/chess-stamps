@@ -83,7 +83,7 @@ SECRET_KEY="<secret_key>"
 AUTH_METHOD="oauth"
 ```
 
-Replace `<your_lichess_token>` with a personal access token described [here](https://lichess.org/api#section/Introduction/Authentication). This is to provide another auth method for dev purposes without having to go through OAuth every time. To stop using OAuth, you can change the `AUTH_METHOD` described in `env.`.
+Replace `<your_lichess_token>` with a personal access token described [here](https://lichess.org/api#section/Introduction/Authentication). This is to provide another auth method for dev purposes without having to go through OAuth every time. To stop using OAuth, you can change the `AUTH_METHOD` described in `.env`.
 
  `<SECRET_KEY>` is a static secret key for the Flask app. You can generate a secret key using the following Python code:
 
