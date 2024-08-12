@@ -261,7 +261,7 @@ def get_user_data(username,timestamp_to_use,token,streamed_response=[]):
     # Second request is to pull the actual games
     chunks_expected = min(estimated_games,max_games)   
     chunks = 0
-    url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max_games}&moves=false&perfType=bullet,blitz,rapid,classical&since={timestamp_to_use}"
+    url = f"https://lichess.org/api/games/user/{username}?pgnInJson=true&opening=true&max={max_games}&moves=false&since={timestamp_to_use}"
     print(url, flush=True)
 
     try:
